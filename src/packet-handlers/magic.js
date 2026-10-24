@@ -513,7 +513,7 @@ async function castNPC({ player }, { index, id }) {
     }
 
     const damage = rollSpellDamage(player, npc, MISSILES[id]);
-    const died = npc.damage(damage, player);
+    const died = npc.damage(damage, player, 'magic');
 
     if (!died) {
         retaliate(player, npc);

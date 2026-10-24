@@ -1549,7 +1549,7 @@ class Player extends Character {
         // TODO player damage
         const damage = rollPlayerNPCRangedDamage(this, character);
 
-        character.damage(damage, this, true);
+        character.damage(damage, this, 'ranged');
         this.sendProjectile(character, 2);
 
         if (

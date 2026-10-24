@@ -74,9 +74,10 @@ class Character extends Entity {
         // { player.id: damage }
         this.playerDamage = new Map();
 
-        // ARSC: the part of playerDamage dealt with ranged attacks
-        // { player.id: damage }, so kills pay ranged experience
+        // ARSC: the parts of playerDamage dealt with ranged attacks and with
+        // spells { player.id: damage }, so kills pay the right experience
         this.rangedDamage = new Map();
+        this.magicDamage = new Map();
 
         this.isWalking = false;
 
@@ -156,14 +157,16 @@ class Character extends Entity {
     }
 
     // returns whether or not we died
-    damage(damage, player, ranged = false) {
+    // kind: 'melee', 'ranged' (Player#shootRanged) or 'magic' (spells)
+    damage(damage, player, kind = 'melee') {
         if (player) {
             const totalDamage = this.playerDamage.get(player.id) || 0;
             this.playerDamage.set(player.id, totalDamage + damage);
 
-            if (ranged) {
-                const rangedDamage = this.rangedDamage.get(player.id) || 0;
-                this.rangedDamage.set(player.id, rangedDamage + damage);
+            const byKind = { ranged: this.rangedDamage, magic: this.magicDamage }[kind];
+
+            if (byKind) {
+                byKind.set(player.id, (byKind.get(player.id) || 0) + damage);
             }
         }
 

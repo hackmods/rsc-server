@@ -1,5 +1,6 @@
-// A kill made with a bow pays ranged experience (NPC#die): Character#damage records ranged damage when
-// Player#shootRanged passes ranged = true, and die() splits the kill's experience by how the victor dealt it.
+// A kill made with a bow pays ranged experience and a spell kill pays no combat experience (NPC#die): Character#damage
+// records ranged and magic damage (Player#shootRanged passes 'ranged', magic.js 'magic'), and die() splits the kill's
+// experience by how the victor dealt it.
 
 const test = require('node:test');
 const assert = require('node:assert');
@@ -37,7 +38,7 @@ async function kill(victor, hits) {
     const total = npc.getCombatExperience();
     npc.skills.hits.current = hits.length;
     npc.broadcastDamage = () => {};
-    for (const ranged of hits) npc.damage(1, victor, ranged);
+    for (const kind of hits) npc.damage(1, victor, kind);
     // die() pays out in callPlugin's then()
     await new Promise((resolve) => setImmediate(resolve));
     return total;
@@ -45,7 +46,7 @@ async function kill(victor, hits) {
 
 test('a bow kill pays all the experience into ranged, none into hits', async () => {
     const victor = makeVictor();
-    const total = await kill(victor, [true, true, true]);
+    const total = await kill(victor, ['ranged', 'ranged', 'ranged']);
     assert.ok(total > 0);
     assert.strictEqual(victor.xp.ranged, total);
     assert.strictEqual(victor.xp.hits, 0);
@@ -54,7 +55,7 @@ test('a bow kill pays all the experience into ranged, none into hits', async () 
 
 test('a melee kill pays no ranged experience (aggressive: hits + 3x strength)', async () => {
     const victor = makeVictor(1);
-    const total = await kill(victor, [false, false, false]);
+    const total = await kill(victor, ['melee', 'melee', 'melee']);
     const quarter = Math.floor(total / 4);
     assert.strictEqual(victor.xp.ranged, undefined);
     assert.strictEqual(victor.xp.hits, quarter);
@@ -63,8 +64,25 @@ test('a melee kill pays no ranged experience (aggressive: hits + 3x strength)', 
 
 test('a mixed kill splits by damage dealt', async () => {
     const victor = makeVictor(2);
-    const total = await kill(victor, [true, false, false, false]);
+    const total = await kill(victor, ['ranged', 'melee', 'melee', 'melee']);
     assert.strictEqual(victor.xp.ranged, Math.floor(total / 4));
     assert.strictEqual(victor.xp.hits, Math.floor((total * 3) / 4 / 4));
     assert.strictEqual(victor.xp.attack, Math.floor((total * 3) / 4 / 4) * 3);
+});
+
+test('a spell kill pays no combat experience (the cast already paid magic)', async () => {
+    const victor = makeVictor(1);
+    await kill(victor, ['magic', 'magic', 'magic']);
+    assert.strictEqual(victor.xp.ranged, undefined);
+    assert.strictEqual(victor.xp.hits, 0);
+    assert.strictEqual(victor.xp.strength, 0);
+    assert.strictEqual(victor.xp.magic, undefined);
+});
+
+test('spell plus melee: only the melee share pays the style split', async () => {
+    const victor = makeVictor(1);
+    const total = await kill(victor, ['magic', 'magic', 'melee', 'melee']);
+    const quarter = Math.floor(total / 2 / 4);
+    assert.strictEqual(victor.xp.hits, quarter);
+    assert.strictEqual(victor.xp.strength, quarter * 3);
 });
