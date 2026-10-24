@@ -113,7 +113,7 @@ async function onGameObjectCommandOne(player, gameObject) {
         return false;
     }
 
-    await onGameObjectCommand(player, gameObject);
+    return await onGameObjectCommand(player, gameObject);
 }
 
 async function onGameObjectCommandTwo(player, gameObject) {
@@ -121,7 +121,7 @@ async function onGameObjectCommandTwo(player, gameObject) {
         return false;
     }
 
-    await onGameObjectCommand(player, gameObject);
+    return await onGameObjectCommand(player, gameObject);
 }
 
 module.exports = { onGameObjectCommandOne, onGameObjectCommandTwo };

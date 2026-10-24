@@ -33,6 +33,8 @@ async function onGameObjectCommandTwo(player, gameObject) {
             await world.sleepTicks(2);
         }
     }
+
+    return true;
 }
 
 async function onUseWithGameObject(player, gameObject, item) {

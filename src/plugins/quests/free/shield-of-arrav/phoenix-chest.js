@@ -25,6 +25,8 @@ async function onGameObjectCommandOne(player, gameObject) {
             player.inventory.add(PHOENIX_BROKEN_SHIELD_ID);
             player.message('@que@You find half a shield which you take');
         }
+
+        return true;
     }
 
     return false;

@@ -6,9 +6,11 @@ const OPEN_COFFIN_ID = 203;
 async function onGameObjectCommandOne(player, gameObject) {
     if (gameObject.id === OPEN_COFFIN_ID) {
         player.message('the coffin is empty.');
+        return true;
     } else if (gameObject.id === CLOSED_COFFIN_ID) {
         const { world } = player;
         world.replaceEntity('gameObjects', gameObject, OPEN_COFFIN_ID);
+        return true;
     }
 
     return false;

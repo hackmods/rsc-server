@@ -51,6 +51,8 @@ async function onGameObjectCommandOne(player, gameObject) {
     player.disengage();
 
     player.questStages.blackKnightsFortress = 2;
+
+    return true;
 }
 
 module.exports = { onGameObjectCommandOne };
