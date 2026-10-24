@@ -1130,7 +1130,9 @@ class Player extends Character {
             this.faceDirection(0, 0);
         });
 
+        // ARSC: same-tile teleport must unlock (was soft-lock forever).
         if (this.x === x && this.y === y) {
+            this.unlock();
             return;
         }
 
