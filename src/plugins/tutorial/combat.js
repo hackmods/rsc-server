@@ -9,18 +9,27 @@ async function onNPCAttack(player, npc) {
         return false;
     }
 
-    if (t.stage(player) < 16) {
-        player.message('@que@Speak to the combat instructor before you attack the rat');
-        return true;
+    const stage = t.stage(player);
+
+    // authentic: the rat may only be fought during the lesson itself
+    if (stage === 16) {
+        return false;
     }
 
-    return false;
+    player.message(
+        stage < 16
+            ? '@que@Speak to the combat instructor before killing rats'
+            : "@que@That's enough rat killing for now"
+    );
+
+    return true;
 }
 
 async function onNPCDeath(player, npc) {
     if (npc.id === t.NPC.RAT && t.stage(player) === 16) {
         t.setStage(player, 20);
-        player.message('@que@Well done, you have killed the rat');
+        player.message("@que@Well done you've killed the rat");
+        await player.world.sleepTicks(3);
         player.message('@que@Now speak to the combat instructor again');
     }
 

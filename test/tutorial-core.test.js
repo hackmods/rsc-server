@@ -174,6 +174,9 @@ test('rat: attack gated before 16, death moves 16 -> 20', async () => {
 
     const ready = fakePlayer({ cache: { tutorial: 16 } });
     assert.equal(await combat.onNPCAttack(ready, rat), false);
+    const after = fakePlayer({ cache: { tutorial: 20 } });
+    assert.equal(await combat.onNPCAttack(after, rat), true);
+    assert.match(after.messages[0], /enough rat killing/);
     assert.equal(await combat.onNPCDeath(ready, rat), false);
     assert.equal(t.stage(ready), 20);
 });

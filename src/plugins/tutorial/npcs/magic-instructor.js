@@ -26,6 +26,40 @@ function canHoldRunes(player) {
     return RUNES.every(([id]) => player.inventory.has(id));
 }
 
+const CHICKEN_RANGE = 10;
+const CHICKEN_SPAWN = { x: 218, y: 755 };
+
+function chickenNearby(player) {
+    const entities = (player.world.npcs && player.world.npcs.entities) || [];
+
+    return [...entities].some(
+        (n) =>
+            n &&
+            n.id === t.NPC.CHICKEN &&
+            Math.abs(n.x - player.x) <= CHICKEN_RANGE &&
+            Math.abs(n.y - player.y) <= CHICKEN_RANGE
+    );
+}
+
+// authentic: with no chicken around the wizard conjures one
+function summonChicken(player) {
+    const NPC = require('../../../model/npc');
+    const { x, y } = CHICKEN_SPAWN;
+
+    const chicken = new NPC(player.world, {
+        id: t.NPC.CHICKEN,
+        x,
+        y,
+        minX: x - 3,
+        maxX: x + 3,
+        minY: y - 3,
+        maxY: y + 3
+    });
+
+    delete chicken.respawn;
+    player.world.addEntity('npcs', chicken);
+}
+
 function giveRunes(player) {
     for (const [id, amount] of RUNES) {
         t.give(player, id, amount);
@@ -123,6 +157,14 @@ async function onTalkToNPC(player, npc) {
             await npc.say('You have run out of runes', 'Here, take some more');
             player.message('@que@The instructor gives you some runes');
             giveRunes(player);
+        }
+
+        if (!chickenNearby(player)) {
+            await npc.say('I think we need a chicken');
+            player.message('@que@The wizard waves his arms around and chants');
+            summonChicken(player);
+            player.disengage();
+            return true;
         }
 
         if (stage === 76) {

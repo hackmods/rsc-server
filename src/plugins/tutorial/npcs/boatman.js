@@ -41,7 +41,12 @@ async function onTalkToNPC(player, npc) {
         player.message('@que@You have completed the tutorial');
         // disengage first so the teleport is not blocked by the dialogue
         player.disengage();
-        await t.complete(player);
+        await player.world.sleepTicks(3);
+
+        if (await t.complete(player)) {
+            player.message('@que@The boat arrives in Lumbridge');
+        }
+
         return true;
     }
 

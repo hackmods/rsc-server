@@ -14,6 +14,8 @@ function makePlayer(stage, { choices = [], full = false } = {}) {
 
     return {
         cache: stage === null ? {} : { tutorial: stage },
+        x: 220,
+        y: 752,
         engaged: 0,
         disengaged: 0,
         messages: [],
@@ -44,7 +46,12 @@ function makePlayer(stage, { choices = [], full = false } = {}) {
         async ask(options) {
             return queue ? (queue.length ? queue.shift() : 0) : choices(options);
         },
-        world: { sleepTicks: async () => {} },
+        // one chicken in the magic room, so the instructor does not conjure another
+        world: {
+            sleepTicks: async () => {},
+            npcs: { entities: [{ id: 3, x: 219, y: 756 }] },
+            addEntity() {}
+        },
         async save() {}
     };
 }
@@ -174,4 +181,20 @@ test('off-tutorial player untouched; wrong id returns false', async () => {
         assert.strictEqual(await mod.onTalkToNPC(q, npcOf(9999)), false);
         assert.strictEqual(q.engaged, 0);
     }
+});
+
+test('magic: with no chicken nearby the wizard conjures one and waits', async () => {
+    const magic = require('../src/plugins/tutorial/npcs/magic-instructor');
+    const t = require('../src/plugins/tutorial/core');
+    const added = [];
+    const player = makePlayer(76);
+    player.world.npcs.entities = [];
+    player.world.addEntity = (type, npc) => added.push([type, npc.id]);
+    player.inventory.add(t.ITEM.AIR_RUNE, 5);
+    player.inventory.add(t.ITEM.MIND_RUNE, 5);
+
+    await magic.onTalkToNPC(player, npcOf(t.NPC.MAGIC));
+
+    assert.deepEqual(added, [['npcs', t.NPC.CHICKEN]]);
+    assert.equal(t.stage(player), 76, 'no advance until a chicken is there');
 });
