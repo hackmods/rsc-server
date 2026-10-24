@@ -39,7 +39,10 @@ function gameObjectCommand(pluginHandler, { player }, { x, y }) {
             return;
         }
 
-        await world.callPlugin(pluginHandler, player, gameObject);
+        const blocked = await world.callPlugin(pluginHandler, player, gameObject);
+
+        // ARSC: nothing claimed it; say so, as wall objects and npcs do.
+        if (!blocked) player.message('Nothing interesting happens');
 
         player.unlock();
     };

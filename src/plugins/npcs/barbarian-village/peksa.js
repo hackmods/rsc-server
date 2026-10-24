@@ -16,7 +16,7 @@ async function onTalkToNPC(player, npc) {
     switch (choice) {
         case 0:
             await npc.say('Well look at all these great helmets!');
-            player.openShop('peksas-helmets');
+            player.openShop('peksas-helmet');
             break;
         case 1:
             await npc.say('Well come back if you change your mind');

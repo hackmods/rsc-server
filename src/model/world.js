@@ -40,6 +40,7 @@ const DROP_DISAPPEAR_TIMEOUT = 1000 * 60 * 2; // 2 mins
 // function names that can be used in files within the ../plugins/ directory
 // that will potentially block default behaviour
 const PLUGIN_TYPES = [
+    'onNPCCommand',
     'onTalkToNPC',
     'onGameObjectCommandOne',
     'onGameObjectCommandTwo',

@@ -182,7 +182,35 @@ async function npcAttack({ player }, { index }) {
     };
 }
 
-// noop for now
-async function npcCommand() {}
+// ARSC npcCommand: the second npc option (pickpocket). Walk up like talking, then the onNPCCommand plugins.
+async function npcCommand({ player }, { index }) {
+    if (player.locked) {
+        return;
+    }
+
+    player.walkAction = false;
+
+    player.endWalkFunction = async () => {
+        const { world } = player;
+        const npc = await getNPC(player, index);
+
+        if (!npc) {
+            return;
+        }
+
+        if (npc.opponent || npc.locked) {
+            player.unlock();
+            return;
+        }
+
+        const blocked = await world.callPlugin('onNPCCommand', player, npc);
+
+        player.unlock();
+
+        if (!blocked) {
+            player.message('Nothing interesting happens');
+        }
+    };
+}
 
 module.exports = { npcTalk, useWithNPC, npcAttack, npcCommand };

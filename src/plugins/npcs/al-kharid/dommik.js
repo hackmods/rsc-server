@@ -10,7 +10,7 @@ async function onTalkToNPC(player, npc) {
         return false;
     }
 
-    return await buyEquipment(player, npc, 'rommiks-crafting');
+    return await buyEquipment(player, npc, 'dommiks-crafting');
 }
 
 module.exports = { onTalkToNPC };
