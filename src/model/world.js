@@ -196,7 +196,8 @@ class World {
 
     removeEntity(type, entity) {
         if (!this[type].remove(entity)) {
-            throw new Error(`unable to remove entity ${entity}`);
+            // ARSC: removing an entity twice (a disappear timer after the item was picked up) must not kill the server.
+            return;
         }
 
         if (type === 'players') {
