@@ -38,4 +38,5 @@ async function onTalkToNPC(player, npc) {
     return await buyEquipment(player, npc, 'rommiks-crafty-supplies');
 }
 
-module.exports = { onTalkToNPC };
+// dommik.js shares the dialogue (Open-RSC CraftingEquipmentShops.java serves both shopkeepers from one class)
+module.exports = { onTalkToNPC, buyEquipment };
