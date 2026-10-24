@@ -100,7 +100,7 @@ function setStage(player, n) {
         return;
     }
 
-    log.debug(`${player} tutorial ${player.cache.tutorial} -> ${n}`);
+    log.info(`${player} tutorial ${player.cache.tutorial} -> ${n}`);
     player.cache.tutorial = n;
 }
 
