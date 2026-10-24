@@ -13,7 +13,14 @@ async function sleepWord({ player }, { sleepWord }) {
 
         player.openSleep(false);
     } else {
-        if (player.sleepWord === sleepWord) {
+        // ARSC sandbox: bots cannot read the captcha image (see services/rsc-server/patches/sandbox-sleep.js).
+        const arscPrefix = (process.env.ARSC_SLEEP_PREFIX || 'bot').toLowerCase();
+        const arscName = String(player.username || '').toLowerCase();
+        const arscAnyWord =
+            process.env.ARSC_SLEEP_ANYWORD === '1' &&
+            sleepWord.trim().length > 0 &&
+            (arscPrefix === '*' || arscName.startsWith(arscPrefix));
+        if (arscAnyWord || player.sleepWord === sleepWord) {
             player.exitSleep(true);
         } else {
             player.sendSleepIncorrect();
