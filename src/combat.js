@@ -47,7 +47,7 @@ function getPrayerBonuses(player) {
             const prayer = PRAYER_BONUSES[index];
 
             if (!prayer) {
-                break;
+                continue;
             }
 
             bonuses[prayer.skill] = prayer.multiplier;
@@ -186,5 +186,6 @@ module.exports = {
     rollPlayerNPCDamage,
     rollPlayerPlayerDamage,
     rollNPCDamage,
-    rollPlayerNPCRangedDamage
+    rollPlayerNPCRangedDamage,
+    getPrayerBonuses
 };

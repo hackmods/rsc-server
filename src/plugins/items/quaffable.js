@@ -100,7 +100,7 @@ const DRINK_EFFECTS = {
         await world.sleepTicks(2);
 
         for (const skillName of ['attack', 'strength', 'defense']) {
-            player.skills[skillName].current = Math.min(
+            player.skills[skillName].current = Math.max(
                 0,
                 player.skills[skillName].current - 2
             );
@@ -131,7 +131,7 @@ const DRINK_EFFECTS = {
         await world.sleepTicks(3);
 
         for (const skillName of ['attack', 'strength', 'defense']) {
-            player.skills[skillName].current = Math.min(
+            player.skills[skillName].current = Math.max(
                 0,
                 player.skills[skillName].current - 2
             );

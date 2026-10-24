@@ -275,7 +275,7 @@ class Entity {
 
         return (
             x >= region.minX &&
-            x <= region.maxY &&
+            x <= region.maxX &&
             y >= region.minY &&
             y <= region.maxY
         );
