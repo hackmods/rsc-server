@@ -5,11 +5,7 @@ async function register(socket, message) {
     const { version, username, password } = message;
     const ip = socket.getIPAddress();
 
-    // only free-to-play worlds support registration
-    if (socket.server.world.members) {
-        socket.send(Buffer.from([15]));
-        return;
-    }
+    // ARSC: members worlds register too (this sandbox always runs members).
 
     if (version !== config.version) {
         socket.send(Buffer.from([5]));
