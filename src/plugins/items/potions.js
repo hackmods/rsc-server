@@ -24,7 +24,7 @@ const POTIONS = [
     { name: 'restore prayer potion', doses: dosesFrom(483, 3), effect: { type: 'prayer', flat: 7, percent: 0.25 } },
     { name: 'stat restoration potion', doses: dosesFrom(477, 3), effect: restore(8, 0.25) },
     { name: 'cure poison potion', doses: dosesFrom(566, 3), effect: { type: 'curePoison' } },
-    { name: 'poison antidote', doses: dosesFrom(569, 3), effect: { type: 'curePoison' } }
+    { name: 'poison antidote', doses: dosesFrom(569, 3), effect: { type: 'antidote' } }
 ];
 
 // skills the stat restoration potion tops up (not hits, and prayer has its own potion)
@@ -88,9 +88,15 @@ function applyEffect(player, effect) {
 
             break;
         }
+        // Open-RSC Drinkables.java: both cure the poison, then keep it off for 3 minutes (cure poison potion) or
+        // 6 minutes (antidote). Neither says anything beyond the usual drink and doses messages.
         case 'curePoison':
-            // there is no poison in this server yet; the potion is still used up
-            player.message('@que@You feel better');
+            player.curePoison();
+            player.setCurePoisonProtection();
+            break;
+        case 'antidote':
+            player.curePoison();
+            player.setAntidoteProtection();
             break;
     }
 }

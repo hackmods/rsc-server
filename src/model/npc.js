@@ -6,6 +6,7 @@ const npcRespawn = require('@2003scape/rsc-data/npc-respawn');
 const npcs = require('@2003scape/rsc-data/config/npcs');
 const { rollItemDrop } = require('../rolls');
 const { rollNPCDamage } = require('../combat');
+const poisonRules = require('../poison');
 
 const HERB_IDS = new Set(dropDefinitions.herb.map((entry) => entry.id));
 const PARALYZE_MONSTER_ID = 12;
@@ -116,6 +117,8 @@ class NPC extends Character {
 
     die() {
         const { world } = this;
+
+        this.curePoison();
 
         let maxDamage = 0;
         let victorID = -1;
@@ -349,6 +352,9 @@ class NPC extends Character {
 
     fight() {
         if (this.fightStage % 3 === 0) {
+            // regardless of the paralyze monster prayer, like Open-RSC
+            poisonRules.npcRound(this, this.opponent);
+
             if (!this.opponent.prayers[PARALYZE_MONSTER_ID]) {
                 const damage = rollNPCDamage(this, this.opponent);
                 this.opponent.damage(damage);
@@ -394,6 +400,7 @@ class NPC extends Character {
 
     tick() {
         this.normalizeSkills();
+        this.tickPoison();
 
         if (this.opponent) {
             this.fight();

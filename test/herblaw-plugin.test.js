@@ -286,8 +286,12 @@ test('stat restoration lifts drained stats toward base but never hits or past ba
 test('cure poison and antidote are used up', async () => {
     for (const id of [566, 569]) {
         const player = fakePlayer({ inventory: [id] });
+        let cured = 0;
+        player.curePoison = () => (cured += 1);
+        player.setCurePoisonProtection = player.setAntidoteProtection = () => {};
         assert.equal(await drink(player, id), true);
         assert.deepEqual(player.bag, [id + 1]);
+        assert.equal(cured, 1);
     }
 });
 

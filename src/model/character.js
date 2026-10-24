@@ -37,6 +37,12 @@ function getDirectionDelta(directionNumber) {
     return numberDirections[directionNumber];
 }
 
+// ARSC poison, ported from Open-RSC server/src/com/openrsc/server/event/rsc/impl/PoisonEvent.java: the event
+// runs every 32 ticks, hurts for power / 10, loses 2 power per run and is cured silently once power drops below 10
+const POISON_INTERVAL_TICKS = 32;
+const POISON_MIN_POWER = 10;
+const POISON_POWER_DECAY = 2;
+
 class Character extends Entity {
     constructor(world) {
         super(world);
@@ -73,7 +79,60 @@ class Character extends Entity {
         this.rangedDamage = new Map();
 
         this.isWalking = false;
+
+        // ARSC poison: 0 when healthy, see poison()
+        this.poisonPower = 0;
+        this.poisonTicks = 0;
+        // the player who poisoned an NPC, so a poison kill pays them
+        this.poisonedBy = null;
     }
+
+    get poisoned() {
+        return this.poisonPower > 0;
+    }
+
+    // start (or restart) poison at this power. returns whether it took
+    poison(power, poisonedBy = null) {
+        this.poisonPower = power;
+        this.poisonTicks = POISON_INTERVAL_TICKS;
+        this.poisonedBy = poisonedBy;
+        return true;
+    }
+
+    curePoison() {
+        this.poisonPower = 0;
+        this.poisonTicks = 0;
+        this.poisonedBy = null;
+    }
+
+    // run every world tick
+    tickPoison() {
+        if (this.poisonPower <= 0) {
+            return;
+        }
+
+        this.poisonTicks -= 1;
+
+        if (this.poisonTicks > 0) {
+            return;
+        }
+
+        this.poisonTicks = POISON_INTERVAL_TICKS;
+
+        if (this.poisonPower < POISON_MIN_POWER) {
+            this.curePoison();
+            return;
+        }
+
+        const damage = Math.floor(this.poisonPower / 10);
+        this.poisonPower -= POISON_POWER_DECAY;
+
+        this.onPoisonDamage(damage);
+        this.damage(damage, this.poisonedBy);
+    }
+
+    // hook for the message a poisoned player sees
+    onPoisonDamage() {}
 
     lock() {
         this.locked = true;

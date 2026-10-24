@@ -17,6 +17,7 @@ const {
 } = require('../combat');
 
 const { weapons: rangedWeapons } = require('@2003scape/rsc-data/ranged');
+const poisonRules = require('../poison');
 
 // properties to save in the database
 const SAVE_PROPERTIES = [
@@ -52,6 +53,11 @@ const MAX_FATIGUE = 75000;
 
 // how many ticks to wait before re-generating health
 const RESTORE_TICKS = 100;
+
+// ARSC poison immunity after a potion, Open-RSC Player.java setCurePoisonProtection / setAntidoteProtection
+// (3 and 6 minutes of 640ms ticks)
+const CURE_PROTECTION_TICKS = 281;
+const ANTIDOTE_PROTECTION_TICKS = 562;
 
 const RAPID_RESTORE_ID = 6;
 const RAPID_HEAL_ID = 7;
@@ -562,6 +568,42 @@ class Player extends Character {
         }
     }
 
+    // Open-RSC Player.java isAntidoteProtected
+    isPoisonProtected() {
+        return !!this.poisonProtectedUntil && this.world.ticks < this.poisonProtectedUntil;
+    }
+
+    // a cure poison potion never shortens a poison antidote's longer protection
+    setCurePoisonProtection() {
+        const remaining = (this.poisonProtectedUntil || 0) - this.world.ticks;
+
+        if (remaining > CURE_PROTECTION_TICKS) {
+            return;
+        }
+
+        this.poisonProtectedUntil = this.world.ticks + CURE_PROTECTION_TICKS;
+    }
+
+    setAntidoteProtection() {
+        this.poisonProtectedUntil = this.world.ticks + ANTIDOTE_PROTECTION_TICKS;
+    }
+
+    poison(power, poisonedBy = null) {
+        if (this.isPoisonProtected()) {
+            return false;
+        }
+
+        return super.poison(power, poisonedBy);
+    }
+
+    // Open-RSC PoisonEvent.java: the same coloured message every time it hurts
+    onPoisonDamage(damage) {
+        this.message(
+            '@gr3@You @gr2@are @gr1@poisioned! @gr2@You @gr3@lose @gr2@' +
+                `${damage} @gr1@health.`
+        );
+    }
+
     // send the red hitsplat
     damage(damage) {
         // ARSC Tutorial Island: nothing there can kill you (authentic: the rat
@@ -860,6 +902,8 @@ class Player extends Character {
         const { world } = this;
 
         const victor = this.opponent;
+
+        this.curePoison();
 
         if (victor) {
             victor.retreat();
@@ -1335,6 +1379,8 @@ class Player extends Character {
         if (this.fightStage % 3 === 0) {
             const isPlayer = !!this.opponent.username;
 
+            poisonRules.playerRound(this, this.opponent);
+
             const damage = isPlayer
                 ? rollPlayerPlayerDamage(this, this.opponent)
                 : rollPlayerNPCDamage(this, this.opponent);
@@ -1402,6 +1448,8 @@ class Player extends Character {
 
         this.inventory.remove(ammunitionID);
 
+        poisonRules.rangedHit(this, character, ammunitionID);
+
         if (Math.random() >= 0.2) {
             const [arrowStack] = world.groundItems
                 .getAtPoint(character.x, character.y)
@@ -1457,6 +1505,7 @@ class Player extends Character {
 
     tick() {
         this.normalizeSkills();
+        this.tickPoison();
 
         if (this.interfaceOpen.sleep) {
             this.refreshDisplayFatigue();
