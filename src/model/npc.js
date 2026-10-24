@@ -158,7 +158,30 @@ class NPC extends Character {
                 victor.sendSound('victory');
 
                 const totalExperience = this.getCombatExperience();
-                const quarterExperience = Math.floor(totalExperience / 4);
+
+                // ARSC: damage dealt with a bow pays ranged experience (and no
+                // hits), the rest pays the combat-style split below. Open-RSC
+                // server/src/com/openrsc/server/model/entity/npc/Npc.java
+                // handleXpDistribution pays ranged the whole combat experience
+                // for ranged damage (lines 765-776); here the victor still
+                // takes all of it, split by how they dealt the damage.
+                const dealt = this.playerDamage.get(victor.id) || 0;
+                const ranged = Math.min(
+                    this.rangedDamage.get(victor.id) || 0,
+                    dealt
+                );
+                const rangedShare = dealt > 0 ? ranged / dealt : 0;
+                const rangedExperience = Math.floor(
+                    totalExperience * rangedShare
+                );
+
+                if (rangedExperience > 0) {
+                    victor.addExperience('ranged', rangedExperience);
+                }
+
+                const quarterExperience = Math.floor(
+                    (totalExperience * (1 - rangedShare)) / 4
+                );
 
                 victor.addExperience('hits', quarterExperience);
 
