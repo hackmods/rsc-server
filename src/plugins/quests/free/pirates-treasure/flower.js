@@ -10,8 +10,7 @@ async function onUseWithGameObject(player, gameObject, item) {
     if (
         gameObject.id !== FLOWER_ID ||
         item.id !== SPADE_ID ||
-        questStage !== 3 ||
-        questStage !== 4
+        (questStage !== 3 && questStage !== 4)
     ) {
         return false;
     }
