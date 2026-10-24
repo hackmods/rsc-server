@@ -11,12 +11,18 @@ const wallObjects = require('@2003scape/rsc-data/config/wall-objects');
 const { Landscape } = require('@2003scape/rsc-landscape');
 const { PathFinder } = require('@2003scape/rsc-path-finder');
 
+const arscLocations = require('../arsc-locations');
+
 const entityLocations = {
     npcs: require('@2003scape/rsc-data/locations/npcs'),
     gameObjects: require('@2003scape/rsc-data/locations/objects'),
     wallObjects: require('@2003scape/rsc-data/locations/wall-objects'),
     groundItems: require('@2003scape/rsc-data/locations/items')
 };
+
+for (const type of Object.keys(entityLocations)) {
+    entityLocations[type] = entityLocations[type].concat(arscLocations[type]);
+}
 
 const entityConstructors = {
     npcs: require('./npc'),

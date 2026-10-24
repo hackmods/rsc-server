@@ -1,4 +1,5 @@
-const EXCLUDE_IDS = new Set([130, 198, 223, 227]);
+// 199: the black hole ladder (miniquests/black-hole.js)
+const EXCLUDE_IDS = new Set([130, 198, 199, 223, 227]);
 
 async function onGameObjectCommandOne(player, gameObject) {
     if (EXCLUDE_IDS.has(gameObject.id)) {

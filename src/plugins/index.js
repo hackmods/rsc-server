@@ -45,6 +45,7 @@ module.exports = {
     "items.sleeping-bag": require('./items/sleeping-bag.js'),
     "items.war-ship": require('./items/war-ship.js'),
     "miniquests.barcrawl": require('./miniquests/barcrawl.js'),
+    "miniquests.black-hole": require('./miniquests/black-hole.js'),
     "guilds.champions": require('./guilds/champions.js'),
     "guilds.cooks": require('./guilds/cooks.js'),
     "guilds.crafting": require('./guilds/crafting.js'),
