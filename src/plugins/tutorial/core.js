@@ -184,6 +184,15 @@ function onDeath(player) {
     return true;
 }
 
+// player.damage(): on the tutorial, hits never drop below 1
+function safeDamage(player, damage) {
+    if (!onTutorial(player)) {
+        return damage;
+    }
+
+    return Math.max(0, Math.min(damage, player.skills.hits.current - 1));
+}
+
 // player.exitSleep(): the fatigue expert's lesson
 function onWake(player, refreshed) {
     if (refreshed && stage(player) === 85) {
@@ -248,6 +257,7 @@ module.exports = {
     complete,
     onFirstLogin,
     onDeath,
+    safeDamage,
     onWake,
     init,
     getDoor

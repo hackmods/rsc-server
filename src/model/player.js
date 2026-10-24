@@ -564,6 +564,10 @@ class Player extends Character {
 
     // send the red hitsplat
     damage(damage) {
+        // ARSC Tutorial Island: nothing there can kill you (authentic: the rat
+        // never lands a killing blow)
+        damage = require('../plugins/tutorial/core').safeDamage(this, damage);
+
         const isDead = super.damage(damage);
         this.sendStats();
         return isDead;

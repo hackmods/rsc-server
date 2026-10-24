@@ -230,3 +230,13 @@ test('complete strips tutorial items, keeps the rest and lands in Lumbridge', as
     // a second call (double click on the boatman) does nothing
     assert.equal(await t.complete(player), false);
 });
+
+test('nothing on the island can take a player below 1 hit', () => {
+    const player = { cache: { tutorial: 16 }, skills: { hits: { current: 3 } } };
+    assert.equal(t.safeDamage(player, 5), 2);
+    player.skills.hits.current = 1;
+    assert.equal(t.safeDamage(player, 4), 0);
+
+    const outsider = { cache: {}, skills: { hits: { current: 3 } } };
+    assert.equal(t.safeDamage(outsider, 5), 5);
+});
