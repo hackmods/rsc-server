@@ -21,8 +21,8 @@ module.exports = {
     "shop": require('./shop.js'),
     "sleep": require('./sleep.js'),
     "social": require('./social.js'),
-    "spell": require('./spell.js'),
     "trade": require('./trade.js'),
     "walk": require('./walk.js'),
     "wall-object": require('./wall-object.js'),
+    "magic": require('./magic.js'),
 };
