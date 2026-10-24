@@ -39,6 +39,9 @@ const ITEM = {
     TIN_ORE: 202,
     AIR_RUNE: 33,
     MIND_RUNE: 35,
+    WATER_RUNE: 32,
+    EARTH_RUNE: 34,
+    BODY_RUNE: 36,
     SLEEPING_BAG: 1263,
     COINS: 10
 };
@@ -52,6 +55,9 @@ const TUTORIAL_ITEMS = [
     ITEM.TIN_ORE,
     ITEM.AIR_RUNE,
     ITEM.MIND_RUNE,
+    ITEM.WATER_RUNE,
+    ITEM.EARTH_RUNE,
+    ITEM.BODY_RUNE,
     ITEM.SLEEPING_BAG
 ];
 

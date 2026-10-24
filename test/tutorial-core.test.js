@@ -214,7 +214,7 @@ test('dying on the tutorial respawns on the island', () => {
 test('complete strips tutorial items, keeps the rest and lands in Lumbridge', async () => {
     const player = fakePlayer({
         cache: { tutorial: 100 },
-        items: [t.ITEM.BRONZE_LONG_SWORD, t.ITEM.SLEEPING_BAG, t.ITEM.COOKED_MEAT, t.ITEM.NET]
+        items: [t.ITEM.BRONZE_LONG_SWORD, t.ITEM.SLEEPING_BAG, t.ITEM.COOKED_MEAT, t.ITEM.NET, t.ITEM.WATER_RUNE, t.ITEM.BODY_RUNE]
     });
 
     assert.equal(await t.complete(player), true);
@@ -224,6 +224,7 @@ test('complete strips tutorial items, keeps the rest and lands in Lumbridge', as
     assert.ok(player.inventory.has(t.ITEM.NET));
     assert.ok(!player.inventory.has(t.ITEM.SLEEPING_BAG));
     assert.ok(!player.inventory.has(t.ITEM.COOKED_MEAT));
+    assert.ok(!player.inventory.has(t.ITEM.WATER_RUNE) && !player.inventory.has(t.ITEM.BODY_RUNE));
     assert.ok(!t.inBounds(player.x, player.y));
     assert.equal(player.saved, 1);
 

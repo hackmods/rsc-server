@@ -3,9 +3,7 @@
 
 const t = require('../core');
 
-const WATER_RUNE = 32;
-const EARTH_RUNE = 34;
-const BODY_RUNE = 36;
+const { WATER_RUNE, EARTH_RUNE, BODY_RUNE } = t.ITEM;
 
 const RUNES = [
     [t.ITEM.AIR_RUNE, 12],
