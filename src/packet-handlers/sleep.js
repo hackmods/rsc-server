@@ -13,7 +13,7 @@ async function sleepWord({ player }, { sleepWord }) {
 
         player.openSleep(false);
     } else {
-        // ARSC sandbox: bots cannot read the captcha image (ARSC_SLEEP_ANYWORD / ARSC_SLEEP_PREFIX; docs/ENGINE.md in Autonomous-RSC).
+        // ARSC sandbox: bots cannot read the captcha image (sandbox flags below; docs/ENGINE.md in Autonomous-RSC).
         const arscPrefix = (process.env.ARSC_SLEEP_PREFIX || 'bot').toLowerCase();
         const arscName = String(player.username || '').toLowerCase();
         const arscAnyWord =
