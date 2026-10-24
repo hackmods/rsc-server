@@ -17,6 +17,13 @@ async function onUseWithGameObject(player, gameObject, item) {
 
     const { world } = player;
 
+    if (item.id === FLAX_ID && player.skills.crafting.current < 10) {
+        player.message(
+            'You need a crafting level of 10 or higher to make a bowstring'
+        );
+        return true;
+    }
+
     player.lock();
 
     player.sendBubble(item.id);
@@ -27,16 +34,10 @@ async function onUseWithGameObject(player, gameObject, item) {
         player.message('You spin the sheeps wool into a nice ball of wool');
         player.inventory.add(BALL_OF_WOOL_ID);
         player.addExperience('crafting', 10);
-    } else if (item.id === FLAX_ID) {
-        if (player.skills.crafting.current >= 10) {
-            player.message('You make the flax into a bow string');
-            player.inventory.add(BOWSTRING_ID);
-            player.addExperience('crafting', 60);
-        } else {
-            player.message(
-                'You need a crafting level of 10 or higher to make a bowstring'
-            );
-        }
+    } else {
+        player.message('You make the flax into a bow string');
+        player.inventory.add(BOWSTRING_ID);
+        player.addExperience('crafting', 60);
     }
 
     await world.sleepTicks(1);

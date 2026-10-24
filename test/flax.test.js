@@ -51,3 +51,18 @@ test('the plant stays put: picking again gives flax again', async () => {
     await flax.onGameObjectCommandTwo(player, { id: 313 });
     assert.deepEqual(player.bag, [675, 675]);
 });
+
+test('spinning flax below crafting 10 keeps the flax', async () => {
+    const spinningWheel = require('../src/plugins/skills/crafting/spinning-wheel');
+    const removed = [];
+    const messages = [];
+    const player = {
+        skills: { crafting: { current: 9 } },
+        inventory: { remove: (id) => removed.push(id), add() {} },
+        message: (...m) => messages.push(...m)
+    };
+
+    assert.equal(await spinningWheel.onUseWithGameObject(player, { id: 121 }, { id: 675 }), true);
+    assert.deepEqual(removed, []);
+    assert.match(messages[0], /crafting level of 10/);
+});
