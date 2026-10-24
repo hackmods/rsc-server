@@ -180,6 +180,13 @@ class Server {
             await this.dataClient.init();
 
             await this.world.loadData();
+            // ARSC world-admin: live world config + admin API
+            try {
+                require('./world-admin').start(this);
+            } catch (e) {
+                log.error('world-admin failed to start', e);
+            }
+
             this.world.tick();
 
             this.loadPacketHandlers();

@@ -6,9 +6,9 @@ const quests = require('@2003scape/rsc-data/quests');
 const regions = require('@2003scape/rsc-data/regions');
 
 async function command({ player }, { command, args }) {
-    /*if (!player.isAdministrator()) {
+    if (!require('../world-admin').canUseCommands(player)) { // ARSC world-admin
         return;
-    }*/
+    }
 
     const { world } = player;
 

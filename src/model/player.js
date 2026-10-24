@@ -213,6 +213,8 @@ class Player extends Character {
 
         this.message('Welcome to RuneScape!');
 
+        require('../world-admin').onLogin(this); // ARSC world-admin
+
         this.localEntities.updateNearby('npcs');
         this.localEntities.updateNearby('players');
         this.localEntities.updateNearby('gameObjects');

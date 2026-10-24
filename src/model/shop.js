@@ -73,14 +73,17 @@ class Shop {
         return Math.floor((priceMod * item.definition.price) / 100);
     }
 
+    // ARSC world-admin: one restock pass. The cadence is driven by
+    // world-admin (upstream never scheduled it) and the old splice bug that
+    // replaced this.items with the removed item is gone.
     restock() {
         let updated = false;
+        const keep = [];
 
-        for (const [index, item] of this.items.entries()) {
+        for (const item of this.items) {
             const shopInventory = this.getShopInventory(item);
 
             if (shopInventory) {
-                // regular shop item
                 if (item.amount > shopInventory.amount) {
                     item.amount -= 1;
                     updated = true;
@@ -88,24 +91,23 @@ class Shop {
                     item.amount += 1;
                     updated = true;
                 }
-            } else {
-                // non-shop item, decrease its amount by one
-                if (item.amount <= 1) {
-                    // remove the item if theres 1 or less
-                    this.items = this.items.splice(index, 1);
-                } else {
-                    item.amount -= 1;
-                }
 
+                keep.push(item);
+            } else {
                 updated = true;
+
+                if (item.amount > 1) {
+                    item.amount -= 1;
+                    keep.push(item);
+                }
             }
         }
+
+        this.items = keep;
 
         if (updated) {
             this.updateOccupants();
         }
-
-        this.world.setTimeout(this.boundRestock, this.definition.restock);
     }
 
     updateOccupants() {
