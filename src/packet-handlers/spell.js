@@ -10,6 +10,9 @@ const {
 
 const log = require('bole')('spell');
 
+// in tiles; withinRange(..., precise) compares against range / 2 (as shootRanged does)
+// in tiles; withinRange(..., precise) compares against range / 2, as
+// shootRanged accounts for
 const CAST_RANGE = 5;
 const CAST_DELAY_TICKS = 3;
 
@@ -46,12 +49,12 @@ async function castNPC({ player }, { index, id: spellIndex }) {
             return;
         }
 
-        if (!npc.withinRange(player, CAST_RANGE, true)) {
+        if (!npc.withinRange(player, CAST_RANGE * 2, true)) {
             if (npc.withinRange(player, 8)) {
                 await player.chase(npc);
             }
 
-            if (!npc.withinRange(player, CAST_RANGE, true)) {
+            if (!npc.withinRange(player, CAST_RANGE * 2, true)) {
                 return;
             }
         }
