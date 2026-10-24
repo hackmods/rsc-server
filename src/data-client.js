@@ -5,7 +5,7 @@ const log = require('bole')('data-client');
 const net = require('net');
 const uid = require('rand-token').uid;
 
-const TIMEOUT = 10000;
+const TIMEOUT = 60000; // ARSC: multi-bot login headroom
 
 class DataClient {
     constructor(server) {
