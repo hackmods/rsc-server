@@ -18,15 +18,17 @@ async function onTalkToNPC(player, npc) {
 
     const choice = await player.ask(['no thankyou', "i'll have a look"], true);
 
-    if (choice === 0) {
-        await npc.say('ahh well, all the best to you');
+    // the shop is option 1: services/rsc-agents/scripts/gen-shop-openers.js reads the
+    // option path from the `if (choice === N)` around openShop
+    if (choice === 1) {
+        await npc.say('great stuff');
         player.disengage();
+        player.openShop('grand-tree-groceries');
         return true;
     }
 
-    await npc.say('great stuff');
+    await npc.say('ahh well, all the best to you');
     player.disengage();
-    player.openShop('grand-tree-groceries');
     return true;
 }
 

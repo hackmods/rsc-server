@@ -22,15 +22,17 @@ async function onTalkToNPC(player, npc) {
         false
     );
 
-    if (choice === 0) {
-        await player.say('I think I might just leave the perusing for now thanks');
+    // the shop is option 1: services/rsc-agents/scripts/gen-shop-openers.js reads the
+    // option path from the `if (choice === N)` around openShop
+    if (choice === 1) {
+        await player.say("OK,let's see what you've got then");
         player.disengage();
+        player.openShop('fancy-clothes');
         return true;
     }
 
-    await player.say("OK,let's see what you've got then");
+    await player.say('I think I might just leave the perusing for now thanks');
     player.disengage();
-    player.openShop('fancy-clothes');
     return true;
 }
 

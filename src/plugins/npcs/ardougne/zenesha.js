@@ -17,16 +17,18 @@ async function onTalkToNPC(player, npc) {
         false
     );
 
-    if (choice === 0) {
-        await player.say("I'm not interested");
+    // the shop is option 1: services/rsc-agents/scripts/gen-shop-openers.js reads the
+    // option path from the `if (choice === N)` around openShop
+    if (choice === 1) {
+        await player.say('I may be interested');
+        await npc.say('Look at these fine samples then');
         player.disengage();
+        player.openShop('zeneshas-plate-mail');
         return true;
     }
 
-    await player.say('I may be interested');
-    await npc.say('Look at these fine samples then');
+    await player.say("I'm not interested");
     player.disengage();
-    player.openShop('zeneshas-plate-mail');
     return true;
 }
 
