@@ -1,7 +1,7 @@
 // https://classic.runescape.wiki/w/Smithing#Forging
 
 const items = require('@2003scape/rsc-data/config/items');
-const { smithing } = require('@2003scape/rsc-data/skills/smithing');
+const rscData = require('@2003scape/rsc-data/skills/smithing');
 
 const ANVIL_ID = 50;
 const BRONZE_BAR_ID = 169;
@@ -10,6 +10,20 @@ const DORICS_ANVIL_ID = 177;
 const HAMMER_ID = 168;
 const STEEL_BAR_ID = 171;
 const STEEL_NAILS_ID = 419;
+
+// ARSC: rsc-data rows that are missing or wrong, fixed on a copy of the table. Values from Open-RSC
+// server/conf/server/defs/extras/ItemSmithingDef.xml (read by authentic/skills/smithing/Smithing.java):
+//  - iron has no Plate Mail Legs or Plated Skirt row, so picking either threw (items[choice] undefined);
+//  - the adamantite Kite Shield row is item 154 (adamantite ore) instead of 131;
+//  - the mithril throwing knife row has no amount, so it made 1 where every other bar makes 2.
+const smithing = JSON.parse(JSON.stringify(rscData.smithing));
+const IRON_BAR_ID = 170;
+const MITHRIL_BAR_ID = 173;
+const ADAMANTITE_BAR_ID = 174;
+
+smithing.items[IRON_BAR_ID].items[1][2].push({ level: 31, id: 9 }, { level: 31, id: 215 });
+smithing.items[ADAMANTITE_BAR_ID].items[1][1][1].id = 131;
+smithing.items[MITHRIL_BAR_ID].items[0][1].amount = 2;
 
 // for when you initially use the bar on the anvil
 // { barID: minimumSmithingLevel }
@@ -267,4 +281,4 @@ async function onUseWithGameObject(player, gameObject, item) {
     return true;
 }
 
-module.exports = { onUseWithGameObject };
+module.exports = { onUseWithGameObject, smithing, FORGING_MENUS };
