@@ -240,6 +240,12 @@ class Player extends Character {
             this.dontAnswer();
         }
 
+        // ARSC: a dialogue still running (between menus) when the player leaves
+        // would otherwise hold its NPC "busy" for everyone, forever
+        if (this.interlocutor) {
+            this.disengage();
+        }
+
         if (this.interfaceOpen.shop) {
             this.exitShop(true);
         }
@@ -466,6 +472,11 @@ class Player extends Character {
     // the blue menu text prompting the player for a choice. if repeat is true,
     // the player will say the option they picked
     async ask(options, repeat = false) {
+        // ARSC: never wait on a menu nobody can answer (player already gone)
+        if (!this.loggedIn) {
+            throw new Error('interrupted ask');
+        }
+
         this.send({
             type: 'optionList',
             options
