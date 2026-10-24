@@ -55,7 +55,8 @@ const PLUGIN_TYPES = [
     'onInventoryCommand',
     'onDropItem',
     'onNPCAttack',
-    'onNPCDeath'
+    'onNPCDeath',
+    'onCastOnNPC'
 ];
 
 // prevent spawning entities outside of the f2p boundaries
