@@ -26,6 +26,16 @@ const stalls = resolveTable(thieving.stalls);
 const chests = resolveTable(thieving.chests);
 const doors = resolveTable(thieving.doors);
 
+// npcs whose menu says "Pickpocket" but rsc-data has no entry for: the same marks under other ids
+// (men, a farmer and warriors elsewhere in the world)
+const POCKET_ALIASES = { 72: 11, 318: 11, 319: 63, 159: 86, 320: 86 };
+
+for (const [id, mark] of Object.entries(POCKET_ALIASES)) {
+    if (!pickpocketNPCs.has(Number(id))) {
+        pickpocketNPCs.set(Number(id), pickpocketNPCs.get(mark));
+    }
+}
+
 // follow { reference: id } entries to their definition; the entry's own fields (alias ...) win
 function resolveTable(table) {
     const out = new Map();
