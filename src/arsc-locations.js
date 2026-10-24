@@ -10,5 +10,8 @@ module.exports = {
         { id: 199, direction: 0, x: 312, y: 3344 }
     ],
     wallObjects: [],
-    groundItems: []
+    groundItems: [
+        // 10 coins on the floor of Thordur's chamber (the price of a disk of returning), back a minute after pickup
+        { id: 10, amount: 10, respawn: 60000, x: 308, y: 3348 }
+    ]
 };

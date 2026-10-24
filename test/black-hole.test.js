@@ -75,6 +75,7 @@ test('listed in plugins/index.js and Thordur and his ladder are placed', () => {
     assert.ok(Object.values(plugins).includes(blackHole));
     assert.ok(arscLocations.npcs.some((n) => n.id === 175));
     assert.ok(arscLocations.gameObjects.some((o) => o.id === 199));
+    assert.ok(arscLocations.groundItems.some((g) => g.id === COINS_ID && g.amount === 10 && g.respawn === 60000));
 });
 
 test('Thordur sells a disk for 10 coins', async () => {
