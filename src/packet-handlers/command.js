@@ -6,6 +6,18 @@ const quests = require('@2003scape/rsc-data/quests');
 const regions = require('@2003scape/rsc-data/regions');
 
 async function command({ player }, { command, args }) {
+    // ARSC Tutorial Island: sent by the clients' "Skip the tutorial" option,
+    // so it works whatever the command policy is
+    if (command === 'skiptutorial') {
+        const tutorial = require('../plugins/tutorial/core');
+
+        if (tutorial.onTutorial(player)) {
+            await tutorial.complete(player);
+        }
+
+        return;
+    }
+
     if (!require('../world-admin').canUseCommands(player)) { // ARSC world-admin
         return;
     }

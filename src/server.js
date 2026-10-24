@@ -40,8 +40,10 @@ class Server {
         }
     }
 
-    handleConnection(socket) {
+    handleConnection(socket, { arscBot = false } = {}) {
         socket = new RSCSocket(socket);
+        // ARSC: bots announce themselves with X-ARSC-Bot (Tutorial Island is for humans)
+        socket.arscBot = arscBot;
         socket.setTimeout(5000);
         socket.server = this;
 
@@ -118,8 +120,11 @@ class Server {
         this.websocketServer = new ws.Server({ port });
         this.websocketServer.on('error', (err) => log.error(err));
 
-        this.websocketServer.on('connection', (socket) => {
-            this.handleConnection(socket);
+        this.websocketServer.on('connection', (socket, request) => {
+            const arscBot =
+                !!request && request.headers['x-arsc-bot'] === '1';
+
+            this.handleConnection(socket, { arscBot });
         });
 
         log.info(`listening for websocket connections on port ${port}`);
@@ -186,6 +191,8 @@ class Server {
             } catch (e) {
                 log.error('world-admin failed to start', e);
             }
+
+            require('./plugins/tutorial/core').init(this.world); // ARSC Tutorial Island
 
             this.world.tick();
 

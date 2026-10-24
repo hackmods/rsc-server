@@ -191,6 +191,8 @@ class Player extends Character {
     }
 
     login() {
+        require('../plugins/tutorial/core').onFirstLogin(this); // ARSC Tutorial Island
+
         this.world.addEntity('players', this);
 
         this.sendWorldInfo();
@@ -637,6 +639,8 @@ class Player extends Character {
             this.message('You are unexpectedly awoken! You still feel tired');
         }
 
+        require('../plugins/tutorial/core').onWake(this, refreshed); // ARSC Tutorial Island
+
         this.send({ type: 'sleepClose' });
     }
 
@@ -847,6 +851,23 @@ class Player extends Character {
         }
 
         this.healTicks = 0;
+
+        // ARSC Tutorial Island: respawn on the island, keeping everything
+        if (require('../plugins/tutorial/core').onDeath(this)) {
+            for (const skill of Object.keys(this.skills)) {
+                this.skills[skill].current = this.skills[skill].base;
+            }
+
+            this.sendStats();
+            this.sendDeath();
+
+            if (victor) {
+                victor.opponent = null;
+                this.opponent = null;
+            }
+
+            return;
+        }
 
         const itemsKept = this.inventory.removeMostValuable(
             3 + (this.prayers[8] ? 1 : 0)

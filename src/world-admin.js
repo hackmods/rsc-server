@@ -1013,31 +1013,62 @@ function onLogin(player) {
             return;
         }
 
+        // Tutorial Island: the kit waits for the boat (grantStarterKit), even
+        // across logins mid-tutorial
+        if (Number.isInteger(player.cache.tutorial)) {
+            return;
+        }
+
         if (kit.grantTo === 'new' && player.loginDate) {
             // existing account: never retro-grant, and remember that
             player.cache.starterKit = -1;
             return;
         }
 
-        const needed = kit.items.filter((i) => {
-            const def = items[i.id];
-            return !(def.stackable && player.inventory.has(i.id));
-        }).length;
-
-        if (player.inventory.items.length + needed > INVENTORY_CAP) {
-            player.message('You have no room for your starter supplies');
-            return;
-        }
-
-        for (const entry of kit.items) {
-            player.inventory.add(entry.id, entry.amount);
-        }
-
-        player.cache.starterKit = Date.now();
-        player.message(kit.message);
+        giveKit(player, kit);
     } catch (e) {
         log.error(e);
     }
+}
+
+// the tutorial's boatman and ::skiptutorial: grant now if it is still owed
+function grantStarterKit(player) {
+    try {
+        const kit = state.doc && state.doc.starterKit;
+
+        if (!kit || !kit.enabled || !kit.items.length || player.cache.starterKit) {
+            return;
+        }
+
+        const name = String(player.username || '').toLowerCase();
+
+        if (kit.skipPrefixes.some((p) => name.startsWith(p.toLowerCase()))) {
+            return;
+        }
+
+        giveKit(player, kit);
+    } catch (e) {
+        log.error(e);
+    }
+}
+
+function giveKit(player, kit) {
+    const needed = kit.items.filter((i) => {
+        const def = items[i.id];
+        return !(def.stackable && player.inventory.has(i.id));
+    }).length;
+
+    if (player.inventory.items.length + needed > INVENTORY_CAP) {
+        player.message('You have no room for your starter supplies');
+        return;
+    }
+
+    for (const entry of kit.items) {
+        player.inventory.add(entry.id, entry.amount);
+    }
+
+    player.cache.starterKit = Date.now();
+    player.message(kit.message);
 }
 
 function canUseCommands(player) {
@@ -1442,4 +1473,11 @@ function start(server) {
     startHttp();
 }
 
-module.exports = { start, onLogin, canUseCommands, normalize, _state: state };
+module.exports = {
+    start,
+    onLogin,
+    grantStarterKit,
+    canUseCommands,
+    normalize,
+    _state: state
+};
