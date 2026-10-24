@@ -26,6 +26,7 @@ module.exports = {
     "game-objects.dead-tree": require('./game-objects/dead-tree.js'),
     "game-objects.draynor-manor-cupboard": require('./game-objects/draynor-manor-cupboard.js'),
     "game-objects.dummy": require('./game-objects/dummy.js'),
+    "game-objects.flax": require('./game-objects/flax.js'),
     "game-objects.gate": require('./game-objects/gate.js'),
     "game-objects.hopper": require('./game-objects/hopper.js'),
     "game-objects.locked-door": require('./game-objects/locked-door.js'),

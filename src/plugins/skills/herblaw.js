@@ -4,6 +4,8 @@
 //  - herb on a vial of water (`unfinished`): level, no XP, makes an unfinished potion;
 //  - secondary ingredient on an unfinished potion (`potions`): level, XP, makes the potion.
 // All of it needs the Druidic Ritual quest (questStages.druidicRitual === -1). Drinking is in items/potions.js.
+// Grinding (pestle and mortar on an item, Herblaw.java doGrind, no level, no quest, no XP) is ported from the same file:
+// one item per use, the pestle and mortar is kept.
 // rsc-data experience values are quarter points, which player.addExperience takes as is.
 
 const items = require('@2003scape/rsc-data/config/items');
@@ -13,6 +15,18 @@ const VIAL_OF_WATER_ID = 464;
 const ASHES_ID = 181;
 const CURE_POISON_ID = 566;
 const MARRENTILL_UNFINISHED_ID = 455;
+const PESTLE_AND_MORTAR_ID = 468;
+const BAT_BONES_ID = 604;
+const CHARCOAL_ID = 983;
+
+// item ground on a pestle and mortar -> ground item
+const GRINDABLE = new Map([
+    [466, 473], // unicorn horn
+    [467, 472], // blue dragon scale
+    [BAT_BONES_ID, 1051],
+    [CHARCOAL_ID, 1179], // ground charcoal (Shilo Village)
+    [337, 772] // chocolate bar -> chocolate dust
+]);
 
 // rsc-data lists the cure poison potion as its own secondary ingredient; the real recipe is marrentill + ashes
 const POTION_FIXES = [{ unfinished: MARRENTILL_UNFINISHED_ID, secondary: ASHES_ID, level: 5, experience: 150, id: CURE_POISON_ID }];
@@ -158,6 +172,24 @@ async function makePotion(player, unfinishedItem, secondaryItem, recipe) {
     return true;
 }
 
+function grind(player, item, product) {
+    player.inventory.remove(item.id);
+
+    if (item.id === CHARCOAL_ID) {
+        player.message('You grind the charcoal to a powder');
+    }
+
+    player.message(`@que@You grind the ${items[item.id].name} to dust`);
+
+    if (item.id === BAT_BONES_ID) {
+        player.sendBubble(PESTLE_AND_MORTAR_ID);
+    }
+
+    player.inventory.add(product);
+
+    return true;
+}
+
 async function onInventoryCommand(player, item) {
     const herb = herbsByID.get(item.id);
 
@@ -170,6 +202,10 @@ async function onInventoryCommand(player, item) {
 
 async function onUseWithInventory(player, item, target) {
     for (const [first, second] of [[item, target], [target, item]]) {
+        if (first.id === PESTLE_AND_MORTAR_ID && GRINDABLE.has(second.id)) {
+            return grind(player, second, GRINDABLE.get(second.id));
+        }
+
         if (second.id === VIAL_OF_WATER_ID && unfinishedByHerb.has(first.id)) {
             return makeUnfinished(player, first, unfinishedByHerb.get(first.id));
         }

@@ -170,6 +170,47 @@ test('a missing ingredient after the pause does not duplicate or lose items', as
     assert.deepEqual(player.bag, [454]);
 });
 
+test('pestle and mortar grinds unicorn horn, blue dragon scale and bat bones, either order', async () => {
+    const cases = [[466, 473], [467, 472], [604, 1051]];
+    for (const [ingredient, ground] of cases) {
+        const a = fakePlayer({ inventory: [468, ingredient] });
+        assert.equal(await herblaw.onUseWithInventory(a, item(468), item(ingredient)), true);
+        assert.deepEqual(a.bag, [468, ground], `pestle on ${ingredient}`);
+        assert.deepEqual(a.xp, []);
+
+        const b = fakePlayer({ inventory: [ingredient, 468] });
+        assert.equal(await herblaw.onUseWithInventory(b, item(ingredient), item(468)), true);
+        assert.deepEqual(b.bag, [468, ground], `${ingredient} on pestle`);
+    }
+});
+
+test('grinding needs no level and no quest, and says what it ground', async () => {
+    const player = fakePlayer({ level: 1, quest: null, inventory: [468, 466] });
+    assert.equal(await herblaw.onUseWithInventory(player, item(468), item(466)), true);
+    assert.deepEqual(player.bag, [468, 473]);
+    assert.match(player.messages.join('|'), /You grind the Unicorn horn to dust/);
+});
+
+test('grinding bat bones shows the pestle bubble; the others do not', async () => {
+    const bubbles = [];
+    const bones = fakePlayer({ inventory: [468, 604] });
+    bones.sendBubble = (id) => bubbles.push(id);
+    await herblaw.onUseWithInventory(bones, item(468), item(604));
+    assert.deepEqual(bubbles, [468]);
+
+    const horn = fakePlayer({ inventory: [468, 466] });
+    horn.sendBubble = (id) => bubbles.push(id);
+    await herblaw.onUseWithInventory(horn, item(468), item(466));
+    assert.deepEqual(bubbles, [468]);
+});
+
+test('grinding leaves unrelated items on the pestle alone', async () => {
+    const player = fakePlayer({ inventory: [468, 10] });
+    assert.equal(await herblaw.onUseWithInventory(player, item(468), item(10)), false);
+    assert.equal(await herblaw.onUseWithInventory(player, item(10), item(468)), false);
+    assert.deepEqual(player.bag, [468, 10]);
+});
+
 /* ---------- drinking ---------- */
 
 async function drink(player, id) {
