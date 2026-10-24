@@ -134,20 +134,16 @@ async function onTalkToNPC(player, npc) {
             player.inventory.remove(FLOUR_ID);
             player.inventory.remove(EGG_ID);
 
-            player.message(
-                '@que@You give some milk, an egg and some flour to the cook',
-                "Well done. You have completed the cook's assistant quest"
-            );
-
-            player.addExperience(
-                'cooking',
-                player.skills.cooking.base * 200 + 1000,
-                false
-            );
-
-            player.questStages.cooksAssistant = -1;
-            player.addQuestPoints(1);
-            player.message('@gre@You haved gained 1 quest point!');
+            player.completeQuest('cooksAssistant', {
+                questPoints: 1,
+                experience: {
+                    cooking: player.skills.cooking.base * 200 + 1000
+                },
+                message: [
+                    '@que@You give some milk, an egg and some flour to the cook',
+                    "Well done. You have completed the cook's assistant quest"
+                ]
+            });
         } else {
             await player.say('I have found some of the things you asked for:');
 

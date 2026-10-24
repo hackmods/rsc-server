@@ -82,12 +82,30 @@ async function inventoryDrop({ player }, { index }) {
 
 async function inventoryWear({ player }, { index }) {
     player.sendSound('click');
-    player.inventory.equip(index);
+
+    const blocked = await player.world.callPlugin(
+        'onWearItem',
+        player,
+        player.inventory.items[index]
+    );
+
+    if (!blocked) {
+        player.inventory.equip(index);
+    }
 }
 
 async function inventoryUnequip({ player }, { index }) {
     player.sendSound('click');
-    player.inventory.unequip(index);
+
+    const blocked = await player.world.callPlugin(
+        'onRemoveItem',
+        player,
+        player.inventory.items[index]
+    );
+
+    if (!blocked) {
+        player.inventory.unequip(index);
+    }
 }
 
 async function useWithGroundItem({ player }, { x, y, groundItemID, index }) {

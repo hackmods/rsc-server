@@ -150,6 +150,20 @@ class Inventory {
         return false;
     }
 
+    // how many of an item are carried (Open-RSC countId): the stack size for
+    // a stackable item, otherwise the number of slots holding it
+    count(id) {
+        let total = 0;
+
+        for (const item of this.items) {
+            if (item.id === id) {
+                total += item.amount;
+            }
+        }
+
+        return total;
+    }
+
     remove(id, amount = 1) {
         if (typeof id !== 'number') {
             amount = id.amount;

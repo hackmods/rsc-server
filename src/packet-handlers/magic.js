@@ -8,8 +8,10 @@
 //  - castInventoryItem: low and high level alchemy, superheat item, enchant
 //    lvl-1 to lvl-5 amulet
 //  - castPlayer: refused, there is no player-vs-player combat on this server
-//  - castGroundItem, castObject, castWallObject, castGround: telekinetic grab
-//    and charge orb are not implemented ("Nothing interesting happens")
+//  - castGroundItem, castObject: offered to onCastOnGroundItem and
+//    onCastOnGameObject plugins; otherwise ("Nothing interesting happens")
+//  - castWallObject, castGround: telekinetic grab and charge orb are not
+//    implemented ("Nothing interesting happens")
 //
 // Every cast checks the members flag, the magic level and the runes (an
 // elemental staff stands in for its runes), then takes the runes and gives the
@@ -675,13 +677,70 @@ async function notImplemented({ player }, { id }) {
     player.message('Nothing interesting happens');
 }
 
+// plugins get the cast first (Open-RSC SpellLocTrigger); the spell itself is
+// still not implemented, so an unclaimed cast gets the default message
+async function castObject({ player }, { x, y, id }) {
+    const spell = getSpell(id);
+
+    if (isBusy(player)) {
+        return;
+    }
+
+    const [gameObject] = player.world.gameObjects.getAtPoint(x, y);
+
+    if (
+        gameObject &&
+        (await player.world.callPlugin(
+            'onCastOnGameObject',
+            player,
+            gameObject,
+            spell,
+            id
+        ))
+    ) {
+        return;
+    }
+
+    player.message('Nothing interesting happens');
+}
+
+async function castGroundItem({ player }, { x, y, id, itemID }) {
+    const spell = getSpell(id);
+
+    if (isBusy(player)) {
+        return;
+    }
+
+    const groundItem = player.world.groundItems
+        .getAtPoint(x, y)
+        .find(
+            (item) =>
+                item.id === itemID && (!item.owner || item.owner === player.id)
+        );
+
+    if (
+        groundItem &&
+        (await player.world.callPlugin(
+            'onCastOnGroundItem',
+            player,
+            groundItem,
+            spell,
+            id
+        ))
+    ) {
+        return;
+    }
+
+    player.message('Nothing interesting happens');
+}
+
 module.exports = {
     castSelf,
     castNPC,
     castPlayer,
     castInventoryItem,
-    castGroundItem: notImplemented,
-    castObject: notImplemented,
+    castGroundItem,
+    castObject,
     castWallObject: notImplemented,
     castGround: notImplemented
 };

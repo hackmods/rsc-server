@@ -898,7 +898,73 @@ class Player extends Character {
         this.sendQuestList();
     }
 
+    // finish a quest (Open-RSC sendQuestComplete): mark it done, pay the
+    // experience (rsc-data quarter points, no fatigue) and the quest points.
+    // `message` is shown first, as a string or an array of lines
+    completeQuest(key, { questPoints = 0, experience = {}, message } = {}) {
+        if (message) {
+            this.message(...[].concat(message));
+        }
+
+        for (const [skill, amount] of Object.entries(experience)) {
+            this.addExperience(skill, amount, false);
+        }
+
+        this.questStages[key] = -1;
+
+        if (questPoints > 0) {
+            this.addQuestPoints(questPoints);
+
+            this.message(
+                `@gre@You haved gained ${questPoints} quest point${
+                    questPoints > 1 ? 's' : ''
+                }!`
+            );
+        } else {
+            this.sendQuestList();
+        }
+    }
+
+    // raise or lower the current level of a skill (Open-RSC incStat/decStat,
+    // setCurrentLevel). it never goes below 0, and a positive delta stops at
+    // `cap` (a boost to base + 3 passes { cap: base + 3 }) without ever
+    // lowering a level that is already above it. returns the new level
+    changeStat(skill, delta, { cap } = {}) {
+        const stat = this.skills[skill];
+        let level = stat.current + delta;
+
+        if (delta > 0 && typeof cap === 'number') {
+            level = Math.min(level, Math.max(cap, stat.current));
+        }
+
+        stat.current = Math.max(0, level);
+        this.sendStats();
+
+        return stat.current;
+    }
+
+    // a plugin can claim the death (onPlayerDeath returns true) and handle
+    // it itself. with no handlers registered this stays synchronous
     die() {
+        const { world } = this;
+        const handlers = world.plugins && world.plugins.get('onPlayerDeath');
+
+        if (!handlers || !handlers.length) {
+            this.processDeath();
+            return;
+        }
+
+        world
+            .callPlugin('onPlayerDeath', this)
+            .then((blocked) => {
+                if (!blocked) {
+                    this.processDeath();
+                }
+            })
+            .catch((err) => log.error(err));
+    }
+
+    processDeath() {
         const { world } = this;
 
         const victor = this.opponent;
@@ -1400,6 +1466,13 @@ class Player extends Character {
         }
 
         this.walkQueue.length = 0;
+
+        if (
+            character.constructor.name === 'NPC' &&
+            (await this.world.callPlugin('onNPCRangedAttack', this, character))
+        ) {
+            return false;
+        }
 
         if (
             this.getDistance(character) <= 1.5 &&

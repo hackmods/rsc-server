@@ -63,7 +63,13 @@ const PLUGIN_TYPES = [
     'onDropItem',
     'onNPCAttack',
     'onNPCDeath',
-    'onCastOnNPC'
+    'onCastOnNPC',
+    'onCastOnGameObject',
+    'onCastOnGroundItem',
+    'onPlayerDeath',
+    'onWearItem',
+    'onRemoveItem',
+    'onNPCRangedAttack'
 ];
 
 // prevent spawning entities outside of the f2p boundaries
@@ -240,10 +246,84 @@ class World {
     replaceEntity(type, entity, newID) {
         const Entity = entityConstructors[type];
         const newEntity = new Entity(this, { ...entity, id: newID });
+
+        if (type === 'npcs') {
+            // a transformed NPC (Open-RSC changenpc) is not dead: the old one
+            // must not respawn beside it, and the spawn point stays put
+            newEntity.spawnX = entity.spawnX;
+            newEntity.spawnY = entity.spawnY;
+            entity.respawn = undefined;
+        }
+
         this.removeEntity(type, entity);
         this.addEntity(type, newEntity);
 
         return newEntity;
+    }
+
+    // add an NPC that goes away after `ticks` unless it is already gone
+    // (Open-RSC addnpc with a despawn time). the wander range defaults to
+    // the spawn tile
+    spawnTimedNPC({ id, x, y, ticks, minX = x, maxX = x, minY = y, maxY = y }) {
+        const npc = new entityConstructors.npcs(this, {
+            id,
+            x,
+            y,
+            minX,
+            maxX,
+            minY,
+            maxY
+        });
+
+        // these timed NPCs are not part of the permanent spawns
+        npc.respawn = undefined;
+
+        this.addEntity('npcs', npc);
+
+        this.setTickTimeout(() => {
+            this.removeEntity('npcs', npc);
+        }, ticks);
+
+        return npc;
+    }
+
+    // add a ground item that disappears after `ticks`. with an owner (a
+    // player or a player ID) only they can see it
+    addTimedGroundItem({ id, amount = 1, x, y, ticks, owner }) {
+        const groundItem = new entityConstructors.groundItems(this, {
+            id,
+            amount,
+            x,
+            y
+        });
+
+        if (typeof owner !== 'undefined') {
+            groundItem.owner = typeof owner === 'object' ? owner.id : owner;
+        }
+
+        this.addEntity('groundItems', groundItem);
+
+        this.setTickTimeout(() => {
+            this.removeEntity('groundItems', groundItem);
+        }, ticks);
+
+        return groundItem;
+    }
+
+    // replace an entity, then put the original ID back after `ticks` (Open-RSC
+    // changeloc with a delay). the revert is skipped if the replacement was
+    // already removed or replaced by something else. returns the replacement
+    replaceTimed(type, entity, newID, ticks) {
+        const originalID = entity.id;
+        const replacement = this.replaceEntity(type, entity, newID);
+
+        this.setTickTimeout(() => {
+            if (this[type].getByIndex(replacement.index) === replacement) {
+                this.replaceEntity(type, replacement, originalID);
+            }
+        }, ticks);
+
+        return replacement;
     }
 
     loadEntities(type) {
