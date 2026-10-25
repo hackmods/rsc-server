@@ -43,6 +43,23 @@ const POISON_INTERVAL_TICKS = 32;
 const POISON_MIN_POWER = 10;
 const POISON_POWER_DECAY = 2;
 
+// every obstacle cell of the tile is set: scenery fills it
+function isTileBlocked(pathFinder, x, y) {
+    if (!pathFinder || !pathFinder.obstacles) {
+        return false;
+    }
+
+    const { x: ox, y: oy } = pathFinder.gameCoordsToObstacleCoords({ x, y });
+    const { obstacles } = pathFinder;
+
+    return !!(
+        obstacles.get(ox, oy) &&
+        obstacles.get(ox + 1, oy) &&
+        obstacles.get(ox, oy + 1) &&
+        obstacles.get(ox + 1, oy + 1)
+    );
+}
+
 class Character extends Entity {
     constructor(world) {
         super(world);
@@ -440,8 +457,16 @@ class Character extends Entity {
             return false;
         }
 
+        const { pathFinder } = this.world;
+
+        // ARSC: a player put inside blocked scenery (Open-RSC teleports onto it, e.g. the barbarian course's 2x2
+        // spiked pit) may take any step until they are out; the tile's own obstacle cells would otherwise read as
+        // walls on every side and trap them. Only a teleport puts anyone there.
+        const trapped = isTileBlocked(pathFinder, this.x, this.y);
+
         if (
-            !this.world.pathFinder.isValidGameStep(
+            !trapped &&
+            !pathFinder.isValidGameStep(
                 { x: this.x, y: this.y },
                 { deltaX, deltaY }
             )
