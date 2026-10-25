@@ -86,7 +86,7 @@ function describeLoot(drop) {
     return drop.amount > 1 ? `${drop.amount} ${name}` : `a ${name}`;
 }
 
-// success chance for actions the data gives no roll for (doors, chest traps): 55% at the required level, +2% per
+// success chance for actions the data gives no roll for (chest traps): 55% at the required level, +2% per
 // level above, capped at 95%
 function marginRoll(level, required) {
     return Math.random() < Math.min(0.95, 0.55 + 0.02 * Math.max(0, level - required));
@@ -337,34 +337,128 @@ async function lootChest(player, gameObject) {
 }
 
 // ---- doors ---------------------------------------------------------------------------------------------------
+// Ported from Open-RSC Core-Framework authentic/skills/thieving/Thieving.java handlePicklock (AGPL-3.0).
+// Experience is the Java literal: Java incExp(skill, xp, true) and rsc-data both use quarter points, as the other
+// addExperience calls here do.
+
+// Formulae.calcGatheringSuccessfulLegacy(levelReq, skillLevel)
+function gatheringSuccessLegacy(levelReq, skillLevel) {
+    const roll = 1 + Math.floor(Math.random() * 128);
+
+    if (skillLevel < levelReq) {
+        return false;
+    }
+
+    const threshold = Math.min(127, Math.max(1, skillLevel + 40 - Math.trunc(levelReq * 1.5)));
+
+    return roll <= threshold;
+}
+
+// the door's { level, experience, lockpick } and whether this player stands on the already unlocked side
+function lockInfo(player, wallObject) {
+    const { x, y } = player;
+    let level = 1;
+    let experience = 0;
+    let lockpick = false;
+    let goThrough = false;
+
+    switch (wallObject.id) {
+        case 93:
+            level = 7;
+            experience = 15;
+            goThrough = y <= 591;
+            break;
+        case 94:
+            if ((wallObject.x === 586 && wallObject.y === 581) || (wallObject.x === 539 && wallObject.y === 599) ||
+                (wallObject.x === 581 && wallObject.y === 580) || (wallObject.x === 581 && wallObject.y === 761)) {
+                level = 16;
+                experience = 60;
+                goThrough = (x === 539 && y >= 599) || (x <= 585 && y === 581) || (x >= 581 && y === 580) ||
+                    (x === 582 && y >= 761) || (x === 581 && y >= 762);
+            }
+            break;
+        case 95:
+            level = 31;
+            experience = 100;
+            goThrough = x <= 556;
+            break;
+        case 96:
+            level = 46;
+            experience = 150;
+            goThrough = y <= 555;
+            break;
+        case 162:
+            level = 82;
+            experience = 200;
+            lockpick = true;
+            break;
+        case 100:
+            level = 32;
+            experience = 100;
+            lockpick = true;
+            goThrough = y >= 103 && y <= 107;
+            break;
+        case 99:
+            level = 39;
+            experience = 140;
+            lockpick = true;
+            goThrough = (x >= 263 && x <= 269 && y === 104) || (x === 266 && y >= 100);
+            break;
+        case 97:
+            level = 61;
+            experience = 200;
+            goThrough = y >= 1548 && x === 609;
+            break;
+        default:
+            break;
+    }
+
+    return { level, experience, lockpick, goThrough };
+}
+
+async function openDoor(player, wallObject) {
+    if (lockInfo(player, wallObject).goThrough) {
+        player.message('You go through the door');
+        await player.enterDoor(wallObject);
+    } else {
+        player.message('The door is locked');
+    }
+
+    return true;
+}
 
 async function pickLock(player, wallObject) {
-    const door = doors.get(wallObject.id);
-    const { world } = player;
-    const level = thievingLevel(player);
+    const door = lockInfo(player, wallObject);
 
-    if (door.level > level) {
-        player.message(`You need a thieving level of ${door.level} to pick this lock`);
+    if (door.goThrough) {
+        player.message('You have already unlocked the door');
         return true;
     }
 
-    if (door.lockpick && !player.inventory.has(LOCKPICK_ID)) {
-        player.message('You need a lockpick to pick this lock');
+    player.message('you attempt to pick the lock');
+
+    if (thievingLevel(player) < door.level) {
+        player.message('You are not a high enough level to pick this lock');
         return true;
     }
 
-    player.message('You attempt to pick the lock');
-    await world.sleepTicks(2);
+    const hasPick = player.inventory.has(LOCKPICK_ID);
 
-    if (!marginRoll(level, door.level)) {
+    if (door.lockpick && !hasPick) {
+        player.message('You need a lockpick for this lock');
+        return true;
+    }
+
+    // a carried lockpick makes picking a bit easier
+    if (!gatheringSuccessLegacy(door.level, thievingLevel(player) + (hasPick ? 10 : 0))) {
         player.message('You fail to pick the lock');
         return true;
     }
 
     player.message('You manage to pick the lock');
-    player.addExperience('thieving', door.experience);
     await player.enterDoor(wallObject);
     player.message('You go through the door');
+    player.addExperience('thieving', door.experience);
 
     return true;
 }
@@ -404,9 +498,7 @@ async function onWallObjectCommandOne(player, wallObject) {
         return false;
     }
 
-    player.message('The door is locked');
-
-    return true;
+    return openDoor(player, wallObject);
 }
 
 async function onWallObjectCommandTwo(player, wallObject) {

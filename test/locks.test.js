@@ -230,25 +230,96 @@ test('locked (object 142 Black Knights doors): never opens', async () => {
     assert.equal(await lockedDoor.onGameObjectCommandOne(p, { id: 143 }), false);
 });
 
-test('pick-lock door (wall 93): low level refused, lockpick doors need the pick, success walks through', async () => {
-    const low = fakePlayer({ x: 539, y: 532, levels: { thieving: 1 } });
-    assert.equal(await thieving.onWallObjectCommandTwo(low, wall(93, 539, 531)), true);
-    assert.deepEqual(low.entered, []);
-    const noPick = fakePlayer({ x: 160, y: 105, levels: { thieving: 99 } });
-    assert.equal(await thieving.onWallObjectCommandTwo(noPick, wall(100, 160, 107)), true);
-    assert.deepEqual(noPick.entered, []);
-    const strong = fakePlayer({ x: 539, y: 532, levels: { thieving: 99 } });
+function withRandom(value, fn) {
     const real = Math.random;
-    Math.random = () => 0;
-    try {
-        assert.equal(await thieving.onWallObjectCommandTwo(strong, wall(93, 539, 531)), true);
-    } finally {
-        Math.random = real;
-    }
-    assert.deepEqual(strong.entered, [93]);
-    const open = fakePlayer({ x: 539, y: 532 });
-    assert.equal(await thieving.onWallObjectCommandOne(open, wall(93, 539, 531)), true);
+    Math.random = () => value;
+    return Promise.resolve().then(fn).finally(() => { Math.random = real; });
+}
+
+const LOCKPICK = 714;
+
+test('pick-lock door (wall 93): locked side says locked, level refusal, success walks through and pays', async () => {
+    const open = fakePlayer({ x: 539, y: 592 });
+    assert.equal(await thieving.onWallObjectCommandOne(open, wall(93, 539, 591)), true);
     assert.deepEqual(open.messages, ['The door is locked']);
+    assert.deepEqual(open.entered, []);
+
+    const low = fakePlayer({ x: 539, y: 592, levels: { thieving: 6 } });
+    assert.equal(await thieving.onWallObjectCommandTwo(low, wall(93, 539, 591)), true);
+    assert.deepEqual(low.messages, ['you attempt to pick the lock', 'You are not a high enough level to pick this lock']);
+    assert.deepEqual(low.entered, []);
+
+    const strong = fakePlayer({ x: 539, y: 592, levels: { thieving: 7 } });
+    await withRandom(0, async () => assert.equal(await thieving.onWallObjectCommandTwo(strong, wall(93, 539, 591)), true));
+    assert.deepEqual(strong.entered, [93]);
+    assert.deepEqual(strong.messages, ['you attempt to pick the lock', 'You manage to pick the lock', 'You go through the door']);
+    assert.deepEqual(strong.xp, ['thieving', 15]);
+});
+
+test('pick-lock door: from the unlocked side Open goes through and Pick lock says already unlocked', async () => {
+    const cases = [
+        [93, 539, 591, { x: 539, y: 590 }], [95, 560, 3300, { x: 556, y: 3300 }], [96, 10, 555, { x: 10, y: 555 }],
+        [97, 609, 1548, { x: 609, y: 1548 }], [100, 160, 107, { x: 160, y: 105 }], [99, 266, 104, { x: 266, y: 104 }]
+    ];
+    for (const [id, wx, wy, at] of cases) {
+        const p = fakePlayer({ ...at, levels: { thieving: 99 } });
+        assert.equal(await thieving.onWallObjectCommandOne(p, wall(id, wx, wy)), true);
+        assert.deepEqual(p.messages, ['You go through the door'], `door ${id}`);
+        assert.deepEqual(p.entered, [id]);
+        const q = fakePlayer({ ...at, levels: { thieving: 99 } });
+        assert.equal(await thieving.onWallObjectCommandTwo(q, wall(id, wx, wy)), true);
+        assert.deepEqual(q.messages, ['You have already unlocked the door'], `door ${id}`);
+        assert.equal(q.xp, undefined);
+    }
+});
+
+test('pick-lock doors 99, 100, 162 need a lockpick; the others do not', async () => {
+    for (const [id, x, y] of [[100, 160, 120], [99, 270, 90], [162, 1, 1]]) {
+        const p = fakePlayer({ x, y, levels: { thieving: 99 } });
+        await thieving.onWallObjectCommandTwo(p, wall(id, x, y));
+        assert.deepEqual(p.messages, ['you attempt to pick the lock', 'You need a lockpick for this lock'], `door ${id}`);
+        assert.deepEqual(p.entered, []);
+    }
+    const p = fakePlayer({ x: 160, y: 120, levels: { thieving: 99 }, inv: { [LOCKPICK]: 1 } });
+    await withRandom(0, () => thieving.onWallObjectCommandTwo(p, wall(100, 160, 108)));
+    assert.deepEqual(p.entered, [100]);
+    assert.deepEqual(p.xp, ['thieving', 100]);
+});
+
+test('pick-lock success rolls calcGatheringSuccessfulLegacy with +10 levels for a carried lockpick', async () => {
+    // door 93 (req 7) at level 7: threshold = 7 + 40 - 10 = 37 of 128; with a lockpick 47
+    const at = (roll, inv) => {
+        const p = fakePlayer({ x: 539, y: 592, levels: { thieving: 7 }, inv });
+        return withRandom(roll, async () => {
+            await thieving.onWallObjectCommandTwo(p, wall(93, 539, 591));
+            return p.entered.length === 1;
+        });
+    };
+    // Math.random() r gives roll = 1 + floor(r * 128)
+    assert.equal(await at(36 / 128, {}), true);   // roll 37
+    assert.equal(await at(37 / 128, {}), false);  // roll 38
+    assert.equal(await at(46 / 128, { [LOCKPICK]: 1 }), true);   // roll 47
+    assert.equal(await at(47 / 128, { [LOCKPICK]: 1 }), false);  // roll 48
+});
+
+test('pick-lock door 94: 60 xp and level 16 at the four Java coordinates, level 1 and no xp elsewhere', async () => {
+    const p = fakePlayer({ x: 586, y: 582, levels: { thieving: 15 } });
+    await thieving.onWallObjectCommandTwo(p, wall(94, 586, 581));
+    assert.deepEqual(p.messages, ['you attempt to pick the lock', 'You are not a high enough level to pick this lock']);
+
+    for (const [x, y] of [[586, 581], [539, 599], [581, 580], [581, 761]]) {
+        const q = fakePlayer({ x: 600, y: 600, levels: { thieving: 16 } });
+        await withRandom(0, () => thieving.onWallObjectCommandTwo(q, wall(94, x, y)));
+        assert.deepEqual(q.xp, ['thieving', 60], `door at ${x},${y}`);
+    }
+    const other = fakePlayer({ x: 600, y: 600, levels: { thieving: 1 } });
+    await withRandom(0, () => thieving.onWallObjectCommandTwo(other, wall(94, 100, 100)));
+    assert.deepEqual(other.entered, [94]);
+    assert.deepEqual(other.xp, ['thieving', 0]);
+
+    const through = fakePlayer({ x: 585, y: 581 });
+    await thieving.onWallObjectCommandOne(through, wall(94, 586, 581));
+    assert.deepEqual(through.messages, ['You go through the door']);
 });
 
 // ---- re-close (timed replace) -------------------------------------------------------------------------------------
@@ -289,26 +360,37 @@ test('enterGate replaces the gate with its open twin and back (re-close)', async
 
 // ---- defects in files this pass does not own (todo: they do not fail the suite) -----------------------------------
 
-test('thieving.js: Open on a pick-lock door from the unlocked side goes through (Java goThrough)', { todo: true }, async () => {
-    const p = fakePlayer({ x: 539, y: 590 });
-    await thieving.onWallObjectCommandOne(p, wall(93, 539, 591));
-    assert.deepEqual(p.messages, ['You go through the door']);
-});
-
-test('thieving.js: level refusal reads "You are not a high enough level to pick this lock" after the attempt line', { todo: true }, async () => {
-    const p = fakePlayer({ levels: { thieving: 1 } });
-    await thieving.onWallObjectCommandTwo(p, wall(93, 539, 591));
-    assert.deepEqual(p.messages, ['you attempt to pick the lock', 'You are not a high enough level to pick this lock']);
-});
-
-test('locked-door.js: Java says plain "the doors are locked" (no @que@)', { todo: true }, async () => {
+test('locked-door.js: Java says plain "the doors are locked" (no @que@)', async () => {
     const p = fakePlayer();
     await lockedDoor.onGameObjectCommandOne(p, { id: 142 });
     assert.deepEqual(p.messages, ['the doors are locked']);
 });
 
-test('melzars-maze-doors.js: clicking Open on the maze entrance (60) says "The door is locked"', { todo: true }, async () => {
+test('melzars-maze-doors.js: clicking Open on the maze entrance (60) says "The door is locked" (DoorAction blocks it)', async () => {
     const p = fakePlayer();
     assert.equal(await melzar.onWallObjectCommandOne(p, wall(60, 338, 632)), true);
-    assert.deepEqual(p.messages, ['the door is locked']);
+    assert.deepEqual(p.messages, ['The door is locked']);
+});
+
+test('melzars-maze-doors.js: red key opens door 48, then "you go through the door", then "Your red key has gone!"', async () => {
+    const p = fakePlayer({ inv: { 390: 1 } });
+    assert.equal(await melzar.onUseWithWallObject(p, wall(48, 1, 1), { id: 390 }), true);
+    assert.deepEqual(p.messages, ['you unlock the door', 'you go through the door', 'Your red key has gone!']);
+    assert.deepEqual(p.entered, [48]);
+    assert.equal(p.inventory.has(390), false);
+});
+
+test('melzars-maze-doors.js: black key on door 52 sets the map piece and says "Your black key has gone!"', async () => {
+    const p = fakePlayer({ inv: { 395: 1 } });
+    assert.equal(await melzar.onUseWithWallObject(p, wall(52, 1, 1), { id: 395 }), true);
+    assert.deepEqual(p.messages, ['you unlock the door', 'you go through the door', 'Your black key has gone!']);
+    assert.equal(p.cache.melzarsChestMapPiece, true);
+});
+
+test('melzars-maze-doors.js: maze key on entrance 60 opens it and keeps the key (no "has gone")', async () => {
+    const p = fakePlayer({ inv: { 421: 1 } });
+    assert.equal(await melzar.onUseWithWallObject(p, wall(60, 1, 1), { id: 421 }), true);
+    assert.deepEqual(p.messages, ['you unlock the door', 'you go through the door']);
+    assert.deepEqual(p.entered, [60]);
+    assert.equal(p.inventory.has(421), true);
 });
