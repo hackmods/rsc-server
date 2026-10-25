@@ -2,6 +2,7 @@
 // Big net fishing ported from Open-RSC Core-Framework
 // authentic/skills/fishing/Fishing.java (AGPL-3.0)
 
+require('../../data-fixes'); // the spot 261 seaweed row is 622 in rsc-data once corrected
 const items = require('@2003scape/rsc-data/config/items');
 const { rollCascadedSkillSuccess } = require('../../rolls');
 const { spots } = require('@2003scape/rsc-data/skills/fishing');
@@ -12,7 +13,7 @@ const FEATHER_ID = 381;
 // Open-RSC defs/extras/ObjectFishing.xml spot 261 (big net). The rates are
 // independent per fish (not cascaded), lowRate/highRate are x/256 at level 1
 // and 99. rsc-data's rolls differ here, so Open-RSC's numbers are used. The
-// seaweed id is 622 in Open-RSC (rsc-data's spot lists 662, which is an
+// seaweed id is 622 in Open-RSC (raw rsc-data lists 662, which is an
 // unstrung maple longbow).
 const BIG_NET_CATCHES = [
     { id: 554, level: 46, experience: 400, low: 6, high: 31, rolls: 1, message: 'a bass' },

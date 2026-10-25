@@ -1,0 +1,123 @@
+{
+    "about": "Corrections to @2003scape/rsc-data rows, applied once at require time by data-fixes.js. Every entry needs a source (Open-RSC Core-Framework Java file and line, or the live evidence). file is the rsc-data json (skills/cooking = node_modules/@2003scape/rsc-data/skills/cooking.json); path is dot separated, numbers index arrays. ops: set (assign value), delete (remove the key), push (append each of values that is not already there). test/rsc-data-sanity.test.js fails when an entry no longer differs from the raw rsc-data row, so a fix that rsc-data adopts gets removed.",
+    "fixes": [
+        {
+            "id": "cooking-cake",
+            "file": "skills/cooking",
+            "path": "uncooked.339.cooked",
+            "op": "set",
+            "value": 330,
+            "note": "rsc-data cooks the uncooked cake (339) into 300, a diamond amulet; the cooked cake is 330",
+            "source": "Open-RSC server/plugins/com/openrsc/server/plugins/authentic/skills/cooking/ObjectCooking.java, range-only list at line 319 (cake 330); live evidence: a cake on a range gave a diamond amulet"
+        },
+        {
+            "id": "fishing-big-net-seaweed-drop",
+            "file": "skills/fishing",
+            "path": "spots.261.net.fish.662",
+            "op": "delete",
+            "note": "rsc-data lists item 662 (unstrung maple longbow) as the big net seaweed",
+            "source": "Open-RSC server/conf/server/defs/extras/ObjectFishing.xml, spot 261 (big net), seaweed is item 622"
+        },
+        {
+            "id": "fishing-big-net-seaweed-add",
+            "file": "skills/fishing",
+            "path": "spots.261.net.fish.622",
+            "op": "set",
+            "value": { "level": 16, "experience": 4, "roll": [10, 10] },
+            "note": "the seaweed row moved from 662 (the rsc-data row: same level, experience and roll)",
+            "source": "Open-RSC server/conf/server/defs/extras/ObjectFishing.xml, spot 261 (big net), seaweed is item 622"
+        },
+        {
+            "id": "herblaw-cure-poison-drop",
+            "file": "skills/herblaw",
+            "path": "potions.455.566",
+            "op": "delete",
+            "note": "rsc-data lists the cure poison potion (566) as its own secondary ingredient on unfinished marrentill (455)",
+            "source": "Open-RSC server/plugins/com/openrsc/server/plugins/authentic/skills/herblaw/Herblaw.java (cure poison = marrentill + ashes); live evidence: unfinished potion + cure poison potion -> self"
+        },
+        {
+            "id": "herblaw-cure-poison-ashes",
+            "file": "skills/herblaw",
+            "path": "potions.455.181",
+            "op": "set",
+            "value": { "level": 5, "experience": 150, "id": 566 },
+            "note": "the real cure poison recipe: unfinished marrentill + ashes (181)",
+            "source": "Open-RSC server/plugins/com/openrsc/server/plugins/authentic/skills/herblaw/Herblaw.java; server/conf/server/defs/ItemHerbSecondDef.xml"
+        },
+        {
+            "id": "herblaw-jungle-815",
+            "file": "skills/herblaw",
+            "path": "herbs.815",
+            "op": "set",
+            "value": { "level": 3, "experience": 0, "id": 816 },
+            "note": "unidentified snake weed; rsc-data has no Jungle Potion herbs",
+            "source": "Open-RSC server/conf/server/defs/extras/ItemUnIdentHerbDef.xml, item 815; Herblaw.java"
+        },
+        {
+            "id": "herblaw-jungle-817",
+            "file": "skills/herblaw",
+            "path": "herbs.817",
+            "op": "set",
+            "value": { "level": 3, "experience": 0, "id": 818 },
+            "note": "unidentified ardrigal",
+            "source": "Open-RSC server/conf/server/defs/extras/ItemUnIdentHerbDef.xml, item 817; Herblaw.java"
+        },
+        {
+            "id": "herblaw-jungle-819",
+            "file": "skills/herblaw",
+            "path": "herbs.819",
+            "op": "set",
+            "value": { "level": 3, "experience": 0, "id": 820 },
+            "note": "unidentified sito foil",
+            "source": "Open-RSC server/conf/server/defs/extras/ItemUnIdentHerbDef.xml, item 819; Herblaw.java"
+        },
+        {
+            "id": "herblaw-jungle-821",
+            "file": "skills/herblaw",
+            "path": "herbs.821",
+            "op": "set",
+            "value": { "level": 3, "experience": 0, "id": 822 },
+            "note": "unidentified volencia moss",
+            "source": "Open-RSC server/conf/server/defs/extras/ItemUnIdentHerbDef.xml, item 821; Herblaw.java"
+        },
+        {
+            "id": "herblaw-jungle-823",
+            "file": "skills/herblaw",
+            "path": "herbs.823",
+            "op": "set",
+            "value": { "level": 3, "experience": 0, "id": 824 },
+            "note": "unidentified rogue's purse",
+            "source": "Open-RSC server/conf/server/defs/extras/ItemUnIdentHerbDef.xml, item 823; Herblaw.java"
+        },
+        {
+            "id": "smithing-iron-plate-legs-skirt",
+            "file": "skills/smithing",
+            "path": "smithing.items.170.items.1.2",
+            "op": "push",
+            "values": [
+                { "level": 31, "id": 9 },
+                { "level": 31, "id": 215 }
+            ],
+            "note": "iron (bar 170) has no Plate Mail Legs (9) or Plated Skirt (215) row, so picking either threw",
+            "source": "Open-RSC server/conf/server/defs/extras/ItemSmithingDef.xml (iron bar rows), read by authentic/skills/smithing/Smithing.java"
+        },
+        {
+            "id": "smithing-adamantite-kite-shield",
+            "file": "skills/smithing",
+            "path": "smithing.items.174.items.1.1.1.id",
+            "op": "set",
+            "value": 131,
+            "note": "the adamantite Kite Shield row is item 154 (adamantite ore) instead of 131",
+            "source": "Open-RSC server/conf/server/defs/extras/ItemSmithingDef.xml (adamantite bar rows), read by authentic/skills/smithing/Smithing.java"
+        },
+        {
+            "id": "smithing-mithril-throwing-knife-amount",
+            "file": "skills/smithing",
+            "path": "smithing.items.173.items.0.1.amount",
+            "op": "set",
+            "value": 2,
+            "note": "the mithril throwing knife row has no amount, so it made 1 where every other bar makes 2",
+            "source": "Open-RSC server/conf/server/defs/extras/ItemSmithingDef.xml (mithril bar rows), read by authentic/skills/smithing/Smithing.java"
+        }
+    ]
+}

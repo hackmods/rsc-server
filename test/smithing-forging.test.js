@@ -75,7 +75,8 @@ test('throwing knives come in twos for every bar', async () => {
     }
 });
 
-test('the rsc-data table itself is not modified', () => {
-    const raw = require('@2003scape/rsc-data/skills/smithing').smithing;
-    assert.strictEqual(raw.items[174].items[1][1][1].id, 154);
+test('the rsc-data table carries the data-fixes.json corrections', () => {
+    const fixed = require('@2003scape/rsc-data/skills/smithing').smithing;
+    assert.strictEqual(fixed.items[174].items[1][1][1].id, 131);
+    assert.strictEqual(fixed.items[173].items[0][1].amount, 2);
 });

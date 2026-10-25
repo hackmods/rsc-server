@@ -3,6 +3,7 @@
 // using items on ranges or fires
 
 const { rollSkillSuccess } = require('../../../rolls');
+require('../../../data-fixes');
 const { uncooked } = require('@2003scape/rsc-data/skills/cooking');
 
 // Ported from Open-RSC Core-Framework authentic/skills/cooking/ObjectCooking.java and Formulae.burnFood (AGPL-3.0)
@@ -26,12 +27,6 @@ const GAUNTLET_LEVELS = { 369: 6, 372: 11, 545: 11 };
 const COOKS_RANGE_BONUS = 1.05;
 const FIRE_PENALTY = 0.95;
 
-// ARSC: rsc-data rows that are wrong, by uncooked item id. rsc-data cooks the uncooked cake (339) into 300, a Diamond
-// Amulet; Open-RSC (authentic/skills/cooking/ObjectCooking.java, range-only list at line 319) gives Cake 330.
-const COOKING_FIXES = {
-    339: { cooked: 330 }
-};
-
 function getDefinition(id) {
     const definition = uncooked[id];
 
@@ -39,7 +34,7 @@ function getDefinition(id) {
         return getDefinition(definition.reference);
     }
 
-    return COOKING_FIXES[id] ? { ...definition, ...COOKING_FIXES[id] } : definition;
+    return definition; // the uncooked cake row (339) is corrected by src/data-fixes.json
 }
 
 function isMeat(item) {

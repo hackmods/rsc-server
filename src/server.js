@@ -1,3 +1,4 @@
+require('./data-fixes'); // ARSC: correct rsc-data before the plugins read it
 const BrowserSocket = require('./browser-socket');
 
 const DataClient = process.browser

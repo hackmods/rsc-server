@@ -92,7 +92,7 @@ test('identify covers every unidentified herb in the data, and leaves other item
         const player = fakePlayer({ level: def.level, inventory: [Number(id)] });
         assert.equal(await herblaw.onInventoryCommand(player, item(Number(id))), true, `herb ${id}`);
         assert.deepEqual(player.bag, [def.id]);
-        assert.equal(player.xp[0].experience, def.experience);
+        assert.equal(player.xp[0] ? player.xp[0].experience : 0, def.experience); // the Jungle Potion herbs (data-fixes.json) pay no xp
     }
     const player = fakePlayer({ inventory: [444] });
     assert.equal(await herblaw.onInventoryCommand(player, item(444)), false);

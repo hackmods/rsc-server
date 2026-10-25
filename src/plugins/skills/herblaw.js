@@ -11,22 +11,17 @@
 // (ItemUnIdentHerbDef.xml 815-823, rsc-data has no entry for them: level 3, no XP, same Druidic Ritual gate as every herb)
 // and InvUseOnItem.java blamish oil on a fishing rod -> oily fishing rod (no level, no quest, no XP).
 
+require('../../data-fixes'); // corrects the potion and Jungle Potion herb rows
 const items = require('@2003scape/rsc-data/config/items');
 const herblaw = require('@2003scape/rsc-data/skills/herblaw');
 
 const VIAL_OF_WATER_ID = 464;
-const ASHES_ID = 181;
-const CURE_POISON_ID = 566;
-const MARRENTILL_UNFINISHED_ID = 455;
 const PESTLE_AND_MORTAR_ID = 468;
 const BAT_BONES_ID = 604;
 const CHARCOAL_ID = 983;
 const BLAMISH_OIL_ID = 588;
 const FISHING_ROD_ID = 377;
 const OILY_FISHING_ROD_ID = 589;
-
-// Jungle Potion unidentified herbs -> snake weed, ardrigal, sito foil, volencia moss, rogue's purse
-const JUNGLE_HERBS = [[815, 816], [817, 818], [819, 820], [821, 822], [823, 824]];
 
 // item ground on a pestle and mortar -> ground item
 const GRINDABLE = new Map([
@@ -37,17 +32,8 @@ const GRINDABLE = new Map([
     [337, 772] // chocolate bar -> chocolate dust
 ]);
 
-// rsc-data lists the cure poison potion as its own secondary ingredient; the real recipe is marrentill + ashes
-const POTION_FIXES = [{ unfinished: MARRENTILL_UNFINISHED_ID, secondary: ASHES_ID, level: 5, experience: 150, id: CURE_POISON_ID }];
-
 const unfinishedByHerb = new Map(Object.entries(herblaw.unfinished).map(([id, def]) => [Number(id), def]));
 const herbsByID = new Map(Object.entries(herblaw.herbs).map(([id, def]) => [Number(id), def]));
-
-for (const [unidentified, identified] of JUNGLE_HERBS) {
-    if (!herbsByID.has(unidentified)) {
-        herbsByID.set(unidentified, { level: 3, experience: 0, id: identified });
-    }
-}
 
 // unfinished potion id -> Map(secondary id -> { level, experience, id })
 const recipes = new Map();
@@ -56,17 +42,10 @@ for (const [unfinished, secondaries] of Object.entries(herblaw.potions)) {
     const byItem = new Map();
 
     for (const [secondary, def] of Object.entries(secondaries)) {
-        // skip the self-referential cure poison entry
-        if (def.id !== Number(secondary)) {
-            byItem.set(Number(secondary), def);
-        }
+        byItem.set(Number(secondary), def);
     }
 
     recipes.set(Number(unfinished), byItem);
-}
-
-for (const fix of POTION_FIXES) {
-    recipes.get(fix.unfinished).set(fix.secondary, fix);
 }
 
 function druidicRitualDone(player) {
