@@ -1,8 +1,10 @@
 // 199: the black hole ladder (miniquests/black-hole.js)
 const EXCLUDE_IDS = new Set([130, 198, 199, 223, 227]);
+// ladders, stairs and levers that move the player to a fixed tile (object-tele-points.js) are not plane shifts
+const { findTelePoint } = require('./object-tele-points');
 
 async function onGameObjectCommandOne(player, gameObject) {
-    if (EXCLUDE_IDS.has(gameObject.id)) {
+    if (EXCLUDE_IDS.has(gameObject.id) || findTelePoint(gameObject)) {
         return false;
     }
     if (/go up|climb(-| )up/i.test(gameObject.definition.commands[0])) {
