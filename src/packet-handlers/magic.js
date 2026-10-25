@@ -8,10 +8,12 @@
 //  - castInventoryItem: low and high level alchemy, superheat item, enchant
 //    lvl-1 to lvl-5 amulet
 //  - castPlayer: refused, there is no player-vs-player combat on this server
+//  - castSelf also casts Charge (Open-RSC SpellHandler handleGroundCast): a
+//    timed flag that lifts the god spells from 18 to 25 for a god cape wearer
 //  - castGroundItem, castObject: offered to onCastOnGroundItem and
-//    onCastOnGameObject plugins; otherwise ("Nothing interesting happens")
-//  - castWallObject, castGround: telekinetic grab and charge orb are not
-//    implemented ("Nothing interesting happens")
+//    onCastOnGameObject plugins (telegrab and the charge orbs live in
+//    plugins/skills/magic.js); otherwise ("Nothing interesting happens")
+//  - castWallObject, castGround: not implemented ("Nothing interesting happens")
 //
 // Every cast checks the members flag, the magic level and the runes (an
 // elemental staff stands in for its runes), then takes the runes and gives the
@@ -19,6 +21,7 @@
 // experience). Only exports cast* handlers: server.js registers every export of
 // a packet-handler file by name.
 
+const GameObject = require('../model/game-object');
 const Item = require('../model/item');
 const items = require('@2003scape/rsc-data/config/items');
 const log = require('bole')('magic');
@@ -42,6 +45,25 @@ const COAL_ID = 155;
 const IRON_ORE_ID = 151;
 const STEEL_BAR_ID = 171;
 const BRONZE_BAR_ID = 169;
+
+// Charge (Open-RSC SpellHandler): lasts 6 minutes, the effect object shows on
+// the caster's tile for a moment
+const CHARGE = 47;
+const CHARGE_TICKS = Math.round((6 * 60 * 1000) / 640);
+const CHARGE_OBJECT_ID = 1147;
+const CHARGE_OBJECT_TICKS = 2;
+const GOD_SPELLS = new Set([33, 34, 35]);
+const GOD_SPELL_CHARGED_MAX_HIT = 25;
+const GOD_CAPE_IDS = [1213, 1214, 1215]; // zamorak, saradomin, guthix
+// the god spell cast counters the Open-RSC cache keeps (Mage Arena)
+const GOD_CAST_KEYS = [
+    'Flames of Zamorak_casts',
+    'Saradomin strike_casts',
+    'Claws of Guthix_casts'
+];
+const GOD_CASTS_REQUIRED = 100;
+// Point.inMageArena
+const MAGE_ARENA = { minX: 217, minY: 119, maxX: 239, maxY: 141 };
 
 // rune id: wielded staffs that supply it without limit (same as the client's
 // hasInventoryItems)
@@ -244,6 +266,37 @@ function finishCast(player, id, cost, message = 'Cast spell successfully') {
     player.addExperience('magic', spellExperience[id]);
 }
 
+// Open-RSC player.isCharged: the timer is a tick count, and it fades by itself
+function isCharged(player) {
+    return (
+        typeof player.chargeExpiresTick === 'number' &&
+        player.world.ticks < player.chargeExpiresTick
+    );
+}
+
+// the max hit of a missile spell; Charge lifts the god spells for a god cape
+// wearer (Open-RSC CombatFormula.calculateGodSpellDamage)
+function getMaxHit(player, id) {
+    if (
+        GOD_SPELLS.has(id) &&
+        isCharged(player) &&
+        GOD_CAPE_IDS.some((capeID) => player.inventory.isEquipped(capeID))
+    ) {
+        return GOD_SPELL_CHARGED_MAX_HIT;
+    }
+
+    return MISSILES[id];
+}
+
+function inMageArena({ x, y }) {
+    return (
+        x >= MAGE_ARENA.minX &&
+        x <= MAGE_ARENA.maxX &&
+        y >= MAGE_ARENA.minY &&
+        y <= MAGE_ARENA.maxY
+    );
+}
+
 // can the player cast at all right now (not busy, no window open)
 function isBusy(player) {
     return player.locked || player.hasInterfaceOpen() || isCooling(player);
@@ -302,6 +355,67 @@ function bonesToBananas(player, id, spell) {
     finishCast(player, id, cost);
 }
 
+function charge(player, id, spell) {
+    const { world } = player;
+
+    // outside the Mage Arena only after 100 casts of every god spell tried
+    if (!inMageArena(player)) {
+        const casts = GOD_CAST_KEYS.filter((key) => key in player.cache);
+
+        if (
+            !casts.length ||
+            casts.some((key) => player.cache[key] < GOD_CASTS_REQUIRED)
+        ) {
+            player.message('this spell can only be used in the mage arena');
+            return;
+        }
+    }
+
+    if (world.gameObjects.getAtPoint(player.x, player.y).length) {
+        player.message(
+            "You can't charge power here, please move to a different area"
+        );
+
+        return;
+    }
+
+    const cost = checkCast(player, id, spell);
+
+    if (!cost) {
+        return;
+    }
+
+    player.message('@gre@You feel charged with magic power');
+
+    // casting again only restarts the countdown
+    const expires = world.ticks + CHARGE_TICKS;
+    player.chargeExpiresTick = expires;
+
+    world.setTickTimeout(() => {
+        if (player.chargeExpiresTick === expires) {
+            delete player.chargeExpiresTick;
+            player.message('@red@Your magic charge fades');
+        }
+    }, CHARGE_TICKS);
+
+    const effect = new GameObject(world, {
+        id: CHARGE_OBJECT_ID,
+        direction: 0,
+        x: player.x,
+        y: player.y
+    });
+
+    world.addEntity('gameObjects', effect);
+
+    world.setTickTimeout(() => {
+        if (world.gameObjects.getByIndex(effect.index) === effect) {
+            world.removeEntity('gameObjects', effect);
+        }
+    }, CHARGE_OBJECT_TICKS);
+
+    finishCast(player, id, cost);
+}
+
 async function castSelf({ player }, { id }) {
     const spell = getSpell(id);
 
@@ -318,6 +432,8 @@ async function castSelf({ player }, { id }) {
         await teleport(player, id, spell);
     } else if (id === BONES_TO_BANANAS) {
         bonesToBananas(player, id, spell);
+    } else if (id === CHARGE) {
+        charge(player, id, spell);
     } else {
         player.message('Nothing interesting happens');
     }
@@ -512,7 +628,7 @@ async function castNPC({ player }, { index, id }) {
         return;
     }
 
-    const damage = rollSpellDamage(player, npc, MISSILES[id]);
+    const damage = rollSpellDamage(player, npc, getMaxHit(player, id));
     const died = npc.damage(damage, player, 'magic');
 
     if (!died) {
@@ -666,7 +782,7 @@ async function castInventoryItem({ player }, { index, id }) {
     }
 }
 
-// telekinetic grab, charge orbs: not implemented yet
+// wall object and ground spells: not implemented
 async function notImplemented({ player }, { id }) {
     getSpell(id);
 
@@ -677,8 +793,8 @@ async function notImplemented({ player }, { id }) {
     player.message('Nothing interesting happens');
 }
 
-// plugins get the cast first (Open-RSC SpellLocTrigger); the spell itself is
-// still not implemented, so an unclaimed cast gets the default message
+// plugins get the cast first (Open-RSC SpellLocTrigger: the charge orbs); an
+// unclaimed cast gets the default message
 async function castObject({ player }, { x, y, id }) {
     const spell = getSpell(id);
 
@@ -744,3 +860,10 @@ module.exports = {
     castWallObject: notImplemented,
     castGround: notImplemented
 };
+
+// the cast bookkeeping for plugins (plugins/skills/magic.js). not enumerable:
+// server.js registers every enumerable export as a packet handler
+Object.defineProperty(module.exports, 'cast', {
+    value: { checkCast, finishCast, isCharged },
+    enumerable: false
+});
