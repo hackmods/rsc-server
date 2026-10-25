@@ -16,16 +16,17 @@
  * "climb up/down" regex (gnome branches 648/649, barbarian net 677, wilderness vine 709) are excluded from it when
  * this file loads, because index.js runs climbable.js first and its first-true-wins dispatch would otherwise steal them.
  *
- * Course xp values are the classic/OSRS-shaped numbers; the server's experienceRate multiplies them as usual.
+ * Course xp values are the Java incExp values (quarter points, as player.addExperience takes); the server's
+ * experienceRate multiplies them as usual.
  */
 
 const PLANE = 944;
 
 // course -> { lap: xp bonus for finishing in order, last: step index of the final obstacle }
 const COURSES = {
-    gnome: { name: 'Gnome Stronghold', last: 6, lap: 30 },
-    barbarian: { name: 'Barbarian Outpost', last: 5, lap: 46 },
-    wilderness: { name: 'Wilderness', last: 5, lap: 100 }
+    gnome: { name: 'Gnome Stronghold', last: 6, lap: 150 },
+    barbarian: { name: 'Barbarian Outpost', last: 5, lap: 300 },
+    wilderness: { name: 'Wilderness', last: 5, lap: 1500 }
 };
 
 /**
@@ -45,7 +46,7 @@ const OBSTACLES = [
         course: 'gnome',
         step: 0,
         req: 1,
-        xp: 7.5,
+        xp: 30,
         verb: 'balance across this log',
         start: 'You walk carefully across the slippery log...',
         done: '...and make it safely to the other side',
@@ -60,7 +61,7 @@ const OBSTACLES = [
         course: 'gnome',
         step: 1,
         req: 1,
-        xp: 7.5,
+        xp: 30,
         verb: 'climb this net',
         start: 'You climb up the netting...',
         done: '...and reach the platform',
@@ -72,7 +73,7 @@ const OBSTACLES = [
         course: 'gnome',
         step: 2,
         req: 1,
-        xp: 5,
+        xp: 30,
         verb: 'climb this tree',
         start: 'You climb up the tree...',
         done: '...and reach the branch',
@@ -84,7 +85,7 @@ const OBSTACLES = [
         course: 'gnome',
         step: 3,
         req: 1,
-        xp: 7.5,
+        xp: 30,
         verb: 'swing on this rope',
         start: 'You grab hold of the rope and swing across...',
         done: '...and land on the other side',
@@ -99,7 +100,7 @@ const OBSTACLES = [
         course: 'gnome',
         step: 4,
         req: 1,
-        xp: 5,
+        xp: 30,
         verb: 'climb down this tree',
         start: 'You climb down the tree...',
         done: '...and reach the ground',
@@ -111,7 +112,7 @@ const OBSTACLES = [
         course: 'gnome',
         step: 5,
         req: 1,
-        xp: 7.5,
+        xp: 30,
         verb: 'climb this net',
         start: 'You climb the netting...',
         done: '...and clamber over it',
@@ -123,7 +124,7 @@ const OBSTACLES = [
         course: 'gnome',
         step: 6,
         req: 1,
-        xp: 7.5,
+        xp: 30,
         verb: 'squeeze through this pipe',
         start: 'You squeeze through the pipe...',
         done: '...and come out the other end',
@@ -140,7 +141,7 @@ const OBSTACLES = [
         course: 'barbarian',
         step: 0,
         req: 35,
-        xp: 8,
+        xp: 20,
         verb: 'squeeze through this pipe',
         start: 'You squeeze through the pipe...',
         done: '...and come out the other end',
@@ -155,7 +156,7 @@ const OBSTACLES = [
         course: 'barbarian',
         step: 1,
         req: 35,
-        xp: 22,
+        xp: 80,
         verb: 'swing on this rope',
         start: 'You grab hold of the rope and swing across...',
         done: '...and land safely on the far side',
@@ -175,7 +176,7 @@ const OBSTACLES = [
         course: 'barbarian',
         step: 2,
         req: 35,
-        xp: 13.5,
+        xp: 50,
         verb: 'balance across this log',
         start: 'You walk carefully across the slippery log...',
         done: '...and make it safely to the other side',
@@ -195,7 +196,7 @@ const OBSTACLES = [
         course: 'barbarian',
         step: 3,
         req: 35,
-        xp: 8,
+        xp: 50,
         verb: 'climb this net',
         start: 'You climb up the netting...',
         done: '...and reach the ledge',
@@ -207,7 +208,7 @@ const OBSTACLES = [
         course: 'barbarian',
         step: 4,
         req: 35,
-        xp: 22,
+        xp: 80,
         verb: 'balance along this ledge',
         start: 'You walk carefully along the ledge...',
         done: '...and make it safely to the other side',
@@ -231,7 +232,7 @@ const OBSTACLES = [
         course: 'barbarian',
         step: 5,
         req: 35,
-        xp: 13.5,
+        xp: 20,
         verb: 'climb these handholds',
         start: 'You climb the handholds...',
         done: '...and pull yourself over the top',
@@ -248,7 +249,7 @@ const OBSTACLES = [
         course: 'wilderness',
         step: 0,
         req: 52,
-        xp: 0,
+        xp: 50,
         verb: 'enter this agility area',
         start: 'You open the gate and walk through...',
         done: '...and enter the agility area',
@@ -263,7 +264,7 @@ const OBSTACLES = [
         course: 'wilderness',
         step: 0,
         req: 52,
-        xp: 0,
+        xp: 50,
         verb: 'enter this agility area',
         start: 'You open the gate and walk through...',
         done: '...and enter the agility area',
@@ -278,7 +279,7 @@ const OBSTACLES = [
         course: 'wilderness',
         step: 1,
         req: 52,
-        xp: 12.5,
+        xp: 50,
         verb: 'squeeze through this pipe',
         start: 'You squeeze through the pipe...',
         done: '...and come out the other end',
@@ -293,7 +294,7 @@ const OBSTACLES = [
         course: 'wilderness',
         step: 2,
         req: 52,
-        xp: 20,
+        xp: 100,
         verb: 'swing on this rope',
         start: 'You grab hold of the rope and swing across...',
         done: '...and land safely on the far side',
@@ -313,7 +314,7 @@ const OBSTACLES = [
         course: 'wilderness',
         step: 3,
         req: 52,
-        xp: 20,
+        xp: 80,
         verb: 'balance across these stones',
         start: 'You carefully hop across the stepping stones...',
         done: '...and reach the other side',
@@ -333,7 +334,7 @@ const OBSTACLES = [
         course: 'wilderness',
         step: 4,
         req: 52,
-        xp: 20,
+        xp: 80,
         verb: 'balance along this ledge',
         start: 'You walk carefully along the ledge...',
         done: '...and make it safely to the other side',
@@ -353,7 +354,7 @@ const OBSTACLES = [
         course: 'wilderness',
         step: 5,
         req: 52,
-        xp: 25,
+        xp: 80,
         verb: 'climb this vine',
         start: 'You climb up the vine...',
         done: '...and reach the top',
@@ -511,16 +512,664 @@ async function attempt(player, gameObject, obstacle) {
     player.unlock();
 }
 
-async function onGameObjectCommandOne(player, gameObject) {
-    const obstacle = BY_ID.get(gameObject.id);
+// ---------------------------------------------------------------------------------------------------------------------
+// Agility shortcuts. Ported from Open-RSC Core-Framework authentic/skills/agility/AgilityShortcuts.java (AGPL-3.0)
+// (AgilityUtils.java is only the course lap bookkeeping, which the course code above already covers).
+//
+// One generic handler drives the SHORTCUTS table. A row is:
+//   ids        object ids (a different id per direction)
+//   req/reqMsg agility level and the refusal message below it
+//   tired      refusal when fatigue is full (Java WANT_FATIGUE branch; authentic RSC has fatigue)
+//   tiredFirst the Java checks fatigue before the level
+//   blockedFrom { x, y, msg } refuses from one tile
+//   start      message, then startDelay ticks (Java delay(n))
+//   fail       { req, stopFail, msg, to, damage(player) } Java succeed(): a failure drops the player at `to`
+//   dest | path  teleport tile, or a list of tiles each followed by one tick (the coal truck logs)
+//   done/say/xp  message after arriving, a spoken line, agility xp (Java incExp, quarter points, used as is)
+//   custom     async (player, gameObject): the case's own logic once the guards above passed
+// Skipped: the agility cape auto-success (no agility cape in rsc-data) and every case whose scenery id is an Open-RSC
+// custom id (1236 and up) missing from rsc-data and from the map: Taverly pipe, Entrana rubble, Taverly and Catherby
+// stepping stones, Falador members exit handholds, KBD and lava dungeon stepping stones, Shilo nature stone.
+// ---------------------------------------------------------------------------------------------------------------------
 
-    if (!obstacle) {
+const MAX_FATIGUE = 75000;
+const ROPE_ITEM = 237;
+const GREW_TREE = 662;
+const GREW_TREE_TIED = 663;
+// Java delayedSpawnObject(.., 60000): the tied rope goes away after a minute
+const GREW_TIED_TICKS = Math.ceil(60000 / 640);
+
+function agilityLevel(player) {
+    return player.skills.agility ? player.skills.agility.current : 1;
+}
+
+// Java Formulae.calcProductionSuccessfulLegacy: a 1-256 roll against a threshold that grows with the level
+function productionSucceeds(req, level, stopsFailing, stopFail, minFail = 1) {
+    if (level < req) {
         return false;
     }
 
-    await attempt(player, gameObject, obstacle);
+    const roll = Math.floor(rng.random() * 256) + 1;
+    const max = stopsFailing ? 256 : 256 - minFail;
+    const threshold = Math.min(
+        max,
+        Math.floor(64 + (level - 1) * (19200 / (stopFail * 98)))
+    );
+
+    return roll <= threshold;
+}
+
+// Java succeed(player, req) (never stops failing, up to req + 30) and succeed(player, req, lvlStopFail)
+function succeeds(player, req, stopFail) {
+    const level = agilityLevel(player);
+
+    return stopFail === undefined
+        ? productionSucceeds(req, level, false, req + 30)
+        : productionSucceeds(req, level, true, stopFail);
+}
+
+function hitsLevel(player) {
+    return player.skills.hits.current;
+}
+
+// Java player.damage(n) with the 0 a low level rounds to left out
+function fall(player, damage) {
+    if (damage > 0) {
+        player.damage(damage);
+    }
+}
+
+async function karamjaLog(player) {
+    const { world } = player;
+
+    player.message('You attempt to walk over the the slippery log..');
+    await world.sleepTicks(3);
+
+    if (!succeeds(player, 32)) {
+        player.teleport(368, 781);
+        await world.sleepTicks(1);
+        player.message('@red@You fall into the stream!');
+        player.message('You lose some health');
+        player.teleport(370, 776);
+        fall(player, 1);
+
+        return;
+    }
+
+    const eastward = player.x <= 367;
+
+    player.teleport(368, 781);
+    await world.sleepTicks(1);
+    player.teleport(eastward ? 370 : 366, 781);
+    player.message('...and make it without any problems!');
+    player.addExperience('agility', 10);
+}
+
+async function karamjaStones(player) {
+    const { world } = player;
+    const north = player.y <= 805;
+
+    player.message('You jump onto the rock');
+    player.teleport(...(north ? [347, 806] : [346, 807]));
+    await world.sleepTicks(1);
+
+    if (!succeeds(player, 32)) {
+        await world.sleepTicks(2);
+        player.teleport(...(north ? [341, 809] : [341, 805]));
+        player.message('@red@!!! You Fall !!!');
+        player.message('You get washed up on the other side of the river...');
+        await world.sleepTicks(3);
+        player.message('After being nearly half drowned');
+        await world.sleepTicks(3);
+        fall(player, Math.floor(hitsLevel(player) / 4) + 2);
+
+        return;
+    }
+
+    player.teleport(...(north ? [346, 808] : [347, 805]));
+    player.message('And cross the water without problems.');
+    player.addExperience('agility', 10);
+}
+
+async function shiloRocks(player, gameObject) {
+    const { world } = player;
+
+    player.message('These rocks look quite dangerous to climb.');
+    await world.sleepTicks(3);
+    player.message('But you may be able to scale them.');
+    await world.sleepTicks(3);
+    player.message('Would you like to try?');
+
+    const choice = await player.ask([
+        'Yes, I can easily climb this!',
+        "Nope, I'm sure I'll probably fall!"
+    ]);
+
+    if (choice !== 0) {
+        player.message('You decide not to climb the rocks.');
+
+        return;
+    }
+
+    if (succeeds(player, 32)) {
+        player.message('You manage to climb the rocks succesfully and pick');
+        await world.sleepTicks(3);
+
+        if (gameObject.x === 450) {
+            player.message(
+                'a route though the trecherous embankment to the top.'
+            );
+            player.teleport(452, 829);
+        } else {
+            player.message(
+                'a route though the trecherous embankment to the bottom.'
+            );
+            player.teleport(449, 828);
+        }
+
+        return;
+    }
+
+    player.teleport(450, 828);
+    player.message('You fall and hurt yourself.');
+    await world.sleepTicks(3);
+    fall(player, Math.floor(hitsLevel(player) / 10));
+    await world.sleepTicks(1);
+    player.teleport(449, 828);
+}
+
+async function shiloBridge(player) {
+    const { world } = player;
+
+    player.message('The bridge beyond this fence looks very unsafe.');
+    await world.sleepTicks(3);
+    player.message(
+        "However, you could try to negotiate it if you're feeling very agile."
+    );
+    await world.sleepTicks(3);
+    player.message('Would you like to try?');
+
+    const choice = await player.ask([
+        'No thanks! It looks far too dangerous!',
+        "Yes, I'm totally brave and quite agile!"
+    ]);
+
+    if (choice === 0) {
+        player.message(
+            'You decide that common sense is the better part of valour.'
+        );
+        await world.sleepTicks(3);
+        player.message(
+            'And stop yourself from being hurled to what must be an '
+        );
+        await world.sleepTicks(3);
+        player.message('inevitable death.');
+
+        return;
+    }
+
+    player.message('You prepare to negotiate the bridge fence...');
+    await world.sleepTicks(3);
+    player.message('You run and jump...');
+    await world.sleepTicks(3);
+
+    if (succeeds(player, 32)) {
+        player.message('...and land perfectly on the other side!');
+        player.teleport(player.x >= 460 ? 458 : 460, 828);
+
+        return;
+    }
+
+    player.message('...slip and fall incompetently into the river below!');
+    player.teleport(458, 832);
+    await player.say('* Ahhhhhhhhhh! *');
+    fall(player, Math.floor(hitsLevel(player) / 10));
+    await world.sleepTicks(1);
+    player.teleport(458, 836);
+    fall(player, Math.floor(hitsLevel(player) / 10));
+    await world.sleepTicks(2);
+    await player.say('* Gulp! *');
+    await world.sleepTicks(3);
+    player.teleport(459, 841);
+    await player.say('* Gulp! *');
+    await world.sleepTicks(2);
+    player.message(
+        'You just manage to drag your pitiful frame onto the river bank.'
+    );
+    await player.say('* Gasp! *');
+    fall(player, Math.floor(hitsLevel(player) / 10));
+    await world.sleepTicks(2);
+    player.message('Though you nearly drowned in the river!');
+}
+
+const SHORTCUTS = [
+    {
+        name: 'Handholds (Falador, west wall)',
+        ids: [693],
+        req: 5,
+        reqMsg: 'You need an agility level of 5 to climb the wall',
+        start: 'You climb over the wall',
+        dest: [338, 555],
+        xp: 50
+    },
+    {
+        name: 'Tree (Brimhaven vine)',
+        ids: [694],
+        req: 10,
+        reqMsg:
+            'You need an agility level of 10 to attempt to swing on this vine',
+        start: 'You grab the vine and try and swing across',
+        startDelay: 2,
+        dest: [511, 669],
+        done: 'You skillfully swing across the stream',
+        say: 'Aaaaahahah',
+        xp: 20
+    },
+    {
+        name: 'Tree (Brimhaven vine, back)',
+        ids: [695],
+        req: 10,
+        reqMsg:
+            'You need an agility level of 10 to attempt to swing on this vine',
+        start: 'You grab the vine and try and swing across',
+        startDelay: 2,
+        dest: [508, 668],
+        done: 'You skillfully swing across the stream',
+        say: 'Aaaaahahah',
+        xp: 20
+    },
+    {
+        name: 'Ropeswing (Edgeville dungeon)',
+        ids: [684],
+        req: 15,
+        reqMsg:
+            'You need an agility level of 15 to attempt to swing on this rope',
+        startDelay: 2,
+        dest: [207, 3221],
+        done: 'You skillfully swing across the hole',
+        xp: 40
+    },
+    {
+        name: 'Ropeswing (Edgeville dungeon, back)',
+        ids: [685],
+        req: 15,
+        reqMsg:
+            'You need an agility level of 15 to attempt to swing on this rope',
+        startDelay: 2,
+        dest: [206, 3225],
+        done: 'You skillfully swing across the hole',
+        xp: 40
+    },
+    {
+        name: 'Log (west coal trucks)',
+        ids: [681],
+        req: 20,
+        reqMsg:
+            'You need an agility level of 20 to attempt balancing along this log',
+        start: 'You stand on the slippery log',
+        path: [
+            [595, 458],
+            [594, 458],
+            [593, 458],
+            [592, 458]
+        ],
+        done: 'and you walk across',
+        xp: 34
+    },
+    {
+        name: 'Log (east coal trucks)',
+        ids: [680],
+        req: 20,
+        reqMsg:
+            'You need an agility level of 20 to attempt balancing along this log',
+        start: 'You stand on the slippery log',
+        path: [
+            [595, 458],
+            [596, 458],
+            [597, 458],
+            [598, 458]
+        ],
+        done: 'and you walk across',
+        xp: 34
+    },
+    {
+        name: 'Ropeswing (Yanille agility dungeon)',
+        ids: [628],
+        req: 57,
+        reqMsg:
+            'You need an agility level of 57 to attempt to swing on this rope',
+        tired: 'You are too tired to swing on the rope',
+        start: 'You grab the rope and try and swing across',
+        startDelay: 2,
+        fail: {
+            req: 57,
+            stopFail: 77,
+            msg: 'You miss the opposite side and fall to the level below',
+            to: [596, 3534]
+        },
+        dest: [596, 3581],
+        done: 'You skillfully swing across the hole',
+        xp: 110
+    },
+    {
+        name: 'Ropeswing (Yanille agility dungeon, back)',
+        ids: [627],
+        req: 57,
+        reqMsg:
+            'You need an agility level of 57 to attempt to swing on this rope',
+        tired: 'You are too tired to swing on the rope',
+        start: 'You grab the rope and try and swing across',
+        startDelay: 2,
+        fail: {
+            req: 57,
+            stopFail: 77,
+            msg: 'You miss the opposite side and fall to the level below',
+            to: [598, 3536]
+        },
+        dest: [598, 3585],
+        done: 'You skillfully swing across the hole',
+        xp: 110
+    },
+    {
+        name: 'Ledge (Yanille agility dungeon)',
+        ids: [614],
+        req: 40,
+        reqMsg:
+            'You need an agility level of 40 to attempt balancing along this log',
+        tired: 'You are too tired to balance on the ledge',
+        start: 'You put your foot on the ledge and try to edge across',
+        startDelay: 3,
+        fail: {
+            req: 40,
+            stopFail: 65,
+            msg: 'you lose your footing and fall to the level below',
+            to: [603, 3520],
+            damage: (player) => Math.floor(hitsLevel(player) * 0.2)
+        },
+        dest: [601, 3563],
+        done: 'You skillfully balance across the hole',
+        xp: 90
+    },
+    {
+        name: 'Ledge (Yanille agility dungeon, back)',
+        ids: [615],
+        req: 40,
+        reqMsg:
+            'You need an agility level of 40 to attempt balancing along this log',
+        tired: 'You are too tired to balance on the ledge',
+        start: 'You put your foot on the ledge and try to edge across',
+        startDelay: 3,
+        fail: {
+            req: 40,
+            stopFail: 65,
+            msg: 'you lose your footing and fall to the level below',
+            to: [603, 3520],
+            damage: (player) => Math.floor(hitsLevel(player) * 0.2)
+        },
+        dest: [601, 3557],
+        done: 'You skillfully balance across the hole',
+        xp: 90
+    },
+    {
+        name: 'Pile of rubble (Yanille agility dungeon, down)',
+        ids: [636],
+        req: 67,
+        reqMsg:
+            'You need an agility level of 67 to attempt to climb down the rubble',
+        dest: [580, 3525],
+        done: 'You climb down the pile of rubble'
+    },
+    {
+        name: 'Pile of rubble (Yanille agility dungeon, up)',
+        ids: [633],
+        req: 67,
+        reqMsg:
+            'You need an agility level of 67 to attempt to climb up the rubble',
+        tired: 'You are too tired to climb up the rubble',
+        dest: [582, 3573],
+        done: 'You climb up the pile of rubble',
+        xp: 54
+    },
+    {
+        name: 'Pipe (Yanille agility dungeon)',
+        ids: [656],
+        req: 49,
+        reqMsg:
+            'You need an agility level of 49 to attempt to squeeze through the pipe',
+        tired: 'You are too tired to squeeze through the pipe',
+        start: 'You squeeze through the pipe',
+        startDelay: 2,
+        dest: [608, 3568],
+        xp: 30
+    },
+    {
+        name: 'Pipe (Yanille agility dungeon, back)',
+        ids: [657],
+        req: 49,
+        reqMsg:
+            'You need an agility level of 49 to attempt to squeeze through the pipe',
+        tired: 'You are too tired to squeeze through the pipe',
+        start: 'You squeeze through the pipe',
+        startDelay: 2,
+        dest: [605, 3568],
+        xp: 30
+    },
+    {
+        // Java checks the tile, then fatigue, then the level
+        name: 'Tree (Grew Island, rope tied)',
+        ids: [GREW_TREE_TIED],
+        blockedFrom: {
+            x: 664,
+            y: 755,
+            msg: "You can't reach the tree from here"
+        },
+        tiredFirst: true,
+        tired: 'You are too tired to swing on the rope',
+        req: 30,
+        reqMsg:
+            'You need an agility level of 30 to attempt to swing across the stream',
+        start: 'You grab the rope and try and swing across',
+        startDelay: 2,
+        dest: [664, 755],
+        done: 'You skillfully swing across the stream',
+        xp: 50
+    },
+    {
+        name: 'Tree (Grew Island, swing back)',
+        ids: [664],
+        req: 0,
+        start: 'You grab the rope and try and swing across',
+        startDelay: 2,
+        dest: [666, 755],
+        done: 'You skillfully swing across the stream',
+        xp: 50
+    },
+    {
+        name: 'Log Bridge (east Karamja)',
+        ids: [692],
+        req: 32,
+        reqMsg:
+            'You need an agility level of 32 to attempt balancing along this log',
+        custom: karamjaLog
+    },
+    {
+        name: 'Stepping stones (east Karamja)',
+        ids: [701],
+        req: 32,
+        reqMsg: 'You need an agility level of 32 to step on these stones',
+        tired: 'You are too fatigued to continue.',
+        custom: karamjaStones
+    },
+    {
+        name: 'Climbing rocks (Yanille)',
+        ids: [1029],
+        tiredFirst: true,
+        tired: 'You are too tired to climb up the wall',
+        req: 15,
+        reqMsg: 'You need an agility level of 15 to climb the wall',
+        start: 'You climb over the wall',
+        dest: [624, 741],
+        xp: 40
+    },
+    {
+        name: 'Handholds (Yanille watchtower)',
+        ids: [658],
+        tiredFirst: true,
+        tired: 'You are too tired to climb up the wall',
+        req: 18,
+        reqMsg: 'You need an agility level of 18 to climb the wall',
+        start: 'You climb up the wall',
+        dest: [637, 1680],
+        done: 'And climb in through the window',
+        xp: 50
+    },
+    {
+        name: 'Rocks (Shilo Village)',
+        ids: [710],
+        req: 32,
+        reqMsg: 'You need an agility level of 32 to climb the rocks',
+        custom: shiloRocks
+    },
+    {
+        name: 'Bridge Blockade (Shilo Village)',
+        ids: [691],
+        req: 32,
+        reqMsg: 'You need an agility level of 32 to climb the rocks',
+        custom: shiloBridge
+    }
+];
+
+const SHORTCUT_BY_ID = new Map();
+for (const shortcut of SHORTCUTS) {
+    for (const id of shortcut.ids) {
+        SHORTCUT_BY_ID.set(id, shortcut);
+    }
+}
+
+// the first failed requirement's message, in the order the Java checks them
+function shortcutRefusal(player, shortcut) {
+    const { blockedFrom } = shortcut;
+
+    if (
+        blockedFrom &&
+        player.x === blockedFrom.x &&
+        player.y === blockedFrom.y
+    ) {
+        return blockedFrom.msg;
+    }
+
+    const tooLow = agilityLevel(player) < shortcut.req ? shortcut.reqMsg : null;
+    const tired =
+        shortcut.tired && player.fatigue >= MAX_FATIGUE ? shortcut.tired : null;
+
+    return shortcut.tiredFirst ? tired || tooLow : tooLow || tired;
+}
+
+async function attemptShortcut(player, gameObject, shortcut) {
+    const { world } = player;
+    const refusal = shortcutRefusal(player, shortcut);
+
+    if (refusal) {
+        player.message(refusal);
+
+        return;
+    }
+
+    if (shortcut.custom) {
+        await shortcut.custom(player, gameObject);
+
+        return;
+    }
+
+    if (shortcut.start) {
+        player.message(shortcut.start);
+    }
+
+    if (shortcut.startDelay) {
+        await world.sleepTicks(shortcut.startDelay);
+    }
+
+    const { fail } = shortcut;
+
+    if (fail && !succeeds(player, fail.req, fail.stopFail)) {
+        player.message(fail.msg);
+        player.teleport(...fail.to);
+
+        if (fail.damage) {
+            fall(player, fail.damage(player));
+        }
+
+        return;
+    }
+
+    for (const tile of shortcut.path || [shortcut.dest]) {
+        player.teleport(...tile);
+
+        if (shortcut.path) {
+            await world.sleepTicks(1);
+        }
+    }
+
+    if (shortcut.done) {
+        player.message(shortcut.done);
+    }
+
+    if (shortcut.say) {
+        await player.say(shortcut.say);
+    }
+
+    if (shortcut.xp) {
+        player.addExperience('agility', shortcut.xp);
+    }
+}
+
+// Java onUseLoc: a rope on the Grew Island tree ties it, and the tied tree reverts after a minute
+async function onUseWithGameObject(player, gameObject, item) {
+    if (gameObject.id !== GREW_TREE || item.id !== ROPE_ITEM) {
+        return false;
+    }
+
+    player.message('you tie the rope to the tree');
+    player.inventory.remove(ROPE_ITEM);
+    player.world.replaceTimed(
+        'gameObjects',
+        gameObject,
+        GREW_TREE_TIED,
+        GREW_TIED_TICKS
+    );
 
     return true;
+}
+
+// a course obstacle id always keeps the course behaviour; only shortcut ids that are not course ids are ours
+async function onGameObjectCommandOne(player, gameObject) {
+    const obstacle = BY_ID.get(gameObject.id);
+
+    if (obstacle) {
+        await attempt(player, gameObject, obstacle);
+
+        return true;
+    }
+
+    const shortcut = SHORTCUT_BY_ID.get(gameObject.id);
+
+    if (!shortcut) {
+        return false;
+    }
+
+    await attemptShortcut(player, gameObject, shortcut);
+
+    return true;
+}
+
+// Java onOpLoc ignores the command: Rocks (WalkTo, Climb), Bridge Blockade (Investigate, Jump) and the stepping stones
+// (Balance, Jump onto) use the second one
+async function onGameObjectCommandTwo(player, gameObject) {
+    if (BY_ID.has(gameObject.id) || !SHORTCUT_BY_ID.has(gameObject.id)) {
+        return false;
+    }
+
+    return onGameObjectCommandOne(player, gameObject);
 }
 
 // climbable.js is registered before this file and answers any "climb up/down" first command: keep it off our ids.
@@ -534,7 +1183,7 @@ try {
             player,
             gameObject
         ) {
-            if (BY_ID.has(gameObject.id)) {
+            if (BY_ID.has(gameObject.id) || SHORTCUT_BY_ID.has(gameObject.id)) {
                 return false;
             }
 
@@ -550,9 +1199,22 @@ try {
     // no climbable plugin: nothing to protect
 }
 
-module.exports = { onGameObjectCommandOne };
+module.exports = {
+    onGameObjectCommandOne,
+    onGameObjectCommandTwo,
+    onUseWithGameObject
+};
 
 Object.defineProperty(module.exports, '__test', {
     enumerable: false,
-    value: { OBSTACLES, COURSES, BY_ID, progress, rng, PLANE }
+    value: {
+        OBSTACLES,
+        COURSES,
+        BY_ID,
+        SHORTCUTS,
+        SHORTCUT_BY_ID,
+        progress,
+        rng,
+        PLANE
+    }
 });
