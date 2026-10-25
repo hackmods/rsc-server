@@ -377,7 +377,7 @@ test('barbarian lap: 7 obstacle xp payments, the 300 bonus only after wall 164',
     await go(676);
     assert.deepEqual(player.teleports.at(-1), [492, 563]);
     await go(677);
-    assert.deepEqual(player.teleports.at(-1), [496, 1507]);
+    assert.deepEqual(player.teleports.at(-1), [497, 1506]);
     await go(678, 498, 1506);
     assert.deepEqual(player.teleports.at(-1), [501, 1506]);
 

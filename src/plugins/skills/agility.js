@@ -301,7 +301,9 @@ async function barbarianLog(player) {
 
 async function barbarianNet(player) {
     player.message('You climb up the netting');
-    player.teleport(496, 1507);
+    // Java lands on (496,1507); on this map that tile is boxed in and the ledge (498,1506) is out of reach from it,
+    // so land next to the ledge as the pre-port code did (proven live).
+    player.teleport(497, 1506);
     finishObstacle(player, 677);
 }
 
