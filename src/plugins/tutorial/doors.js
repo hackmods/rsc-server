@@ -4,6 +4,11 @@
 const t = require('./core');
 
 async function onWallObjectCommandOne(player, wallObject) {
+    // mainland copies of the same wall ids are quest doors handled elsewhere
+    if (!t.inBounds(wallObject.x, wallObject.y)) {
+        return false;
+    }
+
     const door = t.getDoor(wallObject);
 
     if (!door) {
