@@ -1,4 +1,6 @@
 // https://classic.runescape.wiki/w/Fishing
+// Big net fishing ported from Open-RSC Core-Framework
+// authentic/skills/fishing/Fishing.java (AGPL-3.0)
 
 const items = require('@2003scape/rsc-data/config/items');
 const { rollCascadedSkillSuccess } = require('../../rolls');
@@ -6,6 +8,54 @@ const { spots } = require('@2003scape/rsc-data/skills/fishing');
 
 const BIG_NET_ID = 548;
 const FEATHER_ID = 381;
+
+// Open-RSC defs/extras/ObjectFishing.xml spot 261 (big net). The rates are
+// independent per fish (not cascaded), lowRate/highRate are x/256 at level 1
+// and 99. rsc-data's rolls differ here, so Open-RSC's numbers are used. The
+// seaweed id is 622 in Open-RSC (rsc-data's spot lists 662, which is an
+// unstrung maple longbow).
+const BIG_NET_CATCHES = [
+    { id: 554, level: 46, experience: 400, low: 6, high: 31, rolls: 1, message: 'a bass' },
+    { id: 550, level: 23, experience: 180, low: 10, high: 41, rolls: 1, message: 'a cod' },
+    { id: 552, level: 16, experience: 80, low: 14, high: 48, rolls: 2, message: 'a mackerel' },
+    { id: 793, level: 16, experience: 40, low: 2, high: 5, rolls: 1, message: 'an oyster shell' },
+    { id: 549, level: 16, experience: 40, low: 0, high: 1, rolls: 1, message: 'a casket' },
+    { id: 17, level: 16, experience: 4, low: 8, high: 8, rolls: 1, message: 'some boots' },
+    { id: 16, level: 16, experience: 4, low: 4, high: 4, rolls: 1, message: 'some gloves' },
+    { id: 622, level: 16, experience: 4, low: 8, high: 8, rolls: 1, message: 'some seaweed' }
+];
+
+// Formulae.interp: chance in [0, 1] for a fish at the given level
+function interpRate(low, high, level) {
+    const value =
+        Math.floor((low * (99 - level)) / 98) +
+        Math.floor((high * (level - 1)) / 98) +
+        1;
+
+    return Math.min(Math.max(value / 256, 0), 1);
+}
+
+// returns { caught, rolls } like Fishing.doBigNetFishingRoll
+function rollBigNet(level) {
+    const caught = [];
+    let rolls = 0;
+
+    for (const fish of BIG_NET_CATCHES) {
+        if (level < fish.level) {
+            continue;
+        }
+
+        for (let i = 0; i < fish.rolls; i += 1) {
+            rolls += 1;
+
+            if (interpRate(fish.low, fish.high, level) > Math.random()) {
+                caught.push(fish);
+            }
+        }
+    }
+
+    return { caught, rolls };
+}
 
 function getSpot(id, command) {
     let spot = spots[id];
@@ -106,7 +156,7 @@ async function doFishing(player, gameObject, index) {
 
     let catching;
 
-    if (command === 'net') {
+    if (command === 'net' && tool !== BIG_NET_ID) {
         catching = 'some fish';
     } else if (command === 'cage') {
         catching = 'a lobster';
@@ -136,7 +186,18 @@ async function doFishing(player, gameObject, index) {
             player.message(`@que@You fail to catch anything`);
         }
     } else {
-        // TODO handle big net later
+        const { caught, rolls } = rollBigNet(fishingLevel);
+
+        for (const fish of caught) {
+            player.message(`@que@You catch ${fish.message}`);
+            player.inventory.add(fish.id);
+            player.addExperience('fishing', fish.experience);
+        }
+
+        // Open-RSC: only reports a failure when every possible roll was made
+        if (!caught.length && rolls === 9) {
+            player.message('@que@You fail to catch anything');
+        }
     }
 
     return true;
