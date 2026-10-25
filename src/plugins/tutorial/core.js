@@ -46,19 +46,23 @@ const ITEM = {
     COINS: 10
 };
 
-// items that only exist for the tutorial; complete() takes them back
+// what the island hands out, and what ::skiptutorial gives a player who has
+// not had it yet (OpenRSC Player.giveTutorialItems). the boat keeps every
+// item, as OpenRSC's boatman does
 const TUTORIAL_ITEMS = [
-    ITEM.RAW_RAT_MEAT,
-    ITEM.COOKED_MEAT,
-    ITEM.BURNT_MEAT,
-    ITEM.RAW_SHRIMP,
-    ITEM.TIN_ORE,
-    ITEM.AIR_RUNE,
-    ITEM.MIND_RUNE,
-    ITEM.WATER_RUNE,
-    ITEM.EARTH_RUNE,
-    ITEM.BODY_RUNE,
-    ITEM.SLEEPING_BAG
+    [ITEM.BRONZE_LONG_SWORD, 1],
+    [ITEM.WOODEN_SHIELD, 1],
+    [ITEM.COOKED_MEAT, 1],
+    [ITEM.NET, 1],
+    [ITEM.RAW_SHRIMP, 1],
+    [ITEM.BRONZE_PICKAXE, 1],
+    [ITEM.TIN_ORE, 1],
+    [ITEM.AIR_RUNE, 12],
+    [ITEM.MIND_RUNE, 8],
+    [ITEM.WATER_RUNE, 3],
+    [ITEM.EARTH_RUNE, 2],
+    [ITEM.BODY_RUNE, 1],
+    [ITEM.SLEEPING_BAG, 1]
 ];
 
 const BOUNDS = { minX: 190, maxX: 240, minY: 715, maxY: 770 };
@@ -128,18 +132,25 @@ function grantStarterKit(player) {
     }
 }
 
-// boatman and skip: off the island, tutorial items gone, starter kit given
-async function complete(player) {
+// skip: hand over each tutorial item not already carried or banked
+function giveTutorialItems(player) {
+    for (const [id, amount] of TUTORIAL_ITEMS) {
+        if (player.inventory.has(id) || (player.bank && player.bank.has(id))) {
+            continue;
+        }
+
+        player.inventory.add(id, amount);
+    }
+}
+
+// boatman and skip: off the island with everything carried, starter kit given
+async function complete(player, { skipped = false } = {}) {
     if (!onTutorial(player)) {
         return false;
     }
 
-    for (const id of TUTORIAL_ITEMS) {
-        while (player.inventory.has(id)) {
-            const index = player.inventory.items.findIndex((i) => i.id === id);
-            const { amount } = player.inventory.items[index];
-            player.inventory.remove(id, amount);
-        }
+    if (skipped) {
+        giveTutorialItems(player);
     }
 
     delete player.cache.tutorial;
@@ -255,6 +266,7 @@ module.exports = {
     START,
     DOORS,
     TUTORIAL_ITEMS,
+    giveTutorialItems,
     inBounds,
     onTutorial,
     stage,

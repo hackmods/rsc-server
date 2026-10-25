@@ -12,7 +12,7 @@ async function command({ player }, { command, args }) {
         const tutorial = require('../plugins/tutorial/core');
 
         if (tutorial.onTutorial(player)) {
-            await tutorial.complete(player);
+            await tutorial.complete(player, { skipped: true });
         }
 
         return;

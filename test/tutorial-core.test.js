@@ -6,7 +6,7 @@ const doors = require('../src/plugins/tutorial/doors');
 const objects = require('../src/plugins/tutorial/objects');
 const combat = require('../src/plugins/tutorial/combat');
 
-function fakePlayer({ cache = {}, items = [], loginDate = 0, arscBot = false } = {}) {
+function fakePlayer({ cache = {}, items = [], banked = [], loginDate = 0, arscBot = false } = {}) {
     const player = {
         cache,
         loginDate,
@@ -20,6 +20,11 @@ function fakePlayer({ cache = {}, items = [], loginDate = 0, arscBot = false } =
         xp: {},
         skills: { fishing: { experience: 0 } },
         world: { sleepTicks: async () => {} },
+        bank: {
+            has(id) {
+                return banked.includes(id);
+            }
+        },
         inventory: {
             items: items.map((id) => ({ id, amount: 1 })),
             has(id, amount = 1) {
@@ -211,7 +216,7 @@ test('dying on the tutorial respawns on the island', () => {
     assert.equal(t.onDeath(fakePlayer()), false);
 });
 
-test('complete strips tutorial items, keeps the rest and lands in Lumbridge', async () => {
+test('complete keeps every item and lands in Lumbridge', async () => {
     const player = fakePlayer({
         cache: { tutorial: 100 },
         items: [t.ITEM.BRONZE_LONG_SWORD, t.ITEM.SLEEPING_BAG, t.ITEM.COOKED_MEAT, t.ITEM.NET, t.ITEM.WATER_RUNE, t.ITEM.BODY_RUNE]
@@ -222,14 +227,37 @@ test('complete strips tutorial items, keeps the rest and lands in Lumbridge', as
     assert.ok(player.cache.tutorialDone);
     assert.ok(player.inventory.has(t.ITEM.BRONZE_LONG_SWORD));
     assert.ok(player.inventory.has(t.ITEM.NET));
-    assert.ok(!player.inventory.has(t.ITEM.SLEEPING_BAG));
-    assert.ok(!player.inventory.has(t.ITEM.COOKED_MEAT));
-    assert.ok(!player.inventory.has(t.ITEM.WATER_RUNE) && !player.inventory.has(t.ITEM.BODY_RUNE));
+    assert.ok(player.inventory.has(t.ITEM.SLEEPING_BAG));
+    assert.ok(player.inventory.has(t.ITEM.COOKED_MEAT));
+    assert.ok(player.inventory.has(t.ITEM.WATER_RUNE) && player.inventory.has(t.ITEM.BODY_RUNE));
+    assert.equal(player.inventory.items.length, 6);
     assert.ok(!t.inBounds(player.x, player.y));
     assert.equal(player.saved, 1);
 
     // a second call (double click on the boatman) does nothing
     assert.equal(await t.complete(player), false);
+});
+
+test('skipping hands over the tutorial items not already carried or banked', async () => {
+    const player = fakePlayer({
+        cache: { tutorial: 45 },
+        items: [t.ITEM.BRONZE_LONG_SWORD, t.ITEM.NET],
+        banked: [t.ITEM.WOODEN_SHIELD]
+    });
+
+    assert.equal(await t.complete(player, { skipped: true }), true);
+    for (const [id] of t.TUTORIAL_ITEMS) {
+        const count = player.inventory.items.filter((i) => i.id === id).length;
+        assert.equal(count, id === t.ITEM.WOODEN_SHIELD ? 0 : 1, `item ${id}`);
+    }
+    assert.ok(player.inventory.has(t.ITEM.AIR_RUNE, 12));
+    assert.ok(!t.inBounds(player.x, player.y));
+});
+
+test('the boat hands over nothing extra', async () => {
+    const player = fakePlayer({ cache: { tutorial: 100 } });
+    assert.equal(await t.complete(player), true);
+    assert.equal(player.inventory.items.length, 0);
 });
 
 test('nothing on the island can take a player below 1 hit', () => {
