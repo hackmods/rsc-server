@@ -766,16 +766,14 @@ class Player extends Character {
 
     // broadcast the player changing sprites
     broadcastDirection() {
-        // temp debug
-        if (!this.moveTick) {
-            this.moveTick = this.world.ticks;
-        } else {
-            if (this.moveTick === this.world.ticks) {
-                throw new Error('two broadcasts in one tick');
-            }
-
-            this.moveTick = this.world.ticks;
+        // ARSC: a second sprite change in one tick (shootRanged's faceDirection right after a walk step) used to
+        // throw here, from a tick timeout, and the uncaught error took the whole server down. The sprite set is
+        // read when the tick's updates are sent, so the second broadcast adds nothing: skip it.
+        if (this.moveTick === this.world.ticks) {
+            return;
         }
+
+        this.moveTick = this.world.ticks;
 
         for (const player of this.localEntities.known.players) {
             if (!player.loggedIn) {
@@ -793,15 +791,12 @@ class Player extends Character {
 
     // broadcast the player moving in their current direction
     broadcastMove() {
-        if (!this.moveTick) {
-            this.moveTick = this.world.ticks;
-        } else {
-            if (this.moveTick === this.world.ticks) {
-                throw new Error('two broadcasts in one tick');
-            }
-
-            this.moveTick = this.world.ticks;
+        // ARSC: one movement broadcast per tick, as above; a second one is skipped instead of crashing the server.
+        if (this.moveTick === this.world.ticks) {
+            return;
         }
+
+        this.moveTick = this.world.ticks;
 
         for (const player of this.getNearbyEntities('players', 16)) {
             if (!player.loggedIn) {
