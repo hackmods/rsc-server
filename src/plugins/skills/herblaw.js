@@ -7,6 +7,9 @@
 // Grinding (pestle and mortar on an item, Herblaw.java doGrind, no level, no quest, no XP) is ported from the same file:
 // one item per use, the pestle and mortar is kept.
 // rsc-data experience values are quarter points, which player.addExperience takes as is.
+// Ported from Open-RSC Core-Framework authentic/skills/herblaw/Herblaw.java (AGPL-3.0): the Jungle Potion herbs
+// (ItemUnIdentHerbDef.xml 815-823, rsc-data has no entry for them: level 3, no XP, same Druidic Ritual gate as every herb)
+// and InvUseOnItem.java blamish oil on a fishing rod -> oily fishing rod (no level, no quest, no XP).
 
 const items = require('@2003scape/rsc-data/config/items');
 const herblaw = require('@2003scape/rsc-data/skills/herblaw');
@@ -18,6 +21,12 @@ const MARRENTILL_UNFINISHED_ID = 455;
 const PESTLE_AND_MORTAR_ID = 468;
 const BAT_BONES_ID = 604;
 const CHARCOAL_ID = 983;
+const BLAMISH_OIL_ID = 588;
+const FISHING_ROD_ID = 377;
+const OILY_FISHING_ROD_ID = 589;
+
+// Jungle Potion unidentified herbs -> snake weed, ardrigal, sito foil, volencia moss, rogue's purse
+const JUNGLE_HERBS = [[815, 816], [817, 818], [819, 820], [821, 822], [823, 824]];
 
 // item ground on a pestle and mortar -> ground item
 const GRINDABLE = new Map([
@@ -33,6 +42,12 @@ const POTION_FIXES = [{ unfinished: MARRENTILL_UNFINISHED_ID, secondary: ASHES_I
 
 const unfinishedByHerb = new Map(Object.entries(herblaw.unfinished).map(([id, def]) => [Number(id), def]));
 const herbsByID = new Map(Object.entries(herblaw.herbs).map(([id, def]) => [Number(id), def]));
+
+for (const [unidentified, identified] of JUNGLE_HERBS) {
+    if (!herbsByID.has(unidentified)) {
+        herbsByID.set(unidentified, { level: 3, experience: 0, id: identified });
+    }
+}
 
 // unfinished potion id -> Map(secondary id -> { level, experience, id })
 const recipes = new Map();
@@ -97,7 +112,11 @@ async function identifyHerb(player, item, herb) {
 
     player.inventory.remove(item.id);
     player.inventory.add(herb.id);
-    player.addExperience('herblaw', herb.experience);
+
+    if (herb.experience) {
+        player.addExperience('herblaw', herb.experience);
+    }
+
     player.message(`@que@This herb is ${itemName(herb.id)}`);
 
     return true;
@@ -201,6 +220,20 @@ async function onInventoryCommand(player, item) {
 }
 
 async function onUseWithInventory(player, item, target) {
+    if (
+        (item.id === BLAMISH_OIL_ID && target.id === FISHING_ROD_ID) ||
+        (item.id === FISHING_ROD_ID && target.id === BLAMISH_OIL_ID)
+    ) {
+        if (player.inventory.has(BLAMISH_OIL_ID) && player.inventory.has(FISHING_ROD_ID)) {
+            player.inventory.remove(BLAMISH_OIL_ID);
+            player.inventory.remove(FISHING_ROD_ID);
+            player.message('You rub the oil onto the fishing rod');
+            player.inventory.add(OILY_FISHING_ROD_ID);
+        }
+
+        return true;
+    }
+
     for (const [first, second] of [[item, target], [target, item]]) {
         if (first.id === PESTLE_AND_MORTAR_ID && GRINDABLE.has(second.id)) {
             return grind(player, second, GRINDABLE.get(second.id));

@@ -1,6 +1,7 @@
 // ARSC overlay: drinking herblaw potions (https://classic.runescape.wiki/w/Potions). Upstream items/quaffable.js only
 // knows drinks like wine and beer. A potion is a chain of item ids, one per dose left (3 -> 2 -> 1 -> empty vial;
 // strength potions have 4 doses). Each sip applies the potion's effect and leaves the next dose down.
+// Potion of Zamorak: Open-RSC Core-Framework authentic/itemactions/Drinkables.java useZamorakPotion (AGPL-3.0).
 // Boosts only apply when they would raise the stat above where it is: sipping twice does not stack.
 
 const EMPTY_VIAL_ID = 465;
@@ -24,7 +25,8 @@ const POTIONS = [
     { name: 'restore prayer potion', doses: dosesFrom(483, 3), effect: { type: 'prayer', flat: 7, percent: 0.25 } },
     { name: 'stat restoration potion', doses: dosesFrom(477, 3), effect: restore(8, 0.25) },
     { name: 'cure poison potion', doses: dosesFrom(566, 3), effect: { type: 'curePoison' } },
-    { name: 'poison antidote', doses: dosesFrom(569, 3), effect: { type: 'antidote' } }
+    { name: 'poison antidote', doses: dosesFrom(569, 3), effect: { type: 'antidote' } },
+    { name: 'potion of Zamorak', doses: dosesFrom(963, 3), drinkMessage: 'You drink some of the foul liquid', effect: { type: 'zamorak' } }
 ];
 
 // skills the stat restoration potion tops up (not hits, and prayer has its own potion)
@@ -41,7 +43,27 @@ for (const potion of POTIONS) {
     });
 }
 
-function applyEffect(player, effect) {
+// Functions.addstat: current + constant + current * percent / 100, capped at max + constant + max * percent / 100
+function addStat(player, skill, constant, percent) {
+    const stat = player.skills[skill];
+    const cap = stat.base + constant + Math.floor((stat.base * percent) / 100);
+    const level = Math.min(stat.current + constant + Math.floor((stat.current * percent) / 100), cap);
+
+    player.changeStat(skill, level - stat.current, { cap });
+}
+
+// Functions.substat: current - (constant + current * percent / 100); hits is a real hit (damage)
+function subStat(player, skill, constant, percent) {
+    const damage = constant + Math.floor((player.skills[skill].current * percent) / 100);
+
+    if (skill === 'hits') {
+        player.damage(damage);
+    } else {
+        player.changeStat(skill, -damage);
+    }
+}
+
+function applyEffect(player, effect, dosesLeft) {
     const { skills } = player;
 
     switch (effect.type) {
@@ -68,6 +90,19 @@ function applyEffect(player, effect) {
 
             player.sendStats();
             player.message('@que@You feel a lot closer to the gods');
+
+            break;
+        }
+        // attack +20%, strength +12% (both +4 flat, +2 on the last dose), defense -10% (-4, -2 on the last dose),
+        // hits -10% as damage, prayer +10% of the current level
+        case 'zamorak': {
+            const last = dosesLeft === 1;
+
+            addStat(player, 'attack', last ? 2 : 4, 20);
+            subStat(player, 'defense', last ? 2 : 4, 10);
+            addStat(player, 'strength', 2, 12);
+            subStat(player, 'hits', 0, 10);
+            addStat(player, 'prayer', 0, 10);
 
             break;
         }
@@ -112,7 +147,7 @@ async function onInventoryCommand(player, item) {
     const { world } = player;
 
     player.sendBubble(item.id);
-    player.message(`@que@You drink some of your ${potion.name}`);
+    player.message(`@que@${potion.drinkMessage || `You drink some of your ${potion.name}`}`);
 
     await world.sleepTicks(2);
 
@@ -125,7 +160,7 @@ async function onInventoryCommand(player, item) {
     player.inventory.remove(item.id);
     player.inventory.add(next);
 
-    applyEffect(player, potion.effect);
+    applyEffect(player, potion.effect, dosesLeft);
 
     if (dosesLeft > 1) {
         const left = dosesLeft - 1;
