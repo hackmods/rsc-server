@@ -37,6 +37,7 @@ module.exports = {
     "game-objects.sinister-chest": require('./game-objects/sinister-chest.js'),
     "game-objects.water-sources": require('./game-objects/water-sources.js'),
     "game-objects.wheat": require('./game-objects/wheat.js'),
+    "game-objects.wishing-fountains": require('./game-objects/wishing-fountains.js'),
     "items.casket": require('./items/casket.js'),
     "items.christmas-cracker": require('./items/christmas-cracker.js'),
     "items.dye-mix": require('./items/dye-mix.js'),

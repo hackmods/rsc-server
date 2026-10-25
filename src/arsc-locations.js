@@ -7,7 +7,20 @@ module.exports = {
     ],
     gameObjects: [
         // ladder down to the black hole, by the torch alcove north of Thordur (311,3343 holds the torch)
-        { id: 199, direction: 0, x: 312, y: 3344 }
+        { id: 199, direction: 0, x: 312, y: 3344 },
+        // wishing fountains (plugins/game-objects/wishing-fountains.js) for towns rsc-data gives no fountain or well;
+        // each 2x2 spot and the ring round it was clear and walkable on the landscape
+        { id: 26, direction: 0, x: 121, y: 508 }, // Varrock square
+        { id: 26, direction: 0, x: 211, y: 628 }, // Draynor
+        { id: 26, direction: 0, x: 269, y: 656 }, // Port Sarim
+        { id: 26, direction: 0, x: 225, y: 511 }, // Barbarian Village
+        { id: 26, direction: 0, x: 371, y: 705 }, // Karamja, Musa Point
+        { id: 26, direction: 0, x: 372, y: 500 }, // Taverley
+        { id: 26, direction: 0, x: 445, y: 500 }, // Catherby
+        { id: 26, direction: 0, x: 495, y: 455 }, // Seers' Village
+        { id: 26, direction: 0, x: 470, y: 658 }, // Brimhaven
+        { id: 26, direction: 0, x: 579, y: 743 }, // Yanille
+        { id: 26, direction: 0, x: 702, y: 479 } // Gnome Stronghold
     ],
     wallObjects: [],
     groundItems: [
