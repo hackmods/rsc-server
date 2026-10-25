@@ -57,7 +57,6 @@ module.exports = {
     "guilds.crafting": require('./guilds/crafting.js'),
     "guilds.mining": require('./guilds/mining.js'),
     "guilds.prayer": require('./guilds/prayer.js'),
-    "wall-objects.brass-key-door": require('./wall-objects/brass-key-door.js'),
     "wall-objects.doors": require('./wall-objects/doors.js'),
     "wall-objects.draynor-manor-doors": require('./wall-objects/draynor-manor-doors.js'),
     "wall-objects.grand-tree-doors": require('./wall-objects/grand-tree-doors.js'),
