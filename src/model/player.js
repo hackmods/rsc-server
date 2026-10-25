@@ -1181,6 +1181,15 @@ class Player extends Character {
                 await this.walkToPoint(gate.x + 1, gate.y, true);
                 deltaX = -1;
             }
+        } else if (direction === 2) {
+            // Open-RSC Functions.doGate dir 2: from y <= gate.y out to y + 1, else onto the gate tile
+            if (this.y <= gate.y) {
+                await this.walkToPoint(gate.x, gate.y, true);
+                deltaY = 1;
+            } else {
+                await this.walkToPoint(gate.x, gate.y + 1, true);
+                deltaY = -1;
+            }
         } else if (direction === 6) {
             if (this.y >= gate.y) {
                 await this.walkToPoint(gate.x, gate.y, true);
