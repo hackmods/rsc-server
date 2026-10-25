@@ -7,7 +7,7 @@ async function onGameObjectCommandOne(player, gameObject) {
         return false;
     }
 
-    player.message('@que@the doors are locked');
+    player.message('the doors are locked');
     return true;
 }
 
