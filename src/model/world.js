@@ -280,9 +280,12 @@ class World {
 
         this.addEntity('npcs', npc);
 
-        this.setTickTimeout(() => {
-            this.removeEntity('npcs', npc);
-        }, ticks);
+        // ARSC: without ticks the caller removes it (Peter Panelist hops on his own timer)
+        if (ticks) {
+            this.setTickTimeout(() => {
+                this.removeEntity('npcs', npc);
+            }, ticks);
+        }
 
         return npc;
     }

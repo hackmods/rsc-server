@@ -195,6 +195,8 @@ class Server {
 
             require('./plugins/tutorial/core').init(this.world); // ARSC Tutorial Island
 
+            require('./peter-panelist').start(this.world); // ARSC Peter Panelist
+
             this.world.tick();
 
             this.loadPacketHandlers();

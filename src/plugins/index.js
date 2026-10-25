@@ -18,6 +18,8 @@ module.exports = {
     "tutorial.npcs.mining-instructor": require('./tutorial/npcs/mining-instructor.js'),
     "tutorial.npcs.quest-advisor": require('./tutorial/npcs/quest-advisor.js'),
     "tutorial.npcs.wilderness-guide": require('./tutorial/npcs/wilderness-guide.js'),
+    // ARSC: tavern rumours about Peter Panelist run before the NPC's own dialogue and never claim the talk
+    "npcs.peter-rumours": require('./npcs/peter-rumours.js'),
     "game-objects.banana-crate": require('./game-objects/banana-crate.js'),
     "game-objects.banana-tree": require('./game-objects/banana-tree.js'),
     "game-objects.bed": require('./game-objects/bed.js'),
@@ -309,4 +311,5 @@ module.exports = {
     "npcs.ardougne.captain-barnaby": require('./npcs/ardougne/captain-barnaby.js'),
     "npcs.brimhaven.customs-official": require('./npcs/brimhaven/customs-official.js'),
     "npcs.port-sarim.monks-of-entrana": require('./npcs/port-sarim/monks-of-entrana.js'),
+    "npcs.peter-panelist": require('./npcs/peter-panelist.js'),
 };
