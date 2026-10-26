@@ -90,6 +90,18 @@ test('ARSC_MINT_POLICY list: refuses others, commands still work', () =>
         assert.strictEqual(worldAdmin.canMint(makePlayer('zasamax')), false);
     }));
 
+test('policy clauses joined by ; (the live compose: rank;prefix:bot;list:...)', () =>
+    withPolicy('open', 'rank;prefix:bot;list:zasama,kale stille', async () => {
+        assert.strictEqual(worldAdmin.canMint(makePlayer('botwa1')), true);
+        assert.strictEqual(worldAdmin.canMint(makePlayer('Kale Stille')), true);
+        assert.strictEqual(worldAdmin.canMint(makePlayer('Zasama')), true);
+        assert.strictEqual(worldAdmin.canMint(makePlayer('somebody')), false);
+
+        const admin = makePlayer('somebody');
+        admin.rank = 3;
+        assert.strictEqual(worldAdmin.canMint(admin), true);
+    }));
+
 test('::give marks the receiver, not the giver', () =>
     withPolicy('open', 'open', async () => {
         const other = makePlayer('friend');

@@ -1083,6 +1083,13 @@ function canMint(player) {
 }
 
 function policyAllows(player, policy) {
+    // clauses joined by ';' (prefix:bot;list:zasama): any one allows
+    if (policy.includes(';')) {
+        return policy
+            .split(';')
+            .some((clause) => clause.trim() && policyAllows(player, clause.trim()));
+    }
+
     if (policy === 'open') {
         return true;
     }
