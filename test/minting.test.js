@@ -102,6 +102,17 @@ test('policy clauses joined by ; (the live compose: rank;prefix:bot;list:...)', 
         assert.strictEqual(worldAdmin.canMint(admin), true);
     }));
 
+test('one conjured sleeping bag (the sleep assist of the bots) does not mark the account; more does', () =>
+    withPolicy('open', 'open', async () => {
+        const player = makePlayer('botwa1');
+        await command({ player }, { command: 'item', args: ['1263', '1'] });
+        assert.deepStrictEqual(player.added, [[1263, 1]]);
+        assert.strictEqual(player.cache.minted, undefined);
+
+        await command({ player }, { command: 'item', args: ['1263', '2'] });
+        assert.ok(player.cache.minted);
+    }));
+
 test('::give marks the receiver, not the giver', () =>
     withPolicy('open', 'open', async () => {
         const other = makePlayer('friend');

@@ -9,6 +9,14 @@ const regions = require('@2003scape/rsc-data/regions');
 // the Grand Exchange, docs/GRAND_EXCHANGE.md in Autonomous-RSC)
 const MINT_COMMANDS = new Set(['item', 'give', 'droprandom']);
 
+// the bots' sleep assist conjures one sleeping bag; that alone does not bar the
+// account (the exchange does not list sleeping bags, src/exchange/rules.js)
+const SLEEPING_BAG = 1263;
+
+function isAssistBag(command, args) {
+    return command === 'item' && +args[0] === SLEEPING_BAG && (+args[1] || 1) === 1;
+}
+
 function markMinted(player) {
     if (player && !player.cache.minted) {
         player.cache.minted = Date.now();
@@ -45,7 +53,9 @@ async function command({ player }, { command, args }) {
             return;
         }
 
-        markMinted(command === 'give' ? player.world.getPlayerByUsername(args[0]) : player);
+        if (!isAssistBag(command, args)) {
+            markMinted(command === 'give' ? player.world.getPlayerByUsername(args[0]) : player);
+        }
     }
 
     const { world } = player;

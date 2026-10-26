@@ -50,7 +50,8 @@ async function request(world, message, ms = config.requestMs) {
 // a write; on no reply, settles the opId with exchangeVoid (retrying until the
 // data server answers) and returns the outcome that stands
 async function write(world, playerId, message) {
-    const opId = crypto.randomUUID();
+    // a caller-chosen opId makes the write idempotent across retries (stakes)
+    const opId = message.opId || crypto.randomUUID();
     const reply = await request(world, { ...message, opId });
 
     if (reply.down) {
@@ -965,8 +966,14 @@ async function handleHttp(world, method, route, url, readBody) {
             };
         }
 
+        // optional opId: the same opId stakes once, however often it is sent
+        if (body.opId !== undefined && !/^[\w:.-]{1,64}$/.test(String(body.opId))) {
+            return { status: 400, body: { error: 'opId: 1-64 of [A-Za-z0-9_:.-]' } };
+        }
+
         const reply = await write(world, 0, {
             handler: 'exchangeStake',
+            ...(body.opId !== undefined ? { opId: String(body.opId) } : {}),
             username: body.user,
             coins,
             note: String(body.note || '').slice(0, 100)

@@ -10,6 +10,10 @@ const COLLECT_SENT = 16;
 const MAX_INT = 2147483647;
 const ACTION_MS = 600;
 
+// never listed: the sleeping bag is what the bots' sleep assist may conjure
+// without being barred (packet-handlers/command.js), so it must not be sold
+const NOT_LISTED = new Set([1263]);
+
 // the [GE] chat line every reply carries, for bots (no colour codes)
 function line(kind, ...fields) {
     return ['[GE]', kind, ...fields].join(' ');
@@ -23,7 +27,7 @@ function itemName(id) {
 function listable(id, members) {
     const def = items[id];
 
-    if (!def || id === COINS) {
+    if (!def || id === COINS || NOT_LISTED.has(id)) {
         return 'UNTRADEABLE';
     }
 

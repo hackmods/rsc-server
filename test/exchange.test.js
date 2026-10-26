@@ -167,6 +167,7 @@ test('items resolve by id or name; coins and untradeables never list', () => {
     assert.strictEqual(R.resolveItem('bar').error, 'AMBIGUOUS');
     assert.ok(R.resolveItem('bar').matches.length <= 3);
     assert.strictEqual(R.listable(10, true), 'UNTRADEABLE');
+    assert.strictEqual(R.listable(1263, true), 'UNTRADEABLE'); // sleeping bag: the assist may conjure it
 
     const untradeable = items.findIndex((def) => def && def.untradeable);
     assert.strictEqual(R.listable(untradeable, true), 'UNTRADEABLE');
@@ -408,6 +409,12 @@ test('admin API: prices, stake behind validation', async () => {
     const ok = await exchange.handleHttp(player.world, 'POST', '/exchange/stake', url, async () => '{"user":"merchant1","coins":5000}');
     assert.strictEqual(ok.status, 200);
     assert.ok(dataClient.sent.find((m) => m.handler === 'exchangeStake').opId);
+
+    await exchange.handleHttp(player.world, 'POST', '/exchange/stake', url, async () => '{"user":"merchant1","coins":5000,"opId":"merchant-stake:merchant1"}');
+    assert.strictEqual(dataClient.sent.filter((m) => m.handler === 'exchangeStake').pop().opId, 'merchant-stake:merchant1');
+
+    const badOp = await exchange.handleHttp(player.world, 'POST', '/exchange/stake', url, async () => '{"user":"merchant1","coins":5,"opId":"no spaces"}');
+    assert.strictEqual(badOp.status, 400);
 
     assert.strictEqual(await exchange.handleHttp(player.world, 'GET', '/shops', url, null), null);
 });
