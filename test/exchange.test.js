@@ -455,3 +455,35 @@ test('every general store has clerks, and each offers the Exchange last', async 
         }
     }
 });
+
+test('an overlay vendor on a clerk (Lumbridge special offers) keeps the Exchange option', async () => {
+    const worldAdmin = require('../src/world-admin');
+    const saved = { doc: worldAdmin._state.doc, world: worldAdmin._state.world };
+    worldAdmin._state.doc = {
+        vendors: [{ key: 'lumbridge-keeper', npcIds: [55, 83], shop: 'lumbridge-general', offers: [{ id: 28, price: 1, label: 'Iron dagger - 1 coin' }] }]
+    };
+    worldAdmin._state.world = { shops: new Map([['lumbridge-general', {}]]) };
+
+    try {
+        const menus = [];
+        const player = {
+            cache: {},
+            engage() {},
+            disengage() {},
+            message() {},
+            async ask(options) {
+                menus.push(options);
+                return options.length - 1;
+            },
+            openShop() {
+                throw new Error('no shop');
+            }
+        };
+
+        assert.strictEqual(await worldAdmin.vendorTalk(player, { id: 55, async say() {} }), true);
+        assert.deepStrictEqual(menus[0], ['Yes please. What are you selling?', 'Do you have any special offers?', 'No thanks', exchange.EXCHANGE_OPTION]);
+        assert.strictEqual(menus[1][0], 'Open the Exchange');
+    } finally {
+        Object.assign(worldAdmin._state, saved);
+    }
+});

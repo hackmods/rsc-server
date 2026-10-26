@@ -855,7 +855,18 @@ async function vendorTalk(player, npc) {
 
     options.push('No thanks');
 
-    const choice = await player.ask(options, true);
+    // ARSC Grand Exchange: a vendor on a general store clerk keeps the clerk's
+    // Exchange option (added last; the other indexes are unchanged)
+    const exchange = require('./exchange');
+    const { CLERK_IDS } = require('./exchange/clerks');
+    const choice = CLERK_IDS.has(npc.id)
+        ? await exchange.ask(player, npc, options, true)
+        : await player.ask(options, true);
+
+    if (choice === exchange.CHOSEN) {
+        return true;
+    }
+
     const action = actions[choice];
 
     if (action === 'shop') {
@@ -1516,5 +1527,6 @@ module.exports = {
     canUseCommands,
     canMint,
     normalize,
+    vendorTalk,
     _state: state
 };
