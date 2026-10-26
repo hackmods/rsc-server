@@ -1,5 +1,6 @@
 // Ported from Open-RSC authentic/npcs/shilo/Obli.java (AGPL-3.0)
 // Obli (Shilo Village): general store talk that opens 'shilo-village-general'. No quest gate in the Java.
+const exchange = require('../../../exchange'); // ARSC Grand Exchange
 
 const OBLI_ID = 620;
 
@@ -15,7 +16,11 @@ async function onTalkToNPC(player, npc) {
         'Would you like to see my items?'
     );
 
-    const choice = await player.ask(['Yes please!', 'No, but thanks for the offer.'], true);
+    const choice = await exchange.ask(player, npc, ['Yes please!', 'No, but thanks for the offer.'], true);
+
+    if (choice === exchange.CHOSEN) {
+        return true; // ARSC Grand Exchange
+    }
 
     if (choice === 0) {
         player.disengage();

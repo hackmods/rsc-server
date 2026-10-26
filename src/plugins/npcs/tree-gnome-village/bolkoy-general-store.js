@@ -1,6 +1,7 @@
 // Ported from Open-RSC authentic/npcs/gnomevillage/BolkoyGeneralStore.java (AGPL-3.0)
 // Bolkoy (Tree Gnome Village general store): greeting varies with the Tree Gnome Village quest stage, then opens the village shop.
 // Java quest stages 0-4 (and any unlisted stage) use the first greeting; stage 6 checks the looted-orbs cache flag.
+const exchange = require('../../../exchange'); // ARSC Grand Exchange
 
 const BOLKOY_ID = 398;
 
@@ -71,7 +72,11 @@ async function onTalkToNPC(player, npc) {
 
     await greet(player, npc);
 
-    const choice = await player.ask(['What have you got?', 'No thankyou'], false);
+    const choice = await exchange.ask(player, npc, ['What have you got?', 'No thankyou'], false);
+
+    if (choice === exchange.CHOSEN) {
+        return true; // ARSC Grand Exchange
+    }
 
     if (choice === 0) {
         await player.say('what have you got?');

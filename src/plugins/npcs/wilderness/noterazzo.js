@@ -1,4 +1,5 @@
 // https://classic.runescape.wiki/w/Transcript:Noterazzo
+const exchange = require('../../../exchange'); // ARSC Grand Exchange
 
 const NOTERAZZO_ID = 233;
 
@@ -11,7 +12,7 @@ async function onTalkToNPC(player, npc) {
 
     await npc.say("Hey wanna trade?, I'll give the best deals you can find");
 
-    const choice = await player.ask(
+    const choice = await exchange.ask(player, npc,
         [
             'Yes please',
             'No thankyou',
@@ -19,6 +20,10 @@ async function onTalkToNPC(player, npc) {
         ],
         true
     );
+
+    if (choice === exchange.CHOSEN) {
+        return true; // ARSC Grand Exchange
+    }
 
     switch (choice) {
         case 0: // yes

@@ -1,3 +1,4 @@
+const exchange = require('../../../exchange'); // ARSC Grand Exchange
 const SHOPKEEPER_IDS = new Set([168, 169]);
 
 async function onTalkToNPC(player, npc) {
@@ -9,10 +10,14 @@ async function onTalkToNPC(player, npc) {
 
     await npc.say('Can I help you at all?');
 
-    const choice = await player.ask([
+    const choice = await exchange.ask(player, npc, [
         'Yes please. What are you selling?',
         'No thanks'
     ], true);
+
+    if (choice === exchange.CHOSEN) {
+        return true; // ARSC Grand Exchange
+    }
 
     player.disengage();
 

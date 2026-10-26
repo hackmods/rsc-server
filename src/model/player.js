@@ -222,6 +222,7 @@ class Player extends Character {
         this.message('Welcome to RuneScape!');
 
         require('../world-admin').onLogin(this); // ARSC world-admin
+        require('../exchange').onLogin(this); // ARSC Grand Exchange
 
         this.localEntities.updateNearby('npcs');
         this.localEntities.updateNearby('players');
@@ -267,11 +268,13 @@ class Player extends Character {
 
         process.nextTick(() => {
             this.world.removeEntity('players', this);
-            this.world.server.dataClient.playerLogout(this.username);
             log.info(`${this} logged out`);
         });
 
+        // ARSC: save first, then release the login, so a quick relog cannot
+        // load the row before this save lands
         await this.save();
+        this.world.server.dataClient.playerLogout(this.username);
     }
 
     async getFriendWorld(username) {
@@ -1645,7 +1648,22 @@ class Player extends Character {
         this.isWalking = false;
     }
 
-    async save() {
+    // ARSC: every database write of this player (saves, Grand Exchange) runs
+    // through one chain, so a save started before an exchange escrow cannot
+    // land after it with the old inventory. fn takes the snapshot when it runs.
+    serialWrite(fn) {
+        const run = (this.writeChain || Promise.resolve()).then(fn, fn);
+        this.writeChain = run.catch(() => {});
+        return run;
+    }
+
+    save() {
+        return this.serialWrite(() =>
+            this.world.server.dataClient.sendAndReceive(this.getSaveMessage())
+        );
+    }
+
+    getSaveMessage() {
         let message = { handler: 'playerUpdate' };
 
         for (const property of SAVE_PROPERTIES) {
@@ -1658,11 +1676,15 @@ class Player extends Character {
 
         message = { ...message, ...this.appearance };
 
-        for (const skillName of Object.keys(message.skills)) {
-            delete message.skills[skillName].base;
-        }
+        // ARSC: copy the skills; deleting base on the live objects broke them
+        message.skills = Object.fromEntries(
+            Object.entries(message.skills).map(([name, skill]) => {
+                const { base, ...saved } = skill;
+                return [name, saved];
+            })
+        );
 
-        await this.world.server.dataClient.sendAndReceive(message);
+        return message;
     }
 
     toString() {

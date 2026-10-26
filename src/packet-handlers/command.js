@@ -5,6 +5,16 @@ const items = require('@2003scape/rsc-data/config/items');
 const quests = require('@2003scape/rsc-data/quests');
 const regions = require('@2003scape/rsc-data/regions');
 
+// ARSC: commands that create items; the receiver is marked minted (barred from
+// the Grand Exchange, docs/GRAND_EXCHANGE.md in Autonomous-RSC)
+const MINT_COMMANDS = new Set(['item', 'give', 'droprandom']);
+
+function markMinted(player) {
+    if (player && !player.cache.minted) {
+        player.cache.minted = Date.now();
+    }
+}
+
 async function command({ player }, { command, args }) {
     // ARSC Tutorial Island: sent by the clients' "Skip the tutorial" option,
     // so it works whatever the command policy is
@@ -18,8 +28,24 @@ async function command({ player }, { command, args }) {
         return;
     }
 
+    // ARSC Grand Exchange: ::ge works whatever the command policy is (by a
+    // clerk only; src/exchange checks that)
+    if (command === 'ge') {
+        await require('../exchange').command(player, args);
+        return;
+    }
+
     if (!require('../world-admin').canUseCommands(player)) { // ARSC world-admin
         return;
+    }
+
+    if (MINT_COMMANDS.has(command)) {
+        if (!require('../world-admin').canMint(player)) {
+            player.message('You cannot conjure items here');
+            return;
+        }
+
+        markMinted(command === 'give' ? player.world.getPlayerByUsername(args[0]) : player);
     }
 
     const { world } = player;
@@ -181,6 +207,11 @@ async function command({ player }, { command, args }) {
             break;
         }
         case 'setcache':
+            if (args[0] === 'minted') { // ARSC: the exchange taint stays
+                player.message('minted cannot be changed');
+                break;
+            }
+
             player.cache[args[0]] = JSON.parse(args[1]);
             break;
         case 'droprandom': {

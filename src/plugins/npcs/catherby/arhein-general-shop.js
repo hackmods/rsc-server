@@ -1,5 +1,6 @@
 // Ported from Open-RSC authentic/npcs/catherby/ArheinGeneralShop.java (AGPL-3.0)
 // Arhein (Catherby docks): trade greeting that opens the general store. Skipped: the "Is that your ship?" tree (not shop dialogue).
+const exchange = require('../../../exchange'); // ARSC Grand Exchange
 
 const ARHEIN_ID = 280;
 
@@ -12,7 +13,11 @@ async function onTalkToNPC(player, npc) {
 
     await npc.say('Hello would you like to trade');
 
-    const choice = await player.ask(['Yes ok', 'No thankyou'], true);
+    const choice = await exchange.ask(player, npc, ['Yes ok', 'No thankyou'], true);
+
+    if (choice === exchange.CHOSEN) {
+        return true; // ARSC Grand Exchange
+    }
 
     if (choice === 0) {
         player.disengage();

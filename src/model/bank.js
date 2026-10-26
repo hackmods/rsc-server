@@ -48,7 +48,7 @@ class Bank {
         const bankItem = this.getItem({ id });
 
         if (this.isFull() && !bankItem) {
-            this.message("You don't have room for that in your bank");
+            this.player.message("You don't have room for that in your bank");
             return;
         }
 
@@ -90,6 +90,51 @@ class Bank {
     update(index) {
         const item = this.items[index];
         this.player.send({ type: 'bankUpdate', index, ...item });
+    }
+
+    // ARSC Grand Exchange (collect to bank, escrow given back): room for id?
+    room(id) {
+        return !!this.getItem({ id }) || !this.isFull();
+    }
+
+    // put items straight in; false when there is no room
+    add(id, amount) {
+        if (!this.room(id)) {
+            return false;
+        }
+
+        const bankItem = this.getItem({ id });
+
+        if (bankItem) {
+            bankItem.amount += amount;
+        } else {
+            this.items.push(new Item({ id, amount }));
+        }
+
+        if (this.player.interfaceOpen.bank) {
+            this.sendOpen();
+        }
+
+        return true;
+    }
+
+    // take items straight out (an exchange collect the data server refused)
+    take(id, amount) {
+        const bankItem = this.getItem({ id });
+
+        if (!bankItem) {
+            return;
+        }
+
+        bankItem.amount -= Math.min(amount, bankItem.amount);
+
+        if (bankItem.amount <= 0) {
+            this.items.splice(this.items.indexOf(bankItem), 1);
+        }
+
+        if (this.player.interfaceOpen.bank) {
+            this.sendOpen();
+        }
     }
 
     has(id, amount = 1) {

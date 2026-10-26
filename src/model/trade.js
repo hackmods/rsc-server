@@ -310,6 +310,9 @@ function completeTrade(playerA, playerB) {
 
     playerA.message('Trade completed.');
     playerB.message('Trade completed.');
+
+    // ARSC Grand Exchange: log minted goods passing to a clean account
+    require('../exchange').onTrade(playerA, playerB, offerA, offerB);
 }
 
 class Trade extends Container {

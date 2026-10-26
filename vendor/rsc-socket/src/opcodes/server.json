@@ -11,6 +11,9 @@
     "duelOpponentAccepted": 253,
     "duelSettings": 30,
     "duelUpdate": 6,
+    "exchangeClose": 142,
+    "exchangeQuote": 141,
+    "exchangeState": 140,
     "friendList": 71,
     "friendMessage": 120,
     "friendStatusChange": 149,
@@ -61,4 +64,3 @@
     "welcome": 182,
     "worldInfo": 25
 }
-

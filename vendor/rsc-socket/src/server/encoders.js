@@ -372,6 +372,35 @@ const encoders = {
         packet.writeString(message);
     },
     shopClose() {},
+    // ARSC Grand Exchange (docs/GRAND_EXCHANGE.md in Autonomous-RSC): 140-142
+    exchangeClose() {},
+    exchangeQuote(packet, { itemId, guide, bid, ask, vol24, limitLeft }) {
+        packet
+            .writeShort(itemId)
+            .writeInt(guide)
+            .writeInt(bid)
+            .writeInt(ask)
+            .writeInt(vol24)
+            .writeInt(limitLeft);
+    },
+    exchangeState(packet, { flags, coins, slots, collect }) {
+        packet.writeByte(flags).writeInt(coins).writeByte(slots.length);
+
+        for (const { state, itemId, qty, filled, price } of slots) {
+            packet
+                .writeByte(state)
+                .writeShort(itemId)
+                .writeInt(qty)
+                .writeInt(filled)
+                .writeInt(price);
+        }
+
+        packet.writeByte(collect.length);
+
+        for (const { itemId, amount } of collect) {
+            packet.writeShort(itemId).writeInt(amount);
+        }
+    },
     shopOpen(packet, { items, general, sellMultiplier, buyMultiplier }) {
         packet
             .writeByte(items.length)

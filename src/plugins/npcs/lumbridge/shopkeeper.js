@@ -1,6 +1,7 @@
 // ARSC lumbridge special offers (installed by
 // services/rsc-server/patches/lumbridge-special-offers.js)
 // https://classic.runescape.wiki/w/Shopkeeper_(Lumbridge)
+const exchange = require('../../../exchange'); // ARSC Grand Exchange
 
 const items = require('@2003scape/rsc-data/config/items');
 
@@ -56,7 +57,7 @@ async function onTalkToNPC(player, npc) {
 
     await npc.say('Can I help you at all?');
 
-    const choice = await player.ask(
+    const choice = await exchange.ask(player, npc,
         [
             'Yes please. What are you selling?',
             'Do you have any special offers?',
@@ -64,6 +65,10 @@ async function onTalkToNPC(player, npc) {
         ],
         true
     );
+
+    if (choice === exchange.CHOSEN) {
+        return true; // ARSC Grand Exchange
+    }
 
     if (choice === 0) {
         await npc.say('Take a look');

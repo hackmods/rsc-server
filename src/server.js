@@ -197,7 +197,10 @@ class Server {
 
             require('./peter-panelist').start(this.world); // ARSC Peter Panelist
 
+            require('./exchange').init(this.world); // ARSC Grand Exchange
+
             this.world.tick();
+            setTimeout(this.world.boundSaveAllPlayers, 1000 * 60 * 5); // ARSC periodic save
 
             this.loadPacketHandlers();
 

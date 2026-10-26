@@ -597,8 +597,11 @@ class World {
         setTimeout(this.boundTick, TICK_INTERVAL - deltaTime);
     }
 
+    // ARSC: started by server.init (upstream never started it); reschedules
+    // itself even with nobody online
     async saveAllPlayers() {
         if (!this.players.length) {
+            setTimeout(this.boundSaveAllPlayers, PLAYER_SAVE_INTERVAL);
             return;
         }
 

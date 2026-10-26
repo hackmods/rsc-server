@@ -1,5 +1,6 @@
 // Ported from Open-RSC authentic/npcs/ardougne/east/ArdougneGeneralShop.java (AGPL-3.0)
 // East Ardougne adventurers' shopkeepers (Aemad 336, Kortan 337): talk, then open the east-ardougne-adventurers shop.
+const exchange = require('../../../exchange'); // ARSC Grand Exchange
 
 const ADVENTURER_SHOP_IDS = new Set([336, 337]);
 
@@ -15,10 +16,14 @@ async function onTalkToNPC(player, npc) {
         "You've come to the right place for adventurer's equipment"
     );
 
-    const choice = await player.ask(
+    const choice = await exchange.ask(player, npc,
         ['Oh that sounds intersting', "No I've come to the wrong place"],
         false
     );
+
+    if (choice === exchange.CHOSEN) {
+        return true; // ARSC Grand Exchange
+    }
 
     if (choice === 0) {
         await player.say('Oh that sounds interesting');

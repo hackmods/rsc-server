@@ -1072,8 +1072,17 @@ function giveKit(player, kit) {
 }
 
 function canUseCommands(player) {
-    const policy = process.env.ARSC_CMD_POLICY || 'open';
+    return policyAllows(player, process.env.ARSC_CMD_POLICY || 'open');
+}
 
+// The item-creating commands (::item, ::give, ::droprandom) on top of
+// canUseCommands: ARSC_MINT_POLICY, same syntax plus list:a,b (exact names).
+// Grand Exchange: whoever receives minted goods is barred from the exchange.
+function canMint(player) {
+    return policyAllows(player, process.env.ARSC_MINT_POLICY || 'open');
+}
+
+function policyAllows(player, policy) {
     if (policy === 'open') {
         return true;
     }
@@ -1091,6 +1100,15 @@ function canUseCommands(player) {
             .filter(Boolean);
 
         return prefixes.some((p) => name.startsWith(p));
+    }
+
+    if (policy.startsWith('list:')) {
+        const name = String(player.username || '').toLowerCase();
+
+        return policy
+            .slice(5)
+            .split(',')
+            .some((p) => p.trim().toLowerCase() === name);
     }
 
     return false;
@@ -1391,6 +1409,17 @@ async function handle(req, res) {
 
         audit({ source: 'api', broadcast: body.message });
         send(res, 200, { ok: true, sentTo: broadcast(body.message) });
+    } else if (route.startsWith('/exchange/')) {
+        // ARSC Grand Exchange: GETs public, POST /exchange/stake behind the token
+        const out = await require('./exchange').handleHttp(
+            world,
+            req.method,
+            route,
+            url,
+            () => readBody(req)
+        );
+
+        send(res, out.status, out.body);
     } else if (req.method === 'POST' && /^\/events\/[^/]+\/run$/.test(route)) {
         const ev = state.doc.events.find((e) => e.id === route.split('/')[2]);
 
@@ -1478,6 +1507,7 @@ module.exports = {
     onLogin,
     grantStarterKit,
     canUseCommands,
+    canMint,
     normalize,
     _state: state
 };
