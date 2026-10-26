@@ -1093,6 +1093,27 @@ function canMint(player) {
     return policyAllows(player, process.env.ARSC_MINT_POLICY || 'open');
 }
 
+// The sleep-word bypass (packet-handlers/sleep.js), on when ARSC_SLEEP_ANYWORD=1. ARSC_SLEEP_PREFIX is '*', a bare
+// prefix (legacy: 'bot'), or the policy syntax above (prefix:bot;list:tks,everdred): the fleet's named accounts are not
+// bot*, and with only the prefix they never woke, sat at 100% fatigue and gained no XP.
+function canSkipSleepWord(player) {
+    if (process.env.ARSC_SLEEP_ANYWORD !== '1') {
+        return false;
+    }
+
+    const policy = (process.env.ARSC_SLEEP_PREFIX || 'bot').trim();
+
+    if (policy === '*') {
+        return true;
+    }
+
+    if (policy === 'open' || /[:;]/.test(policy)) {
+        return policyAllows(player, policy);
+    }
+
+    return String(player.username || '').toLowerCase().startsWith(policy.toLowerCase());
+}
+
 function policyAllows(player, policy) {
     // clauses joined by ';' (prefix:bot;list:zasama): any one allows
     if (policy.includes(';')) {
@@ -1526,6 +1547,7 @@ module.exports = {
     grantStarterKit,
     canUseCommands,
     canMint,
+    canSkipSleepWord,
     normalize,
     vendorTalk,
     _state: state

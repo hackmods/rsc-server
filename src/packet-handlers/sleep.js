@@ -14,12 +14,9 @@ async function sleepWord({ player }, { sleepWord }) {
         player.openSleep(false);
     } else {
         // ARSC sandbox: bots cannot read the captcha image (sandbox flags below; docs/ENGINE.md in Autonomous-RSC).
-        const arscPrefix = (process.env.ARSC_SLEEP_PREFIX || 'bot').toLowerCase();
-        const arscName = String(player.username || '').toLowerCase();
         const arscAnyWord =
-            process.env.ARSC_SLEEP_ANYWORD === '1' &&
             sleepWord.trim().length > 0 &&
-            (arscPrefix === '*' || arscName.startsWith(arscPrefix));
+            require('../world-admin').canSkipSleepWord(player);
         if (arscAnyWord || player.sleepWord === sleepWord) {
             player.exitSleep(true);
         } else {
