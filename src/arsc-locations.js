@@ -3,7 +3,10 @@
 module.exports = {
     npcs: [
         // Thordur, Black Hole Experience (plugins/miniquests/black-hole.js), by Boot in the western Dwarven Mine
-        { id: 175, x: 313, y: 3346, minX: 310, maxX: 314, minY: 3344, maxY: 3349 }
+        { id: 175, x: 313, y: 3346, minX: 310, maxX: 314, minY: 3344, maxY: 3349 },
+        // Wilderness outfitter (plugins/npcs/edgeville/wilderness-outfitter.js, shop in arsc-shops.js), on the street south
+        // of Edgeville bank, 19 tiles below the Wilderness border (y 427); the tile and its wander box are walkable
+        { id: 720, x: 214, y: 446, minX: 212, maxX: 216, minY: 445, maxY: 447 }
     ],
     gameObjects: [
         // ladder down to the black hole, by the torch alcove north of Thordur (311,3343 holds the torch)

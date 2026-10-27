@@ -95,6 +95,7 @@ module.exports = {
     "npcs.draynor.ned": require('./npcs/draynor/ned.js'),
     "npcs.edgeville.monk": require('./npcs/edgeville/monk.js'),
     "npcs.edgeville.shopkeeper": require('./npcs/edgeville/shopkeeper.js'),
+    "npcs.edgeville.wilderness-outfitter": require('./npcs/edgeville/wilderness-outfitter.js'),
     "npcs.falador.barmaid": require('./npcs/falador/barmaid.js'),
     "npcs.falador.cassie": require('./npcs/falador/cassie.js'),
     "npcs.falador.flynn": require('./npcs/falador/flynn.js'),

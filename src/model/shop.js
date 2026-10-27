@@ -1,6 +1,15 @@
 const Item = require('./item');
 const shops = require('@2003scape/rsc-data/shops');
 
+// ARSC: shops rsc-data lacks (src/arsc-shops.js); upstream entries are never overwritten
+const arscShops = require('../arsc-shops');
+
+for (const [name, definition] of Object.entries(arscShops)) {
+    if (!shops[name]) {
+        shops[name] = definition;
+    }
+}
+
 // default to coins as shop currency
 const DEFAULT_CURRENCY = 10;
 
