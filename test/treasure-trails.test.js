@@ -291,6 +291,18 @@ test('the step npc far from the step is not claimed', async () => {
     assert.equal(player.cache.clues.easy.remaining, 2);
 });
 
+// live: Hans (spawn 137,651) wanders to y 670, past a radius of 12; the spawn identifies him
+test('the step npc is matched by its spawn point, wherever it wandered', async () => {
+    const player = fakePlayer({ items: [SCROLL.easy] });
+    setState(player, 'easy', 'test-easy-talk', 2);
+    const wandered = { id: 7, x: 201, y: 240, spawnX: 201, spawnY: 200, say: async () => {} };
+    const elsewhere = { id: 7, x: 201, y: 200, spawnX: 260, spawnY: 200, say: async () => {} };
+
+    assert.equal(await plugin.onTalkToNPC(player, elsewhere), false, 'same npc id spawned far away');
+    assert.equal(await plugin.onTalkToNPC(player, wandered), true);
+    assert.equal(player.cache.clues.easy.remaining, 1);
+});
+
 // --- 4. search ---------------------------------------------------------------
 
 const crate = (overrides = {}) => ({
@@ -742,4 +754,16 @@ test('rollCasket rolls exactly one rare when the rare roll passes, and honours e
         const none = clues.rollCasket(tier, { random: () => 0, excluded: everything });
         assert.equal(none.filter((l) => l.rare).length, 0, `${tier} with the whole rare table excluded`);
     }
+});
+
+test('::clue set <step id> puts the player on that step with the scroll', () => {
+    const player = fakePlayer({ admin: false });
+
+    clues.command(player, ['set', 'test-medium-dig']);
+
+    assert.equal(player.inventory.has(SCROLL.medium), true);
+    assert.deepEqual(player.cache.clues.medium, { step: 'test-medium-dig', remaining: 2, done: [] });
+
+    clues.command(player, ['set', 'no-such-step']);
+    assert.ok(player.messages.some((m) => m.includes('No clue step no-such-step')));
 });

@@ -214,6 +214,12 @@ function isNear(entity, step, radius = step.radius || 0) {
     return distance(entity, step) <= radius;
 }
 
+function spawnOf(npc) {
+    return Number.isFinite(npc.spawnX) && Number.isFinite(npc.spawnY)
+        ? { x: npc.spawnX, y: npc.spawnY }
+        : npc;
+}
+
 function matches(step, type, target, entity) {
     if (!step || step.type !== type) {
         return false;
@@ -224,7 +230,8 @@ function matches(step, type, target, entity) {
             return isNear(entity, step, step.radius || 1);
         case 'talk':
         case 'kill':
-            return target === step.npc && isNear(entity, step);
+            // an NPC wanders its spawn box: the step names the spawn, not where it walked to
+            return target === step.npc && isNear(spawnOf(entity), step);
         case 'search':
             return (
                 target === step.object &&
@@ -467,12 +474,30 @@ function rollSkillDrop(player, skill, random = Math.random) {
     return { tier, id: config.scrolls[tier] };
 }
 
-// ::clue <tier> | ::clue tp [tier] | ::clue skip [tier] | ::clue info [tier]
+// ::clue <tier> | ::clue tp [tier] | ::clue skip [tier] | ::clue info [tier] | ::clue set <step id>
 // Who may use it is the world's command policy (world-admin canUseCommands,
 // ARSC_CMD_POLICY), checked by packet-handlers/command.js before this runs:
 // admins only on a locked-down world, every account on an open sandbox.
 function command(player, args) {
     const [action, maybeTier] = args;
+
+    // a given step, for testing it (bots' trail-check.js --sweep): two steps left, so solving it is not the last
+    if (action === 'set') {
+        const step = STEPS.get(maybeTier);
+
+        if (!step) {
+            player.message(`No clue step ${maybeTier}`);
+            return;
+        }
+
+        if (!player.inventory.has(config.scrolls[step.tier])) {
+            player.inventory.add(config.scrolls[step.tier]);
+        }
+
+        clueCache(player)[step.tier] = { step: step.id, remaining: 2, done: [] };
+        showClue(player, step.tier, player.cache.clues[step.tier]);
+        return;
+    }
     const pickTier = (value) =>
         TIERS.includes(value)
             ? value
@@ -492,7 +517,7 @@ function command(player, args) {
     const state = tier && ensureState(player, tier);
 
     if (!state) {
-        player.message('Usage: ::clue easy|medium|hard, or ::clue tp|skip|info [tier] while holding a clue');
+        player.message('Usage: ::clue easy|medium|hard, ::clue set <step id>, or ::clue tp|skip|info [tier] while holding a clue');
         return;
     }
 
