@@ -160,57 +160,7 @@ class NPC extends Character {
                 victor.retreat();
                 victor.sendSound('victory');
 
-                const totalExperience = this.getCombatExperience();
-
-                // ARSC: damage dealt with a bow pays ranged experience (and no
-                // hits), spell damage pays nothing here (the cast already paid
-                // magic experience), the rest pays the combat-style split
-                // below. Open-RSC server/src/com/openrsc/server/model/entity/
-                // npc/Npc.java handleXpDistribution: ranged gets the whole
-                // combat experience for ranged damage (lines 765-776), mage
-                // damagers only count for the loot (778-788); here the victor
-                // still takes all of it, split by how they dealt the damage.
-                const dealt = this.playerDamage.get(victor.id) || 0;
-                const ranged = Math.min(
-                    this.rangedDamage.get(victor.id) || 0,
-                    dealt
-                );
-                const magic = Math.min(
-                    this.magicDamage.get(victor.id) || 0,
-                    dealt - ranged
-                );
-                const rangedShare = dealt > 0 ? ranged / dealt : 0;
-                const meleeShare = dealt > 0 ? (dealt - ranged - magic) / dealt : 1;
-                const rangedExperience = Math.floor(
-                    totalExperience * rangedShare
-                );
-
-                if (rangedExperience > 0) {
-                    victor.addExperience('ranged', rangedExperience);
-                }
-
-                const quarterExperience = Math.floor(
-                    (totalExperience * meleeShare) / 4
-                );
-
-                victor.addExperience('hits', quarterExperience);
-
-                switch (victor.combatStyle) {
-                    case 0: // controlled
-                        victor.addExperience('attack', quarterExperience);
-                        victor.addExperience('defense', quarterExperience);
-                        victor.addExperience('strength', quarterExperience);
-                        break;
-                    case 1: // aggressive
-                        victor.addExperience('strength', quarterExperience * 3);
-                        break;
-                    case 2: // accurate
-                        victor.addExperience('attack', quarterExperience * 3);
-                        break;
-                    case 3: // defensive
-                        victor.addExperience('defense', quarterExperience * 3);
-                        break;
-                }
+                this.rewardKill(victor);
 
                 this.opponent = null;
                 victor.opponent = null;

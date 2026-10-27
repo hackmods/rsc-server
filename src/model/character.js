@@ -3,6 +3,7 @@
 const Entity = require('./entity');
 const directions = require('./directions');
 const shuffle = require('knuth-shuffle-seeded');
+const wilderness = require('../wilderness');
 
 // used to calculate a direction based on a change in coordinates. use
 // deltaDirections[deltaX + 1][deltaY + 1] to get a direction number.
@@ -380,6 +381,13 @@ class Character extends Entity {
         this.combatRounds = 0;
         this.fightStage = 0;
 
+        // Mob.startCombat: a player attacking a player is skulled (unless
+        // retaliating) and both are in combat for the logout timer
+        if (this.username && character.username) {
+            wilderness.skullOnAttack(this, character);
+            wilderness.markCombat(this, character);
+        }
+
         if (deltaX !== 0 || deltaY !== 0) {
             world.nextTick(() => {
                 this.walkTo(deltaX, deltaY);
@@ -410,6 +418,13 @@ class Character extends Entity {
         this.retreating = true;
         this.unlock();
         this.fightStage = -1;
+
+        // PVP_REATTACK_TIMER: a player who ran from a player can't be
+        // attacked again in melee straight away
+        if (this.username && opponent && opponent.username) {
+            this.ranAwayTick = world.ticks;
+            wilderness.markCombat(this, opponent);
+        }
 
         if (opponent) {
             opponent.unlock();
@@ -690,6 +705,62 @@ class Character extends Entity {
             x: this.x - deltaX,
             y: this.y - deltaY
         };
+    }
+
+    // the kill's combat experience for the victor (NPC.die, and Player
+    // processDeath for a player kill)
+    rewardKill(victor) {
+        const totalExperience = this.getCombatExperience();
+
+        // ARSC: damage dealt with a bow pays ranged experience (and no
+        // hits), spell damage pays nothing here (the cast already paid
+        // magic experience), the rest pays the combat-style split
+        // below. Open-RSC server/src/com/openrsc/server/model/entity/
+        // npc/Npc.java handleXpDistribution: ranged gets the whole
+        // combat experience for ranged damage (lines 765-776), mage
+        // damagers only count for the loot (778-788); here the victor
+        // still takes all of it, split by how they dealt the damage.
+        const dealt = this.playerDamage.get(victor.id) || 0;
+        const ranged = Math.min(
+            this.rangedDamage.get(victor.id) || 0,
+            dealt
+        );
+        const magic = Math.min(
+            this.magicDamage.get(victor.id) || 0,
+            dealt - ranged
+        );
+        const rangedShare = dealt > 0 ? ranged / dealt : 0;
+        const meleeShare = dealt > 0 ? (dealt - ranged - magic) / dealt : 1;
+        const rangedExperience = Math.floor(
+            totalExperience * rangedShare
+        );
+
+        if (rangedExperience > 0) {
+            victor.addExperience('ranged', rangedExperience);
+        }
+
+        const quarterExperience = Math.floor(
+            (totalExperience * meleeShare) / 4
+        );
+
+        victor.addExperience('hits', quarterExperience);
+
+        switch (victor.combatStyle) {
+            case 0: // controlled
+                victor.addExperience('attack', quarterExperience);
+                victor.addExperience('defense', quarterExperience);
+                victor.addExperience('strength', quarterExperience);
+                break;
+            case 1: // aggressive
+                victor.addExperience('strength', quarterExperience * 3);
+                break;
+            case 2: // accurate
+                victor.addExperience('attack', quarterExperience * 3);
+                break;
+            case 3: // defensive
+                victor.addExperience('defense', quarterExperience * 3);
+                break;
+        }
     }
 
     getCombatExperience() {

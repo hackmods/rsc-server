@@ -2,6 +2,7 @@ const Bank = require('./bank');
 const Captcha = require('@2003scape/rsc-captcha');
 const Character = require('./character');
 const Inventory = require('./inventory');
+const Item = require('./item');
 const LocalEntities = require('./local-entities');
 const Trade = require('./trade');
 const log = require('bole')('player');
@@ -18,6 +19,10 @@ const {
 
 const { weapons: rangedWeapons } = require('@2003scape/rsc-data/ranged');
 const poisonRules = require('../poison');
+const wilderness = require('../wilderness');
+
+// dropped for the killer when a player dies to a player
+const BONES_ID = 20;
 
 // properties to save in the database
 const SAVE_PROPERTIES = [
@@ -105,7 +110,7 @@ class Player extends Character {
         this.blockDuel = playerData.blockDuel;
 
         // ticks remaining until unskulled
-        this.skulled = playerData.skulled;
+        this.skulled = Math.max(0, Number(playerData.skulled) || 0);
 
         this.friends = playerData.friends;
         this.ignores = playerData.ignores;
@@ -608,12 +613,20 @@ class Player extends Character {
     }
 
     // send the red hitsplat
-    damage(damage) {
+    damage(damage, attacker, kind) {
         // ARSC Tutorial Island: nothing there can kill you (authentic: the rat
         // never lands a killing blow)
         damage = require('../plugins/tutorial/core').safeDamage(this, damage);
 
-        const isDead = super.damage(damage);
+        // a player's hits count towards the kill (who owns the drop, the
+        // kill experience) and keep both in combat
+        const fromPlayer = attacker && attacker.username ? attacker : undefined;
+
+        if (fromPlayer) {
+            wilderness.markCombat(this, fromPlayer);
+        }
+
+        const isDead = super.damage(damage, fromPlayer, kind);
         this.sendStats();
         return isDead;
     }
@@ -992,15 +1005,62 @@ class Player extends Character {
             return;
         }
 
-        const itemsKept = this.inventory.removeMostValuable(
-            3 + (this.prayers[8] ? 1 : 0)
+        // the player who dealt the most damage takes the kill (Player.killedBy)
+        const killer = this.getPlayerKiller();
+        const skulled = this.isSkulled();
+
+        for (const [index, item] of this.inventory.items.entries()) {
+            if (item.equipped) {
+                this.inventory.unequip(index);
+            }
+        }
+
+        // Inventory.dropOnDeath: 3 kept (none when skulled), +1 with Protect
+        // Item, stackables always lost
+        const kept = new Set(
+            wilderness.keptOnDeath(this.inventory.items, {
+                skulled,
+                protectItem: !!this.prayers[8]
+            })
         );
+        const itemsKept = [];
 
         for (const item of this.inventory.items) {
-            world.addPlayerDrop(this, item);
+            if (kept.has(item)) {
+                itemsKept.push(new Item({ id: item.id }));
+                continue;
+            }
+
+            // a player killer owns the drop (the victim keeps an untradeable)
+            const owner =
+                killer && !item.definition.untradeable ? killer : this;
+
+            world.addPlayerDrop(owner, item, this.x, this.y);
         }
 
         this.inventory.items.length = 0;
+
+        if (killer) {
+            // bones for the killer, the kill experience and the message
+            world.addPlayerDrop(killer, { id: BONES_ID }, this.x, this.y);
+            this.rewardKill(killer);
+            killer.message(`You have defeated ${this.getFormattedUsername()}!`);
+            killer.sendSound('victory');
+            log.info(`${killer} killed ${this} in the wilderness`);
+        }
+
+        this.removeSkull();
+
+        for (const damage of [
+            this.playerDamage,
+            this.rangedDamage,
+            this.magicDamage,
+            this.attackedBy
+        ]) {
+            if (damage) {
+                damage.clear();
+            }
+        }
 
         const { spawnX, spawnY } = regions.lumbridge;
         this.teleport(spawnX, spawnY, false);
@@ -1022,6 +1082,27 @@ class Player extends Character {
             victor.opponent = null;
             this.opponent = null;
         }
+    }
+
+    // the online player who did the most damage to us since our last death
+    getPlayerKiller() {
+        let best = null;
+        let most = 0;
+
+        if (!this.playerDamage || !this.world || !this.world.players) {
+            return best;
+        }
+
+        for (const [id, damage] of this.playerDamage.entries()) {
+            const player = this.world.players.getByID(id);
+
+            if (player && player !== this && damage > most) {
+                best = player;
+                most = damage;
+            }
+        }
+
+        return best;
     }
 
     getAppearanceUpdate() {
@@ -1090,7 +1171,42 @@ class Player extends Character {
     }
 
     isSkulled() {
-        return false;
+        return this.skulled > 0;
+    }
+
+    // Player.addSkull: skulled for `ticks` (never shortens a longer skull)
+    addSkull(ticks = wilderness.SKULL_TICKS) {
+        const was = this.isSkulled();
+        this.skulled = Math.max(this.skulled || 0, ticks);
+
+        if (!was) {
+            this.broadcastPlayerAppearance(true);
+        }
+    }
+
+    removeSkull() {
+        if (!this.isSkulled()) {
+            return;
+        }
+
+        this.skulled = 0;
+        this.broadcastPlayerAppearance(true);
+    }
+
+    tickSkull() {
+        if (this.skulled > 0) {
+            this.skulled -= 1;
+
+            if (this.skulled === 0) {
+                this.broadcastPlayerAppearance(true);
+            }
+        }
+    }
+
+    // Formulae.combatExperience: a player kill is worth combat level + 10
+    // (quarter points here, like the NPC formula in Character)
+    getCombatExperience() {
+        return this.combatLevel * 4 + 40;
     }
 
     isMuted() {
@@ -1586,6 +1702,7 @@ class Player extends Character {
     tick() {
         this.normalizeSkills();
         this.tickPoison();
+        this.tickSkull();
 
         if (this.interfaceOpen.sleep) {
             this.refreshDisplayFatigue();
