@@ -14,6 +14,7 @@ const items = require('@2003scape/rsc-data/config/items');
 const log = require('bole')('exchange');
 const R = require('./rules');
 const { clerkNear } = require('./clerks');
+const house = require('./house');
 
 // timings (tests shorten them)
 const config = { requestMs: 15000, voidRetryMs: 5000, voidRetryMaxMs: 30000 };
@@ -847,6 +848,8 @@ function onTrade(playerA, playerB, offerA, offerB) {
 }
 
 function init(world) {
+    house.start(world, { write, notify: notifyCounterparties });
+
     setInterval(() => {
         for (const player of world.players.getAll()) {
             if (player.exchangeOpen && !clerkNear(player, R.CLERK_RANGE)) {
@@ -940,6 +943,32 @@ async function handleHttp(world, method, route, url, readBody) {
             handler: 'exchangeLedger',
             since: +url.searchParams.get('since') || 0
         });
+    }
+
+    if (method === 'GET' && parts[1] === 'house' && parts.length === 2) {
+        const listings = house.houseListings(world.members !== false);
+
+        return {
+            status: 200,
+            body: {
+                user: house.houseName(),
+                everyMs: house.houseIntervalMs(),
+                last: world.exchangeHouse || null,
+                count: listings.length,
+                listings
+            }
+        };
+    }
+
+    // run a restock now (the hourly one runs anyway); same hour, same opIds,
+    // so a second call in the hour tops up nothing twice
+    if (method === 'POST' && parts[1] === 'house' && parts.length === 2) {
+        const out = await house.restock(world, {
+            write,
+            notify: notifyCounterparties
+        });
+
+        return { status: out.success ? 200 : 503, body: out };
     }
 
     if (method === 'POST' && parts[1] === 'stake' && parts.length === 2) {
