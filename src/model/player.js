@@ -1,3 +1,4 @@
+const clues = require('../clues');
 const Bank = require('./bank');
 const Captcha = require('@2003scape/rsc-captcha');
 const Character = require('./character');
@@ -875,6 +876,11 @@ class Player extends Character {
         );
 
         this.skills[skill].experience += experience;
+
+        // ARSC treasure trails: a rare clue scroll while skilling (quest rewards come without fatigue)
+        if (useFatigue && experience > 0) {
+            clues.rollSkillDrop(this, skill);
+        }
 
         if (nextLevel !== this.skills[skill].base) {
             const levelDelta = nextLevel - this.skills[skill].base;

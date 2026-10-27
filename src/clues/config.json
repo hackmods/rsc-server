@@ -1,0 +1,38 @@
+{
+    "about": "Treasure trail settings (src/clues/index.js). Rates are 1 in N. kill.bands pick the tier from the NPC's combat level, skilling.bands from the player's level in the skill that gained experience; the first band whose max is >= the level wins, a band without max catches the rest.",
+    "scrolls": { "easy": 1241, "medium": 960, "hard": 959 },
+    "caskets": { "easy": 1290, "medium": 1291, "hard": 1292 },
+    "stepCounts": { "easy": [2, 3], "medium": [3, 5], "hard": [5, 7] },
+    "kill": {
+        "bands": [
+            { "maxCombat": 20, "tier": "easy" },
+            { "maxCombat": 60, "tier": "medium" },
+            { "tier": "hard" }
+        ],
+        "rates": { "easy": 128, "medium": 256, "hard": 512 },
+        "excludeNpcs": []
+    },
+    "skilling": {
+        "skills": [
+            "cooking",
+            "woodcutting",
+            "fletching",
+            "fishing",
+            "firemaking",
+            "crafting",
+            "smithing",
+            "mining",
+            "herblaw",
+            "agility",
+            "thieving",
+            "prayer"
+        ],
+        "bands": [
+            { "maxLevel": 39, "tier": "easy" },
+            { "maxLevel": 69, "tier": "medium" },
+            { "tier": "hard" }
+        ],
+        "rates": { "easy": 2500, "medium": 5000, "hard": 10000 }
+    },
+    "broadcastRares": true
+}

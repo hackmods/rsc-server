@@ -1,0 +1,889 @@
+{
+    "about": "Casket rewards (src/clues/index.js rollCasket). Each casket rolls `rolls` [min, max] times on `common` (weighted), then `supplies.rolls` times on `supplies` (runes, herbs and bones: the hard-earned piles, more for harder trails), then once at 1 in `rare.chance` on `rare.table` (weighted, one item). amount is a number or [min, max]. unique: the player can own only one (inventory or bank); a held unique is left out of the roll. Certificates stand in for noted items (RSC has no notes); herbs and bones have none, so a casket puts what the inventory cannot hold into the bank.",
+    "easy": {
+        "rolls": [
+            2,
+            4
+        ],
+        "common": [
+            {
+                "id": 10,
+                "name": "Coins",
+                "amount": [
+                    50,
+                    300
+                ],
+                "weight": 30
+            },
+            {
+                "id": 350,
+                "name": "Shrimp",
+                "amount": [
+                    2,
+                    4
+                ],
+                "weight": 6
+            },
+            {
+                "id": 138,
+                "name": "bread",
+                "amount": [
+                    2,
+                    3
+                ],
+                "weight": 6
+            },
+            {
+                "id": 359,
+                "name": "Trout",
+                "amount": [
+                    2,
+                    3
+                ],
+                "weight": 5
+            },
+            {
+                "id": 11,
+                "name": "Bronze Arrows",
+                "amount": [
+                    30,
+                    80
+                ],
+                "weight": 6
+            },
+            {
+                "id": 638,
+                "name": "Iron Arrows",
+                "amount": [
+                    20,
+                    50
+                ],
+                "weight": 4
+            },
+            {
+                "id": 14,
+                "name": "Logs",
+                "amount": [
+                    2,
+                    4
+                ],
+                "weight": 4
+            },
+            {
+                "id": 150,
+                "name": "copper ore",
+                "amount": [
+                    2,
+                    4
+                ],
+                "weight": 4
+            },
+            {
+                "id": 202,
+                "name": "tin ore",
+                "amount": [
+                    2,
+                    4
+                ],
+                "weight": 4
+            },
+            {
+                "id": 169,
+                "name": "bronze bar",
+                "amount": [
+                    1,
+                    3
+                ],
+                "weight": 3
+            },
+            {
+                "id": 160,
+                "name": "uncut sapphire",
+                "amount": 1,
+                "weight": 2
+            }
+        ],
+        "rare": {
+            "chance": 25,
+            "table": [
+                {
+                    "id": 196,
+                    "name": "Black Plate Mail Body",
+                    "weight": 6
+                },
+                {
+                    "id": 248,
+                    "name": "Black Plate Mail Legs",
+                    "weight": 8
+                },
+                {
+                    "id": 434,
+                    "name": "Black Plated skirt",
+                    "weight": 8
+                },
+                {
+                    "id": 433,
+                    "name": "Black Kite Shield",
+                    "weight": 8
+                },
+                {
+                    "id": 425,
+                    "name": "Black Long Sword",
+                    "weight": 8
+                },
+                {
+                    "id": 427,
+                    "name": "Black Scimitar",
+                    "weight": 8
+                },
+                {
+                    "id": 426,
+                    "name": "Black 2-handed Sword",
+                    "weight": 6
+                },
+                {
+                    "id": 235,
+                    "name": "Amulet of accuracy",
+                    "weight": 8
+                },
+                {
+                    "id": 422,
+                    "name": "Pumpkin",
+                    "weight": 6
+                },
+                {
+                    "id": 677,
+                    "name": "Easter egg",
+                    "weight": 6
+                },
+                {
+                    "id": 246,
+                    "name": "Half full wine jug",
+                    "weight": 4
+                }
+            ]
+        },
+        "supplies": {
+            "rolls": [
+                1,
+                1
+            ],
+            "table": [
+                {
+                    "id": 33,
+                    "name": "Air-Rune",
+                    "amount": [
+                        60,
+                        150
+                    ],
+                    "weight": 6
+                },
+                {
+                    "id": 32,
+                    "name": "Water-Rune",
+                    "amount": [
+                        60,
+                        150
+                    ],
+                    "weight": 6
+                },
+                {
+                    "id": 34,
+                    "name": "Earth-Rune",
+                    "amount": [
+                        60,
+                        150
+                    ],
+                    "weight": 6
+                },
+                {
+                    "id": 31,
+                    "name": "Fire-Rune",
+                    "amount": [
+                        60,
+                        150
+                    ],
+                    "weight": 6
+                },
+                {
+                    "id": 35,
+                    "name": "Mind-Rune",
+                    "amount": [
+                        40,
+                        100
+                    ],
+                    "weight": 5
+                },
+                {
+                    "id": 36,
+                    "name": "Body-Rune",
+                    "amount": [
+                        40,
+                        100
+                    ],
+                    "weight": 4
+                },
+                {
+                    "id": 41,
+                    "name": "Chaos-Rune",
+                    "amount": [
+                        10,
+                        30
+                    ],
+                    "weight": 3
+                },
+                {
+                    "id": 165,
+                    "name": "Herb (guam leaf)",
+                    "amount": [
+                        4,
+                        8
+                    ],
+                    "weight": 5
+                },
+                {
+                    "id": 435,
+                    "name": "Herb (marrentill)",
+                    "amount": [
+                        4,
+                        8
+                    ],
+                    "weight": 5
+                },
+                {
+                    "id": 436,
+                    "name": "Herb (tarromin)",
+                    "amount": [
+                        4,
+                        8
+                    ],
+                    "weight": 5
+                },
+                {
+                    "id": 20,
+                    "name": "Bones",
+                    "amount": [
+                        5,
+                        12
+                    ],
+                    "weight": 4
+                },
+                {
+                    "id": 413,
+                    "name": "Big Bones",
+                    "amount": [
+                        2,
+                        5
+                    ],
+                    "weight": 4
+                }
+            ]
+        }
+    },
+    "medium": {
+        "rolls": [
+            2,
+            4
+        ],
+        "common": [
+            {
+                "id": 10,
+                "name": "Coins",
+                "amount": [
+                    300,
+                    1500
+                ],
+                "weight": 30
+            },
+            {
+                "id": 373,
+                "name": "Lobster",
+                "amount": [
+                    2,
+                    4
+                ],
+                "weight": 6
+            },
+            {
+                "id": 370,
+                "name": "Swordfish",
+                "amount": [
+                    2,
+                    3
+                ],
+                "weight": 5
+            },
+            {
+                "id": 367,
+                "name": "Tuna",
+                "amount": [
+                    2,
+                    4
+                ],
+                "weight": 4
+            },
+            {
+                "id": 640,
+                "name": "Steel Arrows",
+                "amount": [
+                    30,
+                    80
+                ],
+                "weight": 5
+            },
+            {
+                "id": 642,
+                "name": "Mithril Arrows",
+                "amount": [
+                    20,
+                    50
+                ],
+                "weight": 4
+            },
+            {
+                "id": 517,
+                "name": "Iron ore certificate",
+                "amount": [
+                    2,
+                    6
+                ],
+                "weight": 5
+            },
+            {
+                "id": 518,
+                "name": "Coal certificate",
+                "amount": [
+                    2,
+                    6
+                ],
+                "weight": 5
+            },
+            {
+                "id": 528,
+                "name": "Iron bar certificate",
+                "amount": [
+                    1,
+                    4
+                ],
+                "weight": 4
+            },
+            {
+                "id": 529,
+                "name": "steel bar certificate",
+                "amount": [
+                    1,
+                    3
+                ],
+                "weight": 4
+            },
+            {
+                "id": 519,
+                "name": "Mithril ore certificate",
+                "amount": [
+                    1,
+                    2
+                ],
+                "weight": 3
+            },
+            {
+                "id": 159,
+                "name": "uncut emerald",
+                "amount": 1,
+                "weight": 3
+            },
+            {
+                "id": 158,
+                "name": "uncut ruby",
+                "amount": 1,
+                "weight": 2
+            }
+        ],
+        "rare": {
+            "chance": 20,
+            "table": [
+                {
+                    "id": 120,
+                    "name": "Adamantite Plate Mail Body",
+                    "weight": 6
+                },
+                {
+                    "id": 123,
+                    "name": "Adamantite Plate Mail Legs",
+                    "weight": 8
+                },
+                {
+                    "id": 227,
+                    "name": "Adamantite Plated skirt",
+                    "weight": 8
+                },
+                {
+                    "id": 131,
+                    "name": "Adamantite Kite Shield",
+                    "weight": 8
+                },
+                {
+                    "id": 74,
+                    "name": "Adamantite Long Sword",
+                    "weight": 8
+                },
+                {
+                    "id": 86,
+                    "name": "Adamantite Scimitar",
+                    "weight": 8
+                },
+                {
+                    "id": 80,
+                    "name": "Adamantite 2-handed Sword",
+                    "weight": 6
+                },
+                {
+                    "id": 828,
+                    "name": "halloween mask",
+                    "weight": 3
+                },
+                {
+                    "id": 831,
+                    "name": "halloween mask",
+                    "weight": 3
+                },
+                {
+                    "id": 832,
+                    "name": "halloween mask",
+                    "weight": 3
+                },
+                {
+                    "id": 971,
+                    "name": "Santa's hat",
+                    "weight": 4
+                },
+                {
+                    "id": 1289,
+                    "name": "Scythe",
+                    "weight": 3,
+                    "unique": true
+                },
+                {
+                    "id": 1156,
+                    "name": "Bunny ears",
+                    "weight": 3,
+                    "unique": true
+                }
+            ]
+        },
+        "supplies": {
+            "rolls": [
+                1,
+                2
+            ],
+            "table": [
+                {
+                    "id": 41,
+                    "name": "Chaos-Rune",
+                    "amount": [
+                        150,
+                        350
+                    ],
+                    "weight": 6
+                },
+                {
+                    "id": 40,
+                    "name": "Nature-Rune",
+                    "amount": [
+                        80,
+                        180
+                    ],
+                    "weight": 6
+                },
+                {
+                    "id": 42,
+                    "name": "Law-Rune",
+                    "amount": [
+                        60,
+                        150
+                    ],
+                    "weight": 5
+                },
+                {
+                    "id": 46,
+                    "name": "Cosmic-Rune",
+                    "amount": [
+                        60,
+                        150
+                    ],
+                    "weight": 4
+                },
+                {
+                    "id": 38,
+                    "name": "Death-Rune",
+                    "amount": [
+                        40,
+                        100
+                    ],
+                    "weight": 4
+                },
+                {
+                    "id": 619,
+                    "name": "Blood-Rune",
+                    "amount": [
+                        20,
+                        50
+                    ],
+                    "weight": 2
+                },
+                {
+                    "id": 437,
+                    "name": "Herb (harralander)",
+                    "amount": [
+                        6,
+                        12
+                    ],
+                    "weight": 5
+                },
+                {
+                    "id": 438,
+                    "name": "Herb (ranarr weed)",
+                    "amount": [
+                        6,
+                        12
+                    ],
+                    "weight": 5
+                },
+                {
+                    "id": 439,
+                    "name": "Herb (irit leaf)",
+                    "amount": [
+                        6,
+                        12
+                    ],
+                    "weight": 5
+                },
+                {
+                    "id": 440,
+                    "name": "Herb (avantoe)",
+                    "amount": [
+                        6,
+                        12
+                    ],
+                    "weight": 5
+                },
+                {
+                    "id": 413,
+                    "name": "Big Bones",
+                    "amount": [
+                        15,
+                        30
+                    ],
+                    "weight": 5
+                },
+                {
+                    "id": 1270,
+                    "name": "Dragon Bone Certificate",
+                    "amount": [
+                        2,
+                        5
+                    ],
+                    "weight": 2
+                }
+            ]
+        }
+    },
+    "hard": {
+        "rolls": [
+            2,
+            4
+        ],
+        "common": [
+            {
+                "id": 10,
+                "name": "Coins",
+                "amount": [
+                    3000,
+                    12000
+                ],
+                "weight": 25
+            },
+            {
+                "id": 630,
+                "name": "shark certificate",
+                "amount": [
+                    2,
+                    6
+                ],
+                "weight": 6
+            },
+            {
+                "id": 535,
+                "name": "Swordfish certificate",
+                "amount": [
+                    3,
+                    8
+                ],
+                "weight": 5
+            },
+            {
+                "id": 533,
+                "name": "Lobster certificate",
+                "amount": [
+                    4,
+                    10
+                ],
+                "weight": 4
+            },
+            {
+                "id": 518,
+                "name": "Coal certificate",
+                "amount": [
+                    8,
+                    20
+                ],
+                "weight": 5
+            },
+            {
+                "id": 519,
+                "name": "Mithril ore certificate",
+                "amount": [
+                    4,
+                    10
+                ],
+                "weight": 5
+            },
+            {
+                "id": 530,
+                "name": "Mithril bar certificate",
+                "amount": [
+                    2,
+                    6
+                ],
+                "weight": 4
+            },
+            {
+                "id": 532,
+                "name": "Gold bar certificate",
+                "amount": [
+                    2,
+                    6
+                ],
+                "weight": 4
+            },
+            {
+                "id": 711,
+                "name": "yew logs certificate",
+                "amount": [
+                    3,
+                    8
+                ],
+                "weight": 4
+            },
+            {
+                "id": 712,
+                "name": "maple logs certificate",
+                "amount": [
+                    4,
+                    10
+                ],
+                "weight": 4
+            },
+            {
+                "id": 174,
+                "name": "adamantite bar",
+                "amount": [
+                    2,
+                    3
+                ],
+                "weight": 3
+            },
+            {
+                "id": 408,
+                "name": "Runite bar",
+                "amount": 1,
+                "weight": 1
+            },
+            {
+                "id": 646,
+                "name": "Rune Arrows",
+                "amount": [
+                    15,
+                    40
+                ],
+                "weight": 3
+            },
+            {
+                "id": 157,
+                "name": "uncut diamond",
+                "amount": 1,
+                "weight": 3
+            },
+            {
+                "id": 542,
+                "name": "uncut dragonstone",
+                "amount": 1,
+                "weight": 1
+            }
+        ],
+        "rare": {
+            "chance": 50,
+            "table": [
+                {
+                    "id": 576,
+                    "name": "Party Hat (red)",
+                    "weight": 10
+                },
+                {
+                    "id": 577,
+                    "name": "Party Hat (yellow)",
+                    "weight": 10
+                },
+                {
+                    "id": 578,
+                    "name": "Party Hat",
+                    "weight": 10
+                },
+                {
+                    "id": 579,
+                    "name": "Party Hat",
+                    "weight": 10
+                },
+                {
+                    "id": 580,
+                    "name": "Party Hat",
+                    "weight": 10
+                },
+                {
+                    "id": 581,
+                    "name": "Party Hat",
+                    "weight": 10
+                },
+                {
+                    "id": 575,
+                    "name": "Christmas cracker",
+                    "weight": 40
+                }
+            ]
+        },
+        "supplies": {
+            "rolls": [
+                2,
+                3
+            ],
+            "table": [
+                {
+                    "id": 40,
+                    "name": "Nature-Rune",
+                    "amount": [
+                        200,
+                        500
+                    ],
+                    "weight": 5
+                },
+                {
+                    "id": 42,
+                    "name": "Law-Rune",
+                    "amount": [
+                        150,
+                        400
+                    ],
+                    "weight": 5
+                },
+                {
+                    "id": 38,
+                    "name": "Death-Rune",
+                    "amount": [
+                        150,
+                        350
+                    ],
+                    "weight": 5
+                },
+                {
+                    "id": 619,
+                    "name": "Blood-Rune",
+                    "amount": [
+                        100,
+                        250
+                    ],
+                    "weight": 4
+                },
+                {
+                    "id": 41,
+                    "name": "Chaos-Rune",
+                    "amount": [
+                        400,
+                        900
+                    ],
+                    "weight": 4
+                },
+                {
+                    "id": 825,
+                    "name": "Soul-Rune",
+                    "amount": [
+                        10,
+                        30
+                    ],
+                    "weight": 2
+                },
+                {
+                    "id": 438,
+                    "name": "Herb (ranarr weed)",
+                    "amount": [
+                        12,
+                        25
+                    ],
+                    "weight": 5
+                },
+                {
+                    "id": 441,
+                    "name": "Herb (kwuarm)",
+                    "amount": [
+                        12,
+                        25
+                    ],
+                    "weight": 5
+                },
+                {
+                    "id": 442,
+                    "name": "Herb (cadantine)",
+                    "amount": [
+                        12,
+                        25
+                    ],
+                    "weight": 5
+                },
+                {
+                    "id": 443,
+                    "name": "Herb (dwarf weed)",
+                    "amount": [
+                        12,
+                        25
+                    ],
+                    "weight": 5
+                },
+                {
+                    "id": 933,
+                    "name": "Herb (torstol)",
+                    "amount": [
+                        12,
+                        25
+                    ],
+                    "weight": 5
+                },
+                {
+                    "id": 1270,
+                    "name": "Dragon Bone Certificate",
+                    "amount": [
+                        8,
+                        20
+                    ],
+                    "weight": 5
+                },
+                {
+                    "id": 413,
+                    "name": "Big Bones",
+                    "amount": [
+                        20,
+                        40
+                    ],
+                    "weight": 3
+                }
+            ]
+        }
+    }
+}

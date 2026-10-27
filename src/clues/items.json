@@ -1,0 +1,47 @@
+{
+    "about": "ARSC treasure trail caskets: new item definitions appended after rsc-data's last item (1289, Scythe). The clients carry the same three rows in config86.jag (hackmods/rsc-client dist/data204, hackmods/rsc-c cache); the ids must match theirs. Sprite 187 is the casket picture; colour tints its grey pixels (the straps: green, blue, gold), as the party hats are tinted.",
+    "items": [
+        {
+            "id": 1290,
+            "name": "Easy casket",
+            "description": "The prize at the end of an easy treasure trail",
+            "command": "open",
+            "sprite": 187,
+            "price": 50,
+            "stackable": false,
+            "special": false,
+            "equip": null,
+            "colour": "rgb(90, 255, 90)",
+            "untradeable": false,
+            "members": false
+        },
+        {
+            "id": 1291,
+            "name": "Medium casket",
+            "description": "The prize at the end of a medium treasure trail",
+            "command": "open",
+            "sprite": 187,
+            "price": 150,
+            "stackable": false,
+            "special": false,
+            "equip": null,
+            "colour": "rgb(110, 170, 255)",
+            "untradeable": false,
+            "members": false
+        },
+        {
+            "id": 1292,
+            "name": "Hard casket",
+            "description": "The prize at the end of a hard treasure trail",
+            "command": "open",
+            "sprite": 187,
+            "price": 500,
+            "stackable": false,
+            "special": false,
+            "equip": null,
+            "colour": "rgb(255, 215, 0)",
+            "untradeable": false,
+            "members": false
+        }
+    ]
+}

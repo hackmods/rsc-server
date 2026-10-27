@@ -1,4 +1,5 @@
 require('./data-fixes'); // ARSC: correct rsc-data before the plugins read it
+require('./clues'); // ARSC: the treasure trail caskets join rsc-data's item table
 const BrowserSocket = require('./browser-socket');
 
 const DataClient = process.browser
