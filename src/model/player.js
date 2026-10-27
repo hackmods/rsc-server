@@ -14,7 +14,8 @@ const { formatSkillName, experienceToLevel } = require('../skills');
 const {
     rollPlayerNPCDamage,
     rollPlayerPlayerDamage,
-    rollPlayerNPCRangedDamage
+    rollPlayerNPCRangedDamage,
+    rollPlayerPlayerRangedDamage
 } = require('../combat');
 
 const { weapons: rangedWeapons } = require('@2003scape/rsc-data/ranged');
@@ -1590,6 +1591,26 @@ class Player extends Character {
 
         this.walkQueue.length = 0;
 
+        // ARSC: a player target is re-checked before every shot (wilderness
+        // levels, combat range, still online and alive)
+        if (character.username) {
+            if (!character.loggedIn || character.skills.hits.current <= 0) {
+                return false;
+            }
+
+            const refusal = wilderness.attackRefusal(this, character, {
+                missile: true
+            });
+
+            if (refusal !== null) {
+                if (refusal) {
+                    this.message(refusal);
+                }
+
+                return false;
+            }
+        }
+
         if (
             character.constructor.name === 'NPC' &&
             (await this.world.callPlugin('onNPCRangedAttack', this, character))
@@ -1597,7 +1618,10 @@ class Player extends Character {
             return false;
         }
 
+        // an adjacent NPC closes in for melee; an adjacent player is still
+        // shot (letting the victim "attack" would skull the victim)
         if (
+            !character.username &&
             this.getDistance(character) <= 1.5 &&
             this.withinLineOfSight(character)
         ) {
@@ -1669,8 +1693,21 @@ class Player extends Character {
             this.message("I've run out of ammo!");
         }
 
-        // TODO player damage
-        const damage = rollPlayerNPCRangedDamage(this, character);
+        let damage;
+
+        if (character.username) {
+            wilderness.skullOnAttack(this, character);
+            wilderness.markCombat(this, character);
+
+            // Open-RSC: being shot closes the victim's shop
+            if (character.interfaceOpen && character.interfaceOpen.shop) {
+                character.exitShop(true);
+            }
+
+            damage = rollPlayerPlayerRangedDamage(this, character);
+        } else {
+            damage = rollPlayerNPCRangedDamage(this, character);
+        }
 
         character.damage(damage, this, 'ranged');
         this.sendProjectile(character, 2);

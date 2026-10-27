@@ -40,6 +40,12 @@ async function walk({ player }, { targetX, targetY, steps }) {
 
             return;
         } else {
+            // PVP_REATTACK_TIMER: a player who ran from a player can't be
+            // attacked again in melee straight away (only the one who ran)
+            if (player.opponent.username) {
+                player.ranAwayTick = player.world.ticks;
+            }
+
             await player.retreat();
         }
     } else if (player.locked) {

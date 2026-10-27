@@ -7,7 +7,9 @@
 //    god spells (with their staffs), and the stat curses
 //  - castInventoryItem: low and high level alchemy, superheat item, enchant
 //    lvl-1 to lvl-5 amulet
-//  - castPlayer: refused, there is no player-vs-player combat on this server
+//  - castPlayer: strike/bolt/blast/wave spells and the stat curses on other
+//    players, in the Wilderness only (rules in ../wilderness.js); god spells
+//    and Mage Arena duels are refused
 //  - castSelf also casts Charge (Open-RSC SpellHandler handleGroundCast): a
 //    timed flag that lifts the god spells from 18 to 25 for a god cape wearer
 //  - castGroundItem, castObject: offered to onCastOnGroundItem and
@@ -26,6 +28,7 @@ const Item = require('../model/item');
 const items = require('@2003scape/rsc-data/config/items');
 const log = require('bole')('magic');
 const spells = require('@2003scape/rsc-data/config/spells');
+const wilderness = require('../wilderness');
 const { smelting } = require('@2003scape/rsc-data/skills/smithing');
 const { spellExperience } = require('@2003scape/rsc-data/skills/magic');
 
@@ -191,18 +194,6 @@ function getSpell(id) {
     return spell;
 }
 
-// classic wilderness level (same formula as the client's skull indicator)
-function getWildernessLevel({ x, y, world }) {
-    const planeY = y % world.planeElevation;
-    let depth = 2203 - (planeY + 1776);
-
-    if (x + 2304 >= 2640) {
-        depth = -50;
-    }
-
-    return depth > 0 ? 1 + Math.floor(depth / 6) : 0;
-}
-
 function hasStaffFor(player, runeID) {
     const staffs = STAFF_RUNES[runeID];
     return !!staffs && staffs.some((id) => player.inventory.isEquipped(id));
@@ -303,7 +294,7 @@ function isBusy(player) {
 }
 
 async function teleport(player, id, spell) {
-    if (getWildernessLevel(player) > 20) {
+    if (wilderness.wildernessLevel(player) > 20) {
         player.message(
             'A mysterious force blocks your teleport spell!',
             "You can't use teleport after level 20 wilderness"
@@ -452,7 +443,11 @@ function isGone(world, npc) {
 
 // walk straight at the npc until the spell reaches it. a new walk click
 // (walkQueue refilled) or a dead target cancels
-async function approach(player, npc) {
+async function approach(
+    player,
+    npc,
+    gone = (target) => isGone(player.world, target)
+) {
     const { world } = player;
 
     for (let i = 0; i < MAX_APPROACH_STEPS; i += 1) {
@@ -460,7 +455,7 @@ async function approach(player, npc) {
             return true;
         }
 
-        if (player.walkQueue.length || player.locked || isGone(world, npc)) {
+        if (player.walkQueue.length || player.locked || gone(npc)) {
             return false;
         }
 
@@ -636,14 +631,158 @@ async function castNPC({ player }, { index, id }) {
     }
 }
 
-async function castPlayer({ player }, { id }) {
-    getSpell(id);
+function playerGone(target) {
+    return !target.loggedIn || target.skills.hits.current <= 0;
+}
 
-    if (isBusy(player)) {
+// a spell cast on another player (Open-RSC SpellHandler handleMobCast, player
+// branch): Wilderness only, missiles and stat curses; god spells are refused
+async function castPlayer({ player }, { index, id }) {
+    const spell = getSpell(id);
+    const { world } = player;
+    const victim = world.players.getByIndex(index);
+
+    if (!victim || victim === player || !victim.loggedIn) {
         return;
     }
 
-    player.message("You can't attack other players here");
+    const fightingIt = player.opponent === victim;
+
+    if (
+        (player.locked && !fightingIt) ||
+        player.hasInterfaceOpen() ||
+        isCooling(player)
+    ) {
+        return;
+    }
+
+    const isMissile = MISSILES[id] !== undefined;
+    const curse = CURSES[id];
+
+    if (!isMissile && !curse) {
+        player.message('Nothing interesting happens');
+        return;
+    }
+
+    if (GOD_SPELLS.has(id) || inMageArena(player) || inMageArena(victim)) {
+        player.message("You can't attack other players here");
+        return;
+    }
+
+    if (id === CRUMBLE_UNDEAD) {
+        player.message(
+            'This spell can only be used on skeletons, zombies and ghosts'
+        );
+
+        return;
+    }
+
+    const staff = REQUIRED_STAFFS[id];
+
+    if (
+        staff &&
+        !staff.ids.some((staffID) => player.inventory.isEquipped(staffID))
+    ) {
+        player.message(`You need to be wielding the ${staff.name}`);
+        return;
+    }
+
+    // true (after telling the caster) when the Wilderness rules refuse
+    const refused = () => {
+        const refusal = wilderness.attackRefusal(player, victim, {
+            missile: true
+        });
+
+        if (refusal === null) {
+            return false;
+        }
+
+        if (refusal) {
+            player.message(refusal);
+        }
+
+        return true;
+    };
+
+    if (refused()) {
+        return;
+    }
+
+    if (
+        curse &&
+        victim.skills[curse.skill].current < victim.skills[curse.skill].base
+    ) {
+        const skillName = curse.skill === 'defense' ? 'defence' : curse.skill;
+        player.message(`Your opponent already has weakened ${skillName}`);
+        return;
+    }
+
+    // check before walking so a missing rune costs no steps
+    if (!checkCast(player, id, spell)) {
+        return;
+    }
+
+    if (!fightingIt) {
+        if (player.magicApproaching) {
+            return;
+        }
+
+        player.walkQueue.length = 0;
+        player.magicApproaching = true;
+
+        let reached;
+
+        try {
+            reached = await approach(player, victim, playerGone);
+        } finally {
+            player.magicApproaching = false;
+        }
+
+        if (!reached) {
+            if (playerGone(victim)) {
+                return;
+            }
+
+            player.message(
+                player.withinRange(victim, SPELL_RANGE * 2, true)
+                    ? "I can't get a clear shot from here"
+                    : "I can't get close enough"
+            );
+
+            return;
+        }
+    }
+
+    // the walk took ticks: everything may have changed
+    const cost = checkCast(player, id, spell);
+
+    if (!cost || playerGone(victim) || isCooling(player) || refused()) {
+        return;
+    }
+
+    player.faceEntity(victim);
+    player.sendProjectile(victim, PROJECTILE_MAGIC);
+    finishCast(player, id, cost, null);
+
+    wilderness.skullOnAttack(player, victim);
+    wilderness.markCombat(player, victim);
+
+    if (curse) {
+        const skill = victim.skills[curse.skill];
+        skill.current = Math.max(
+            0,
+            skill.current - Math.max(1, Math.ceil(skill.base * curse.fraction))
+        );
+
+        if (typeof victim.sendStats === 'function') {
+            victim.sendStats();
+        }
+
+        return;
+    }
+
+    const damage = rollSpellDamage(player, victim, getMaxHit(player, id));
+    victim.damage(damage, player, 'magic');
 }
 
 function alchemy(player, id, spell, item, rate) {

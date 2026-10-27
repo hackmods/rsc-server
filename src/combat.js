@@ -182,10 +182,19 @@ function rollPlayerNPCRangedDamage(player, npc) {
     return rollDamage(accuracy, maxHit, protection);
 }
 
+function rollPlayerPlayerRangedDamage(player, targetPlayer) {
+    const accuracy = getRangedAccuracy(player);
+    const maxHit = getRangedMaxHit(player);
+    const protection = getProtection(targetPlayer);
+
+    return rollDamage(accuracy, maxHit, protection);
+}
+
 module.exports = {
     rollPlayerNPCDamage,
     rollPlayerPlayerDamage,
     rollNPCDamage,
     rollPlayerNPCRangedDamage,
+    rollPlayerPlayerRangedDamage,
     getPrayerBonuses
 };

@@ -7,6 +7,7 @@ const npcs = require('@2003scape/rsc-data/config/npcs');
 const { rollItemDrop } = require('../rolls');
 const { rollNPCDamage } = require('../combat');
 const poisonRules = require('../poison');
+const { inWilderness } = require('../wilderness');
 
 const HERB_IDS = new Set(dropDefinitions.herb.map((entry) => entry.id));
 const PARALYZE_MONSTER_ID = 12;
@@ -36,9 +37,9 @@ class NPC extends Character {
 
         this.respawn = npcRespawn[id];
 
-        this.aggressive =
-            this.withinRegion('wilderness') ||
-            this.definition.hostility === 'aggressive';
+        // Open-RSC NpcBehavior.aggressiveCheck: only aggressive definitions
+        // aggro, in the wilderness too (rats and unicorns stay passive)
+        this.aggressive = this.definition.hostility === 'aggressive';
 
         // TODO add list of other NPCs that retreat
         this.retreats =
@@ -398,9 +399,11 @@ class NPC extends Character {
     }
 
     isAggressive(player) {
+        // NpcBehavior.aggressiveCheck: player < npc * 2 + 1 (so <= npc * 2),
+        // waived when both are in the wilderness
         return (
-            player.combatLevel < this.combatLevel * 2 ||
-            player.withinRegion('wilderness')
+            player.combatLevel <= this.combatLevel * 2 ||
+            (inWilderness(this) && inWilderness(player))
         );
     }
 

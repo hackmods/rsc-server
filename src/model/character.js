@@ -419,10 +419,7 @@ class Character extends Entity {
         this.unlock();
         this.fightStage = -1;
 
-        // PVP_REATTACK_TIMER: a player who ran from a player can't be
-        // attacked again in melee straight away
         if (this.username && opponent && opponent.username) {
-            this.ranAwayTick = world.ticks;
             wilderness.markCombat(this, opponent);
         }
 
