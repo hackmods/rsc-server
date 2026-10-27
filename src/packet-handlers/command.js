@@ -7,7 +7,7 @@ const regions = require('@2003scape/rsc-data/regions');
 
 // ARSC: commands that create items; the receiver is marked minted (barred from
 // the Grand Exchange, docs/GRAND_EXCHANGE.md in Autonomous-RSC)
-const MINT_COMMANDS = new Set(['item', 'give', 'droprandom']);
+const MINT_COMMANDS = new Set(['item', 'give', 'droprandom', 'clue']);
 
 // the bots' sleep assist conjures one sleeping bag; that alone does not bar the
 // account (the exchange does not list sleeping bags, src/exchange/rules.js)
@@ -135,6 +135,9 @@ async function command({ player }, { command, args }) {
             player.message(
                 `${player.x}, ${player.y}, facing=${player.direction}`
             );
+            break;
+        case 'clue': // ARSC treasure trails: ::clue easy|medium|hard, ::clue tp|skip|info [tier]
+            require('../clues').command(player, args);
             break;
         case 'teleport':
             if (Number.isNaN(+args[0])) {

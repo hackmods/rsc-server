@@ -5,6 +5,7 @@ const log = require('bole')('npc');
 const npcRespawn = require('@2003scape/rsc-data/npc-respawn');
 const npcs = require('@2003scape/rsc-data/config/npcs');
 const { rollItemDrop } = require('../rolls');
+const clues = require('../clues');
 const { rollNPCDamage } = require('../combat');
 const poisonRules = require('../poison');
 
@@ -149,6 +150,14 @@ class NPC extends Character {
 
                 for (const item of drops) {
                     world.addPlayerDrop(victor, item, this.x, this.y);
+                }
+
+                // ARSC treasure trails: the rare clue scroll (src/clues/config.json kill)
+                const clue = clues.rollKillDrop(victor, this);
+
+                if (clue) {
+                    world.addPlayerDrop(victor, clue.id, this.x, this.y);
+                    victor.message(`@gre@You notice ${clues.withArticle(clues.scrollName(clue.tier))} in the loot!`);
                 }
 
                 world.removeEntity('npcs', this);

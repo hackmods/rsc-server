@@ -20,6 +20,8 @@ module.exports = {
     "tutorial.npcs.wilderness-guide": require('./tutorial/npcs/wilderness-guide.js'),
     // ARSC: tavern rumours about Peter Panelist run before the NPC's own dialogue and never claim the talk
     "npcs.peter-rumours": require('./npcs/peter-rumours.js'),
+    // ARSC treasure trails: before the NPC, object and spade handlers; claims only a solved clue step
+    "items.treasure-trails": require('./items/treasure-trails.js'),
     "game-objects.banana-crate": require('./game-objects/banana-crate.js'),
     "game-objects.banana-tree": require('./game-objects/banana-tree.js'),
     "game-objects.bed": require('./game-objects/bed.js'),
