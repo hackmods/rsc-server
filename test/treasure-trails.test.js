@@ -630,14 +630,23 @@ test('rollSkillDrop respects a held scroll, a failed roll and the tutorial', () 
 
 // --- 14. command -------------------------------------------------------------
 
-test('::clue refuses non-administrators', () => {
+// the world's command policy (command.js canUseCommands) is the gate, not the rank
+test('::clue works for any account the command policy let through', () => {
     const player = fakePlayer({ admin: false });
 
     clues.command(player, ['medium']);
 
-    assert.ok(player.messages.some((m) => m.includes('Only administrators')));
-    assert.equal(player.inventory.has(SCROLL.medium), false);
-    assert.equal(player.cache.clues, undefined);
+    assert.equal(player.inventory.has(SCROLL.medium), true);
+    assert.ok(player.cache.clues.medium);
+});
+
+test('::clue sits behind the command policy and marks the account minted', () => {
+    const source = require('fs').readFileSync(require('path').join(__dirname, '../src/packet-handlers/command.js'), 'utf8');
+    const policy = source.indexOf('canUseCommands(player)');
+    const clue = source.indexOf("case 'clue':");
+
+    assert.ok(policy > 0 && clue > policy, 'the policy check runs before ::clue');
+    assert.match(source, /MINT_COMMANDS = new Set\([^)]*'clue'/);
 });
 
 test('::clue medium gives the medium scroll and starts the trail', () => {

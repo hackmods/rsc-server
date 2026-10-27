@@ -468,12 +468,10 @@ function rollSkillDrop(player, skill, random = Math.random) {
 }
 
 // ::clue <tier> | ::clue tp [tier] | ::clue skip [tier] | ::clue info [tier]
+// Who may use it is the world's command policy (world-admin canUseCommands,
+// ARSC_CMD_POLICY), checked by packet-handlers/command.js before this runs:
+// admins only on a locked-down world, every account on an open sandbox.
 function command(player, args) {
-    if (!player.isAdministrator()) {
-        player.message('Only administrators can use ::clue');
-        return;
-    }
-
     const [action, maybeTier] = args;
     const pickTier = (value) =>
         TIERS.includes(value)
