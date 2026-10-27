@@ -1,5 +1,5 @@
 {
-    "about": "ARSC treasure trail caskets: new item definitions appended after rsc-data's last item (1289, Scythe). The clients carry the same three rows in config85.jag (hackmods/rsc-client dist/data204, hackmods/rsc-c cache); the ids must match theirs. Sprite 187 is the casket picture; colour tints its grey pixels, as the party hats do.",
+    "about": "ARSC treasure trail caskets: new item definitions appended after rsc-data's last item (1289, Scythe). The clients carry the same three rows in config86.jag (hackmods/rsc-client dist/data204, hackmods/rsc-c cache); the ids must match theirs. Sprite 187 is the casket picture; colour tints its grey pixels (the straps: green, blue, gold), as the party hats are tinted.",
     "items": [
         {
             "id": 1290,
@@ -11,7 +11,7 @@
             "stackable": false,
             "special": false,
             "equip": null,
-            "colour": "rgb(205, 127, 50)",
+            "colour": "rgb(90, 255, 90)",
             "untradeable": false,
             "members": false
         },
@@ -25,7 +25,7 @@
             "stackable": false,
             "special": false,
             "equip": null,
-            "colour": "rgb(192, 200, 224)",
+            "colour": "rgb(110, 170, 255)",
             "untradeable": false,
             "members": false
         },
@@ -39,7 +39,7 @@
             "stackable": false,
             "special": false,
             "equip": null,
-            "colour": "rgb(255, 200, 0)",
+            "colour": "rgb(255, 215, 0)",
             "untradeable": false,
             "members": false
         }
