@@ -19,6 +19,7 @@ const mining = require('@2003scape/rsc-data/skills/mining');
 const ACCEPTED = new Set([
     'cooking 133/raw chicken -> cookedmeat(132): no shared stem', // the cooked item is literally named "cookedmeat"
     'mining rock 112 gives gold(152): not ore-like', // gold and silver rocks give gold/silver, which are the ores
+    'mining rock 315 gives gold(690): not ore-like', // the Witchaven (Family Crest) rock gives perfect gold, item 690, named "gold"
     'mining rock 195 gives silver(383): not ore-like',
     'mining rock 588 gives uncut opal(891): not ore-like', // the gem rock gives a list of uncut gems
     'mining rock 588 gives uncut jade(890): not ore-like',

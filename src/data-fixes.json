@@ -118,6 +118,142 @@
             "value": 2,
             "note": "the mithril throwing knife row has no amount, so it made 1 where every other bar makes 2",
             "source": "Open-RSC server/conf/server/defs/extras/ItemSmithingDef.xml (mithril bar rows), read by authentic/skills/smithing/Smithing.java"
+        },
+        {
+            "id": "npc-789-strength",
+            "file": "config/npcs",
+            "path": "789.strength",
+            "op": "set",
+            "value": 0,
+            "note": "rsc-data has strength 90 (stats shifted: attack 0 strength 90 hits 0 defense 120); Open-RSC strength 0",
+            "source": "Open-RSC server/conf/server/defs/NpcDefs.json, npc 789 Battle mage (line 30774)"
+        },
+        {
+            "id": "npc-789-hits",
+            "file": "config/npcs",
+            "path": "789.hits",
+            "op": "set",
+            "value": 120,
+            "note": "rsc-data has hits 0, which makes the Battle mage die in one hit; Open-RSC hits 120",
+            "source": "Open-RSC server/conf/server/defs/NpcDefs.json, npc 789 Battle mage (line 30774)"
+        },
+        {
+            "id": "npc-789-defense",
+            "file": "config/npcs",
+            "path": "789.defense",
+            "op": "set",
+            "value": 90,
+            "note": "rsc-data has defense 120; Open-RSC defense 90",
+            "source": "Open-RSC server/conf/server/defs/NpcDefs.json, npc 789 Battle mage (line 30774)"
+        },
+        {
+            "id": "npc-790-strength",
+            "file": "config/npcs",
+            "path": "790.strength",
+            "op": "set",
+            "value": 0,
+            "note": "rsc-data has strength 90 (stats shifted: attack 0 strength 90 hits 0 defense 120); Open-RSC strength 0",
+            "source": "Open-RSC server/conf/server/defs/NpcDefs.json, npc 790 Battle mage (line 30813)"
+        },
+        {
+            "id": "npc-790-hits",
+            "file": "config/npcs",
+            "path": "790.hits",
+            "op": "set",
+            "value": 120,
+            "note": "rsc-data has hits 0, which makes the Battle mage die in one hit; Open-RSC hits 120",
+            "source": "Open-RSC server/conf/server/defs/NpcDefs.json, npc 790 Battle mage (line 30813)"
+        },
+        {
+            "id": "npc-790-defense",
+            "file": "config/npcs",
+            "path": "790.defense",
+            "op": "set",
+            "value": 90,
+            "note": "rsc-data has defense 120; Open-RSC defense 90",
+            "source": "Open-RSC server/conf/server/defs/NpcDefs.json, npc 790 Battle mage (line 30813)"
+        },
+        {
+            "id": "npc-791-strength",
+            "file": "config/npcs",
+            "path": "791.strength",
+            "op": "set",
+            "value": 0,
+            "note": "rsc-data has strength 90 (stats shifted: attack 0 strength 90 hits 0 defense 120); Open-RSC strength 0",
+            "source": "Open-RSC server/conf/server/defs/NpcDefs.json, npc 791 Battle mage (line 30852)"
+        },
+        {
+            "id": "npc-791-hits",
+            "file": "config/npcs",
+            "path": "791.hits",
+            "op": "set",
+            "value": 120,
+            "note": "rsc-data has hits 0, which makes the Battle mage die in one hit; Open-RSC hits 120",
+            "source": "Open-RSC server/conf/server/defs/NpcDefs.json, npc 791 Battle mage (line 30852)"
+        },
+        {
+            "id": "npc-791-defense",
+            "file": "config/npcs",
+            "path": "791.defense",
+            "op": "set",
+            "value": 90,
+            "note": "rsc-data has defense 120; Open-RSC defense 90",
+            "source": "Open-RSC server/conf/server/defs/NpcDefs.json, npc 791 Battle mage (line 30852)"
+        },
+        {
+            "id": "npc-550-hits",
+            "file": "config/npcs",
+            "path": "550.hits",
+            "op": "set",
+            "value": 3,
+            "note": "rsc-data has hits 0 defense 3 (swapped); Open-RSC hits 3",
+            "source": "Open-RSC server/conf/server/defs/NpcDefs.json, npc 550 charlie (line 21453)"
+        },
+        {
+            "id": "npc-550-defense",
+            "file": "config/npcs",
+            "path": "550.defense",
+            "op": "set",
+            "value": 0,
+            "note": "rsc-data has defense 3; Open-RSC defense 0",
+            "source": "Open-RSC server/conf/server/defs/NpcDefs.json, npc 550 charlie (line 21453)"
+        },
+        {
+            "id": "mining-shilo-gem-rock-experience",
+            "file": "skills/mining",
+            "path": "rocks.588.experience",
+            "op": "set",
+            "value": 260,
+            "note": "rsc-data pays 200 per Shilo gem rock (588); Open-RSC pays 260 (same unit as copper 70 in ObjectMining.xml and rsc-data)",
+            "source": "Open-RSC server/plugins/com/openrsc/server/plugins/authentic/skills/mining/GemMining.java, line 148 (incExp 260)"
+        },
+        {
+            "id": "mining-shilo-gem-rock-respawn",
+            "file": "skills/mining",
+            "path": "rocks.588.respawn",
+            "op": "set",
+            "value": 120000,
+            "note": "rsc-data respawn 2000 ms; Open-RSC respawns the rock after 2 minutes",
+            "source": "Open-RSC server/plugins/com/openrsc/server/plugins/authentic/skills/mining/GemMining.java, line 163 (changeloc 120 * 1000)"
+        },
+        {
+            "id": "mining-witchaven-gold-rock",
+            "file": "skills/mining",
+            "path": "rocks.315",
+            "op": "set",
+            "value": {
+                "level": 40,
+                "experience": 260,
+                "roll": [
+                    7,
+                    75
+                ],
+                "ore": 690,
+                "respawn": 70000,
+                "depleted": 24
+            },
+            "note": "rsc-data row is {\"reference\":112} (gold rock 112, which gives gold nuggets 152); the Family Crest rock 315 gives perfect gold ore (690), respawn 70 s; rest copied from rock 112",
+            "source": "Open-RSC server/conf/server/defs/extras/ObjectMining.xml, entry 315 (lines 152-161: oreId 690, exp 260, requiredLvl 40, respawnTime 70)"
         }
     ]
 }

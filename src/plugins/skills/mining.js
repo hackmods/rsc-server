@@ -2,6 +2,7 @@
 // https://classic.runescape.wiki/w/Mining
 // Modelled on skills/woodcutting.js: one attempt per click, 3 tick delay.
 
+require('../../data-fixes'); // corrects the Shilo gem rock (588) and Witchaven gold rock (315) rows before DEPLETED_IDS is built
 const items = require('@2003scape/rsc-data/config/items');
 const objects = require('@2003scape/rsc-data/config/objects');
 const { pickaxes, gem, rocks } = require('@2003scape/rsc-data/skills/mining');
@@ -249,6 +250,32 @@ async function mine(player, gameObject, rockID, rock) {
     return true;
 }
 
+// object 770 "Rocks": not a mining rock. Any pickaxe breaks off an item
+// (Open-RSC Mining.java), no level check, no experience, no depletion.
+const ROCKS_OBJECT_ID = 770;
+const ROCKS_ITEM_ID = 986;
+
+async function mineLargeRocks(player) {
+    const hasPickaxe = Object.keys(pickaxes).some((id) =>
+        player.inventory.has(Number(id))
+    );
+
+    if (!hasPickaxe) {
+        player.message('@que@You need a pickaxe to mine this rock');
+        return true;
+    }
+
+    const { world } = player;
+
+    player.message('@que@You mine the rock');
+    await world.sleepTicks(3);
+    player.message('@que@and break of several large chunks');
+    await world.sleepTicks(3);
+    player.inventory.add(ROCKS_ITEM_ID);
+
+    return true;
+}
+
 async function doMining(player, gameObject, index) {
     const command = String(
         gameObject.definition.commands[index] || ''
@@ -259,6 +286,10 @@ async function doMining(player, gameObject, index) {
     }
 
     const rockID = gameObject.id;
+
+    if (rockID === ROCKS_OBJECT_ID) {
+        return command === 'mine' ? await mineLargeRocks(player) : false;
+    }
 
     if (!ROCK_IDS.has(rockID)) {
         if (DEPLETED_IDS.has(rockID)) {

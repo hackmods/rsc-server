@@ -6,9 +6,11 @@ const { fixes } = require('./data-fixes.json');
 
 // static requires so the browser bundle includes them
 const tables = {
+    'config/npcs': require('@2003scape/rsc-data/config/npcs'),
     'skills/cooking': require('@2003scape/rsc-data/skills/cooking'),
     'skills/fishing': require('@2003scape/rsc-data/skills/fishing'),
     'skills/herblaw': require('@2003scape/rsc-data/skills/herblaw'),
+    'skills/mining': require('@2003scape/rsc-data/skills/mining'),
     'skills/smithing': require('@2003scape/rsc-data/skills/smithing')
 };
 

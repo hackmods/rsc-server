@@ -4,7 +4,21 @@ const items = require('@2003scape/rsc-data/config/items');
 const { axes, trees } = require('@2003scape/rsc-data/skills/woodcutting');
 const { rollSkillSuccess } = require('../../rolls');
 
-const NORMAL_TREES = new Set([0, 1, 70]);
+// percent chance a tree falls after a log is cut: the `fell` field of Open-RSC Core-Framework
+// conf/server/defs/extras/ObjectWoodcutting.xml, rolled as DataConversions.random(1, 100) <= fell by authentic
+// Woodcutting.java. Normal trees (0, 1, 70) are 100: they always fall.
+const FELL_CHANCE = new Map([
+    [0, 100],
+    [1, 100],
+    [70, 100],
+    [306, 10], // oak
+    [307, 12], // willow
+    [308, 15], // maple
+    [309, 17], // yew
+    [310, 20] // magic
+]);
+// a tree missing from FELL_CHANCE (none today) falls like the old flat 12.5% roll
+const DEFAULT_FELL = 12;
 const TREE_IDS = new Set(Object.keys(trees).map(Number));
 
 // in order of best to worst
@@ -84,7 +98,10 @@ async function onGameObjectCommand(player, gameObject) {
     );
 
     if (world.gameObjects.getAtPoint(x, y)[0] === gameObject && logSuccess) {
-        const shouldFall = NORMAL_TREES.has(treeID) || Math.random() <= 0.125;
+        const fell = FELL_CHANCE.has(treeID)
+            ? FELL_CHANCE.get(treeID)
+            : DEFAULT_FELL;
+        const shouldFall = Math.floor(Math.random() * 100) + 1 <= fell;
 
         if (shouldFall) {
             const stump = world.replaceEntity(
