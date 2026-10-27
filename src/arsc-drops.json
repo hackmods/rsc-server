@@ -1,0 +1,9113 @@
+{
+ "about": "NPC drop tables ported from Open-RSC NpcDrops.java by scripts/port-npc-drops.js; do not edit by hand. Same entry format as @2003scape/rsc-data rolls/drops.json (weight 0 = always, reference = sub-table). src/drop-table.js layers this over rsc-data: an entry here replaces the rsc-data table for that NPC id.",
+ "generatedFrom": {
+  "file": "OpenRSC-Core-Framework server/src/com/openrsc/server/constants/NpcDrops.java",
+  "flags": {
+   "WANT_OPENPK_POINTS": false,
+   "WANT_CUSTOM_QUESTS": false,
+   "ONLY_REGULAR_BONES": false
+  },
+  "rollScale": 128,
+  "npcsPorted": 117,
+  "boneOnlyNpcs": 29,
+  "subTables": 14,
+  "skippedItemSlots": 0,
+  "skippedItems": [],
+  "skippedNpcIds": []
+ },
+ "drops": {
+  "0": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "id": 466,
+    "weight": 0
+   }
+  ],
+  "3": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "id": 133,
+    "weight": 0
+   },
+   {
+    "id": 381,
+    "amount": 3,
+    "weight": 76
+   },
+   {
+    "id": 381,
+    "amount": 10,
+    "weight": 20
+   }
+  ],
+  "4": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "id": 82,
+    "weight": 1
+   },
+   {
+    "id": 87,
+    "weight": 3
+   },
+   {
+    "id": 827,
+    "weight": 9
+   },
+   {
+    "id": 41,
+    "weight": 1
+   },
+   {
+    "id": 40,
+    "weight": 1
+   },
+   {
+    "id": 35,
+    "weight": 3
+   },
+   {
+    "id": 34,
+    "amount": 3,
+    "weight": 3
+   },
+   {
+    "id": 36,
+    "weight": 3
+   },
+   {
+    "id": 11,
+    "amount": 7,
+    "weight": 3
+   },
+   {
+    "reference": "herb",
+    "weight": 2
+   },
+   {
+    "id": 10,
+    "amount": 24,
+    "weight": 3
+   },
+   {
+    "id": 10,
+    "amount": 16,
+    "weight": 7
+   },
+   {
+    "id": 10,
+    "amount": 5,
+    "weight": 8
+   },
+   {
+    "id": 10,
+    "amount": 3,
+    "weight": 13
+   },
+   {
+    "id": 10,
+    "weight": 34
+   },
+   {
+    "id": 202,
+    "weight": 1
+   },
+   {
+    "id": 183,
+    "weight": 1
+   },
+   {
+    "id": 143,
+    "weight": 1
+   },
+   {
+    "id": 273,
+    "weight": 10
+   }
+  ],
+  "5": [
+   {
+    "id": 20,
+    "weight": 0
+   }
+  ],
+  "6": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "id": 147,
+    "weight": 0
+   },
+   {
+    "id": 504,
+    "weight": 0
+   }
+  ],
+  "8": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "id": 502,
+    "weight": 0
+   },
+   {
+    "id": 146,
+    "weight": 0
+   }
+  ],
+  "11": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "reference": "herb",
+    "weight": 23
+   },
+   {
+    "id": 10,
+    "amount": 3,
+    "weight": 38
+   },
+   {
+    "id": 10,
+    "amount": 5,
+    "weight": 9
+   },
+   {
+    "id": 380,
+    "weight": 5
+   },
+   {
+    "id": 10,
+    "amount": 15,
+    "weight": 4
+   },
+   {
+    "id": 11,
+    "amount": 7,
+    "weight": 3
+   },
+   {
+    "id": 34,
+    "amount": 3,
+    "weight": 2
+   },
+   {
+    "id": 31,
+    "amount": 4,
+    "weight": 2
+   },
+   {
+    "id": 35,
+    "amount": 6,
+    "weight": 2
+   },
+   {
+    "id": 150,
+    "weight": 2
+   },
+   {
+    "id": 104,
+    "weight": 2
+   },
+   {
+    "id": 18,
+    "weight": 1
+   },
+   {
+    "id": 28,
+    "weight": 1
+   },
+   {
+    "id": 41,
+    "weight": 1
+   },
+   {
+    "id": 10,
+    "amount": 25,
+    "weight": 1
+   }
+  ],
+  "19": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "id": 503,
+    "weight": 0
+   }
+  ],
+  "21": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "id": 34,
+    "amount": 3,
+    "weight": 2
+   },
+   {
+    "id": 32,
+    "amount": 4,
+    "weight": 2
+   },
+   {
+    "id": 35,
+    "amount": 6,
+    "weight": 3
+   },
+   {
+    "reference": "herb",
+    "weight": 13
+   },
+   {
+    "id": 10,
+    "amount": 5,
+    "weight": 12
+   },
+   {
+    "id": 10,
+    "amount": 10,
+    "weight": 3
+   },
+   {
+    "id": 10,
+    "amount": 25,
+    "weight": 1
+   },
+   {
+    "id": 237,
+    "weight": 40
+   },
+   {
+    "id": 380,
+    "weight": 6
+   },
+   {
+    "id": 150,
+    "weight": 2
+   },
+   {
+    "id": 18,
+    "weight": 1
+   },
+   {
+    "id": 104,
+    "weight": 2
+   },
+   {
+    "id": 13,
+    "weight": 1
+   }
+  ],
+  "22": [
+   {
+    "id": 181,
+    "weight": 0
+   },
+   {
+    "id": 115,
+    "weight": 1
+   },
+   {
+    "id": 126,
+    "weight": 1
+   },
+   {
+    "id": 399,
+    "weight": 1
+   },
+   {
+    "id": 84,
+    "weight": 3
+   },
+   {
+    "id": 88,
+    "weight": 4
+   },
+   {
+    "id": 109,
+    "weight": 4
+   },
+   {
+    "id": 31,
+    "amount": 20,
+    "weight": 1
+   },
+   {
+    "id": 31,
+    "amount": 40,
+    "weight": 8
+   },
+   {
+    "id": 38,
+    "amount": 2,
+    "weight": 3
+   },
+   {
+    "id": 41,
+    "amount": 8,
+    "weight": 5
+   },
+   {
+    "reference": "herb",
+    "weight": 1
+   },
+   {
+    "id": 10,
+    "amount": 10,
+    "weight": 7
+   },
+   {
+    "id": 10,
+    "amount": 40,
+    "weight": 29
+   },
+   {
+    "id": 10,
+    "amount": 120,
+    "weight": 40
+   },
+   {
+    "id": 10,
+    "amount": 200,
+    "weight": 10
+   },
+   {
+    "id": 152,
+    "weight": 2
+   },
+   {
+    "id": 142,
+    "amount": 2,
+    "weight": 3
+   },
+   {
+    "reference": "rare",
+    "weight": 4
+   }
+  ],
+  "25": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "id": 49,
+    "weight": 0
+   }
+  ],
+  "35": [
+   {
+    "id": 181,
+    "weight": 0
+   }
+  ],
+  "37": [
+   {
+    "id": 20,
+    "weight": 0
+   }
+  ],
+  "40": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "reference": "herb",
+    "weight": 21
+   },
+   {
+    "id": 10,
+    "amount": 2,
+    "weight": 28
+   },
+   {
+    "id": 10,
+    "amount": 6,
+    "weight": 21
+   },
+   {
+    "id": 10,
+    "weight": 8
+   },
+   {
+    "id": 10,
+    "amount": 13,
+    "weight": 7
+   },
+   {
+    "id": 10,
+    "amount": 20,
+    "weight": 4
+   },
+   {
+    "id": 11,
+    "amount": 8,
+    "weight": 4
+   },
+   {
+    "id": 10,
+    "amount": 30,
+    "weight": 3
+   },
+   {
+    "id": 104,
+    "weight": 3
+   },
+   {
+    "id": 35,
+    "weight": 3
+   },
+   {
+    "id": 40,
+    "amount": 2,
+    "weight": 2
+   },
+   {
+    "id": 34,
+    "weight": 2
+   },
+   {
+    "id": 32,
+    "amount": 2,
+    "weight": 2
+   },
+   {
+    "id": 41,
+    "weight": 1
+   },
+   {
+    "id": 113,
+    "weight": 1
+   },
+   {
+    "id": 16,
+    "weight": 1
+   },
+   {
+    "id": 0,
+    "weight": 1
+   },
+   {
+    "id": 21,
+    "weight": 1
+   }
+  ],
+  "41": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "id": 10,
+    "amount": 18,
+    "weight": 21
+   },
+   {
+    "id": 10,
+    "amount": 10,
+    "weight": 10
+   },
+   {
+    "id": 10,
+    "amount": 26,
+    "weight": 8
+   },
+   {
+    "id": 10,
+    "amount": 35,
+    "weight": 6
+   },
+   {
+    "id": 0,
+    "weight": 3
+   },
+   {
+    "id": 33,
+    "amount": 2,
+    "weight": 3
+   },
+   {
+    "id": 28,
+    "weight": 2
+   },
+   {
+    "id": 60,
+    "weight": 2
+   },
+   {
+    "id": 36,
+    "amount": 2,
+    "weight": 2
+   },
+   {
+    "id": 166,
+    "weight": 2
+   },
+   {
+    "id": 128,
+    "weight": 1
+   },
+   {
+    "id": 46,
+    "weight": 1
+   },
+   {
+    "id": 202,
+    "weight": 1
+   },
+   {
+    "id": 270,
+    "weight": 1
+   },
+   {
+    "id": 31,
+    "amount": 5,
+    "weight": 1
+   }
+  ],
+  "45": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "reference": "herb",
+    "weight": 20
+   },
+   {
+    "reference": "rare",
+    "weight": 1
+   },
+   {
+    "id": 10,
+    "amount": 5,
+    "weight": 25
+   },
+   {
+    "id": 10,
+    "amount": 10,
+    "weight": 24
+   },
+   {
+    "id": 10,
+    "amount": 25,
+    "weight": 8
+   },
+   {
+    "id": 5,
+    "weight": 6
+   },
+   {
+    "id": 169,
+    "weight": 5
+   },
+   {
+    "id": 1,
+    "weight": 4
+   },
+   {
+    "id": 10,
+    "amount": 45,
+    "weight": 4
+   },
+   {
+    "id": 10,
+    "amount": 65,
+    "weight": 3
+   },
+   {
+    "id": 32,
+    "amount": 6,
+    "weight": 3
+   },
+   {
+    "id": 33,
+    "amount": 10,
+    "weight": 3
+   },
+   {
+    "id": 41,
+    "amount": 3,
+    "weight": 3
+   },
+   {
+    "id": 12,
+    "weight": 2
+   },
+   {
+    "id": 42,
+    "weight": 2
+   },
+   {
+    "id": 10,
+    "weight": 2
+   },
+   {
+    "id": 83,
+    "weight": 1
+   },
+   {
+    "id": 113,
+    "weight": 1
+   },
+   {
+    "id": 46,
+    "weight": 1
+   }
+  ],
+  "46": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "reference": "herb",
+    "weight": 21
+   },
+   {
+    "reference": "rare",
+    "weight": 1
+   },
+   {
+    "id": 10,
+    "amount": 2,
+    "weight": 18
+   },
+   {
+    "id": 10,
+    "amount": 12,
+    "weight": 15
+   },
+   {
+    "id": 11,
+    "amount": 2,
+    "weight": 7
+   },
+   {
+    "id": 10,
+    "amount": 4,
+    "weight": 7
+   },
+   {
+    "id": 28,
+    "weight": 6
+   },
+   {
+    "id": 11,
+    "amount": 5,
+    "weight": 4
+   },
+   {
+    "id": 66,
+    "weight": 4
+   },
+   {
+    "id": 10,
+    "amount": 16,
+    "weight": 4
+   },
+   {
+    "id": 10,
+    "amount": 25,
+    "weight": 4
+   },
+   {
+    "id": 10,
+    "amount": 33,
+    "weight": 4
+   },
+   {
+    "id": 33,
+    "amount": 8,
+    "weight": 2
+   },
+   {
+    "id": 41,
+    "amount": 2,
+    "weight": 2
+   },
+   {
+    "id": 34,
+    "amount": 2,
+    "weight": 2
+   },
+   {
+    "id": 31,
+    "weight": 2
+   },
+   {
+    "id": 70,
+    "weight": 1
+   },
+   {
+    "id": 40,
+    "amount": 2,
+    "weight": 1
+   },
+   {
+    "id": 10,
+    "amount": 48,
+    "weight": 1
+   },
+   {
+    "id": 29,
+    "weight": 1
+   },
+   {
+    "id": 151,
+    "weight": 1
+   }
+  ],
+  "47": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "id": 503,
+    "weight": 0
+   }
+  ],
+  "49": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "id": 502,
+    "weight": 0
+   },
+   {
+    "id": 146,
+    "weight": 0
+   }
+  ],
+  "50": [
+   {
+    "id": 20,
+    "weight": 0
+   }
+  ],
+  "52": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "reference": "herb",
+    "weight": 25
+   },
+   {
+    "id": 380,
+    "amount": 5,
+    "weight": 46
+   },
+   {
+    "id": 10,
+    "amount": 10,
+    "weight": 11
+   },
+   {
+    "id": 36,
+    "amount": 4,
+    "weight": 5
+   },
+   {
+    "id": 35,
+    "amount": 3,
+    "weight": 5
+   },
+   {
+    "id": 10,
+    "amount": 4,
+    "weight": 4
+   },
+   {
+    "id": 33,
+    "amount": 9,
+    "weight": 4
+   },
+   {
+    "id": 11,
+    "amount": 8,
+    "weight": 4
+   },
+   {
+    "id": 104,
+    "weight": 4
+   },
+   {
+    "id": 10,
+    "amount": 18,
+    "weight": 3
+   },
+   {
+    "id": 10,
+    "amount": 28,
+    "weight": 2
+   },
+   {
+    "id": 10,
+    "amount": 13,
+    "weight": 2
+   },
+   {
+    "id": 150,
+    "weight": 2
+   },
+   {
+    "id": 70,
+    "weight": 1
+   },
+   {
+    "id": 12,
+    "weight": 1
+   },
+   {
+    "id": 40,
+    "amount": 4,
+    "weight": 1
+   }
+  ],
+  "57": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "id": 10,
+    "weight": 24
+   },
+   {
+    "id": 216,
+    "weight": 10
+   },
+   {
+    "id": 10,
+    "amount": 2,
+    "weight": 9
+   },
+   {
+    "id": 100,
+    "weight": 8
+   },
+   {
+    "id": 40,
+    "weight": 8
+   },
+   {
+    "id": 41,
+    "weight": 8
+   },
+   {
+    "id": 10,
+    "amount": 18,
+    "weight": 7
+   },
+   {
+    "id": 199,
+    "weight": 6
+   },
+   {
+    "id": 31,
+    "amount": 3,
+    "weight": 3
+   },
+   {
+    "id": 32,
+    "amount": 3,
+    "weight": 3
+   },
+   {
+    "id": 33,
+    "amount": 3,
+    "weight": 3
+   },
+   {
+    "id": 34,
+    "amount": 3,
+    "weight": 3
+   },
+   {
+    "id": 35,
+    "amount": 3,
+    "weight": 3
+   },
+   {
+    "id": 36,
+    "amount": 3,
+    "weight": 3
+   },
+   {
+    "id": 31,
+    "amount": 8,
+    "weight": 2
+   },
+   {
+    "id": 32,
+    "amount": 8,
+    "weight": 2
+   },
+   {
+    "id": 33,
+    "amount": 8,
+    "weight": 2
+   },
+   {
+    "id": 34,
+    "amount": 8,
+    "weight": 2
+   },
+   {
+    "id": 35,
+    "amount": 8,
+    "weight": 2
+   },
+   {
+    "id": 36,
+    "amount": 8,
+    "weight": 2
+   },
+   {
+    "id": 42,
+    "weight": 1
+   },
+   {
+    "id": 619,
+    "weight": 1
+   },
+   {
+    "id": 10,
+    "amount": 30,
+    "weight": 1
+   }
+  ],
+  "60": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "id": 10,
+    "weight": 17
+   },
+   {
+    "id": 10,
+    "amount": 2,
+    "weight": 16
+   },
+   {
+    "id": 10,
+    "amount": 4,
+    "weight": 9
+   },
+   {
+    "id": 100,
+    "weight": 8
+   },
+   {
+    "id": 40,
+    "amount": 3,
+    "weight": 6
+   },
+   {
+    "id": 41,
+    "amount": 3,
+    "weight": 6
+   },
+   {
+    "id": 199,
+    "weight": 4
+   },
+   {
+    "id": 216,
+    "weight": 3
+   },
+   {
+    "id": 31,
+    "amount": 7,
+    "weight": 3
+   },
+   {
+    "id": 10,
+    "amount": 29,
+    "weight": 3
+   },
+   {
+    "id": 32,
+    "amount": 7,
+    "weight": 3
+   },
+   {
+    "id": 33,
+    "amount": 7,
+    "weight": 3
+   },
+   {
+    "id": 34,
+    "amount": 7,
+    "weight": 3
+   },
+   {
+    "id": 35,
+    "amount": 7,
+    "weight": 3
+   },
+   {
+    "id": 36,
+    "amount": 7,
+    "weight": 3
+   },
+   {
+    "id": 619,
+    "weight": 2
+   },
+   {
+    "id": 31,
+    "amount": 12,
+    "weight": 2
+   },
+   {
+    "id": 32,
+    "amount": 12,
+    "weight": 2
+   },
+   {
+    "id": 33,
+    "amount": 12,
+    "weight": 2
+   },
+   {
+    "id": 34,
+    "amount": 12,
+    "weight": 2
+   },
+   {
+    "id": 35,
+    "amount": 12,
+    "weight": 2
+   },
+   {
+    "id": 36,
+    "amount": 12,
+    "weight": 2
+   },
+   {
+    "id": 42,
+    "amount": 2,
+    "weight": 1
+   },
+   {
+    "id": 46,
+    "weight": 1
+   },
+   {
+    "id": 10,
+    "amount": 30,
+    "weight": 1
+   }
+  ],
+  "61": [
+   {
+    "id": 413,
+    "weight": 0
+   },
+   {
+    "reference": "herb",
+    "weight": 7
+   },
+   {
+    "reference": "rare",
+    "weight": 3
+   },
+   {
+    "id": 10,
+    "amount": 38,
+    "weight": 26
+   },
+   {
+    "id": 220,
+    "weight": 11
+   },
+   {
+    "id": 10,
+    "amount": 52,
+    "weight": 10
+   },
+   {
+    "id": 10,
+    "amount": 15,
+    "weight": 8
+   },
+   {
+    "id": 10,
+    "amount": 8,
+    "weight": 6
+   },
+   {
+    "id": 10,
+    "amount": 3,
+    "weight": 6
+   },
+   {
+    "id": 193,
+    "weight": 6
+   },
+   {
+    "id": 6,
+    "weight": 5
+   },
+   {
+    "id": 28,
+    "weight": 4
+   },
+   {
+    "id": 2,
+    "weight": 3
+   },
+   {
+    "id": 31,
+    "amount": 10,
+    "weight": 3
+   },
+   {
+    "id": 32,
+    "amount": 5,
+    "weight": 3
+   },
+   {
+    "id": 42,
+    "weight": 3
+   },
+   {
+    "id": 94,
+    "weight": 2
+   },
+   {
+    "id": 72,
+    "weight": 2
+   },
+   {
+    "id": 10,
+    "amount": 88,
+    "weight": 2
+   },
+   {
+    "id": 46,
+    "weight": 2
+   },
+   {
+    "id": 40,
+    "amount": 4,
+    "weight": 2
+   },
+   {
+    "id": 35,
+    "amount": 2,
+    "weight": 2
+   },
+   {
+    "id": 41,
+    "weight": 1
+   },
+   {
+    "id": 38,
+    "weight": 1
+   }
+  ],
+  "62": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "id": 10,
+    "amount": 5,
+    "weight": 28
+   },
+   {
+    "id": 827,
+    "weight": 12
+   },
+   {
+    "id": 32,
+    "amount": 4,
+    "weight": 6
+   },
+   {
+    "id": 36,
+    "amount": 7,
+    "weight": 5
+   },
+   {
+    "id": 273,
+    "weight": 5
+   },
+   {
+    "id": 124,
+    "weight": 3
+   },
+   {
+    "id": 190,
+    "amount": 8,
+    "weight": 3
+   },
+   {
+    "id": 34,
+    "amount": 3,
+    "weight": 3
+   },
+   {
+    "id": 10,
+    "amount": 9,
+    "weight": 3
+   },
+   {
+    "id": 10,
+    "amount": 15,
+    "weight": 3
+   },
+   {
+    "id": 10,
+    "amount": 20,
+    "weight": 2
+   },
+   {
+    "id": 193,
+    "weight": 2
+   },
+   {
+    "id": 189,
+    "weight": 1
+   },
+   {
+    "id": 186,
+    "weight": 1
+   },
+   {
+    "id": 192,
+    "weight": 1
+   }
+  ],
+  "63": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "reference": "herb",
+    "weight": 23
+   },
+   {
+    "id": 10,
+    "amount": 3,
+    "weight": 38
+   },
+   {
+    "id": 10,
+    "amount": 5,
+    "weight": 9
+   },
+   {
+    "id": 380,
+    "weight": 5
+   },
+   {
+    "id": 10,
+    "amount": 15,
+    "weight": 4
+   },
+   {
+    "id": 11,
+    "amount": 7,
+    "weight": 3
+   },
+   {
+    "id": 34,
+    "amount": 3,
+    "weight": 2
+   },
+   {
+    "id": 31,
+    "amount": 4,
+    "weight": 2
+   },
+   {
+    "id": 35,
+    "amount": 6,
+    "weight": 2
+   },
+   {
+    "id": 150,
+    "weight": 2
+   },
+   {
+    "id": 104,
+    "weight": 2
+   },
+   {
+    "id": 18,
+    "weight": 1
+   },
+   {
+    "id": 28,
+    "weight": 1
+   },
+   {
+    "id": 41,
+    "weight": 1
+   },
+   {
+    "id": 10,
+    "amount": 25,
+    "weight": 1
+   }
+  ],
+  "64": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "reference": "herb",
+    "weight": 23
+   },
+   {
+    "id": 10,
+    "amount": 3,
+    "weight": 38
+   },
+   {
+    "id": 10,
+    "amount": 5,
+    "weight": 9
+   },
+   {
+    "id": 380,
+    "weight": 5
+   },
+   {
+    "id": 10,
+    "amount": 15,
+    "weight": 4
+   },
+   {
+    "id": 11,
+    "amount": 7,
+    "weight": 3
+   },
+   {
+    "id": 34,
+    "amount": 3,
+    "weight": 2
+   },
+   {
+    "id": 31,
+    "amount": 4,
+    "weight": 2
+   },
+   {
+    "id": 35,
+    "amount": 6,
+    "weight": 2
+   },
+   {
+    "id": 150,
+    "weight": 2
+   },
+   {
+    "id": 104,
+    "weight": 2
+   },
+   {
+    "id": 18,
+    "weight": 1
+   },
+   {
+    "id": 28,
+    "weight": 1
+   },
+   {
+    "id": 41,
+    "weight": 1
+   },
+   {
+    "id": 10,
+    "amount": 25,
+    "weight": 1
+   }
+  ],
+  "65": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "id": 10,
+    "weight": 38
+   },
+   {
+    "id": 10,
+    "amount": 4,
+    "weight": 16
+   },
+   {
+    "id": 10,
+    "amount": 7,
+    "weight": 10
+   },
+   {
+    "id": 10,
+    "amount": 12,
+    "weight": 9
+   },
+   {
+    "id": 28,
+    "weight": 6
+   },
+   {
+    "id": 104,
+    "weight": 4
+   },
+   {
+    "id": 10,
+    "amount": 17,
+    "weight": 4
+   },
+   {
+    "id": 10,
+    "amount": 25,
+    "weight": 4
+   },
+   {
+    "id": 11,
+    "weight": 3
+   },
+   {
+    "id": 10,
+    "amount": 30,
+    "weight": 2
+   },
+   {
+    "id": 33,
+    "amount": 4,
+    "weight": 2
+   },
+   {
+    "id": 11,
+    "amount": 2,
+    "weight": 2
+   },
+   {
+    "id": 34,
+    "weight": 2
+   },
+   {
+    "id": 31,
+    "weight": 2
+   },
+   {
+    "id": 70,
+    "weight": 1
+   },
+   {
+    "id": 619,
+    "weight": 1
+   },
+   {
+    "id": 41,
+    "weight": 1
+   },
+   {
+    "id": 40,
+    "weight": 1
+   },
+   {
+    "id": 29,
+    "weight": 1
+   },
+   {
+    "id": 151,
+    "weight": 1
+   }
+  ],
+  "66": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "reference": "herb",
+    "weight": 3
+   },
+   {
+    "reference": "rare",
+    "weight": 3
+   },
+   {
+    "id": 10,
+    "amount": 35,
+    "weight": 37
+   },
+   {
+    "id": 10,
+    "amount": 12,
+    "weight": 14
+   },
+   {
+    "id": 10,
+    "weight": 12
+   },
+   {
+    "id": 10,
+    "amount": 58,
+    "weight": 12
+   },
+   {
+    "id": 10,
+    "amount": 6,
+    "weight": 10
+   },
+   {
+    "id": 171,
+    "weight": 6
+   },
+   {
+    "id": 1,
+    "weight": 4
+   },
+   {
+    "id": 34,
+    "amount": 7,
+    "weight": 3
+   },
+   {
+    "id": 41,
+    "amount": 4,
+    "weight": 3
+   },
+   {
+    "id": 36,
+    "amount": 6,
+    "weight": 3
+   },
+   {
+    "id": 6,
+    "weight": 2
+   },
+   {
+    "id": 42,
+    "amount": 2,
+    "weight": 2
+   },
+   {
+    "id": 38,
+    "weight": 2
+   },
+   {
+    "id": 10,
+    "amount": 80,
+    "weight": 2
+   },
+   {
+    "id": 189,
+    "weight": 1
+   },
+   {
+    "id": 95,
+    "weight": 1
+   },
+   {
+    "id": 35,
+    "weight": 1
+   },
+   {
+    "id": 46,
+    "weight": 1
+   },
+   {
+    "id": 138,
+    "weight": 1
+   },
+   {
+    "id": 202,
+    "weight": 1
+   },
+   {
+    "id": 23,
+    "weight": 1
+   }
+  ],
+  "67": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "reference": "herb",
+    "weight": 7
+   },
+   {
+    "reference": "rare",
+    "weight": 2
+   },
+   {
+    "id": 10,
+    "amount": 15,
+    "weight": 36
+   },
+   {
+    "id": 220,
+    "weight": 22
+   },
+   {
+    "id": 10,
+    "amount": 5,
+    "weight": 12
+   },
+   {
+    "id": 10,
+    "amount": 28,
+    "weight": 10
+   },
+   {
+    "id": 10,
+    "amount": 62,
+    "weight": 4
+   },
+   {
+    "id": 10,
+    "amount": 42,
+    "weight": 3
+   },
+   {
+    "id": 827,
+    "weight": 3
+   },
+   {
+    "id": 1,
+    "weight": 3
+   },
+   {
+    "id": 63,
+    "weight": 3
+   },
+   {
+    "id": 42,
+    "weight": 3
+   },
+   {
+    "id": 1088,
+    "weight": 2
+   },
+   {
+    "id": 1089,
+    "weight": 2
+   },
+   {
+    "id": 36,
+    "amount": 4,
+    "weight": 2
+   },
+   {
+    "id": 41,
+    "amount": 2,
+    "weight": 2
+   },
+   {
+    "id": 31,
+    "amount": 5,
+    "weight": 2
+   },
+   {
+    "id": 40,
+    "amount": 3,
+    "weight": 2
+   },
+   {
+    "id": 32,
+    "weight": 2
+   },
+   {
+    "id": 273,
+    "weight": 2
+   },
+   {
+    "id": 60,
+    "weight": 1
+   },
+   {
+    "id": 72,
+    "weight": 1
+   },
+   {
+    "id": 46,
+    "weight": 1
+   }
+  ],
+  "68": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "reference": "herb",
+    "weight": 20
+   },
+   {
+    "reference": "rare",
+    "weight": 1
+   },
+   {
+    "id": 10,
+    "amount": 5,
+    "weight": 25
+   },
+   {
+    "id": 10,
+    "amount": 10,
+    "weight": 24
+   },
+   {
+    "id": 10,
+    "amount": 25,
+    "weight": 8
+   },
+   {
+    "id": 5,
+    "weight": 6
+   },
+   {
+    "id": 169,
+    "weight": 5
+   },
+   {
+    "id": 1,
+    "weight": 4
+   },
+   {
+    "id": 10,
+    "amount": 45,
+    "weight": 4
+   },
+   {
+    "id": 10,
+    "amount": 65,
+    "weight": 3
+   },
+   {
+    "id": 32,
+    "amount": 6,
+    "weight": 3
+   },
+   {
+    "id": 33,
+    "amount": 10,
+    "weight": 3
+   },
+   {
+    "id": 41,
+    "amount": 3,
+    "weight": 3
+   },
+   {
+    "id": 10,
+    "weight": 2
+   },
+   {
+    "id": 42,
+    "weight": 2
+   },
+   {
+    "id": 12,
+    "weight": 2
+   },
+   {
+    "id": 83,
+    "weight": 1
+   },
+   {
+    "id": 113,
+    "weight": 1
+   },
+   {
+    "id": 46,
+    "weight": 1
+   }
+  ],
+  "72": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "reference": "herb",
+    "weight": 23
+   },
+   {
+    "id": 10,
+    "amount": 3,
+    "weight": 38
+   },
+   {
+    "id": 10,
+    "amount": 5,
+    "weight": 9
+   },
+   {
+    "id": 380,
+    "weight": 5
+   },
+   {
+    "id": 10,
+    "amount": 15,
+    "weight": 4
+   },
+   {
+    "id": 11,
+    "amount": 7,
+    "weight": 3
+   },
+   {
+    "id": 34,
+    "amount": 3,
+    "weight": 2
+   },
+   {
+    "id": 31,
+    "amount": 4,
+    "weight": 2
+   },
+   {
+    "id": 35,
+    "amount": 6,
+    "weight": 2
+   },
+   {
+    "id": 150,
+    "weight": 2
+   },
+   {
+    "id": 104,
+    "weight": 2
+   },
+   {
+    "id": 18,
+    "weight": 1
+   },
+   {
+    "id": 28,
+    "weight": 1
+   },
+   {
+    "id": 41,
+    "weight": 1
+   },
+   {
+    "id": 10,
+    "amount": 25,
+    "weight": 1
+   }
+  ],
+  "76": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "reference": "rare",
+    "weight": 1
+   },
+   {
+    "id": 10,
+    "amount": 5,
+    "weight": 42
+   },
+   {
+    "id": 10,
+    "amount": 8,
+    "weight": 9
+   },
+   {
+    "id": 87,
+    "weight": 6
+   },
+   {
+    "id": 10,
+    "amount": 17,
+    "weight": 5
+   },
+   {
+    "id": 100,
+    "weight": 4
+   },
+   {
+    "id": 41,
+    "weight": 4
+   },
+   {
+    "id": 10,
+    "amount": 27,
+    "weight": 3
+   },
+   {
+    "id": 34,
+    "weight": 3
+   },
+   {
+    "id": 11,
+    "amount": 15,
+    "weight": 3
+   },
+   {
+    "id": 42,
+    "weight": 1
+   },
+   {
+    "id": 31,
+    "amount": 3,
+    "weight": 2
+   },
+   {
+    "id": 35,
+    "amount": 3,
+    "weight": 2
+   },
+   {
+    "id": 0,
+    "weight": 1
+   },
+   {
+    "id": 132,
+    "weight": 1
+   },
+   {
+    "id": 146,
+    "weight": 1
+   },
+   {
+    "id": 293,
+    "weight": 1
+   },
+   {
+    "id": 202,
+    "weight": 1
+   },
+   {
+    "id": 201,
+    "weight": 1
+   },
+   {
+    "id": 193,
+    "weight": 1
+   }
+  ],
+  "78": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "reference": "rare",
+    "weight": 1
+   },
+   {
+    "id": 10,
+    "amount": 5,
+    "weight": 42
+   },
+   {
+    "id": 10,
+    "amount": 8,
+    "weight": 9
+   },
+   {
+    "id": 87,
+    "weight": 6
+   },
+   {
+    "id": 10,
+    "amount": 17,
+    "weight": 5
+   },
+   {
+    "id": 100,
+    "weight": 4
+   },
+   {
+    "id": 41,
+    "weight": 4
+   },
+   {
+    "id": 10,
+    "amount": 27,
+    "weight": 3
+   },
+   {
+    "id": 34,
+    "weight": 3
+   },
+   {
+    "id": 11,
+    "amount": 15,
+    "weight": 3
+   },
+   {
+    "id": 42,
+    "weight": 1
+   },
+   {
+    "id": 31,
+    "amount": 3,
+    "weight": 2
+   },
+   {
+    "id": 35,
+    "amount": 3,
+    "weight": 2
+   },
+   {
+    "id": 0,
+    "weight": 1
+   },
+   {
+    "id": 132,
+    "weight": 1
+   },
+   {
+    "id": 146,
+    "weight": 1
+   },
+   {
+    "id": 293,
+    "weight": 1
+   },
+   {
+    "id": 202,
+    "weight": 1
+   },
+   {
+    "id": 201,
+    "weight": 1
+   },
+   {
+    "id": 193,
+    "weight": 1
+   }
+  ],
+  "81": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "id": 184,
+    "weight": 0
+   },
+   {
+    "id": 185,
+    "weight": 0
+   }
+  ],
+  "86": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "reference": "herb",
+    "weight": 23
+   },
+   {
+    "id": 10,
+    "amount": 3,
+    "weight": 38
+   },
+   {
+    "id": 10,
+    "amount": 5,
+    "weight": 9
+   },
+   {
+    "id": 380,
+    "weight": 5
+   },
+   {
+    "id": 10,
+    "amount": 15,
+    "weight": 4
+   },
+   {
+    "id": 11,
+    "amount": 7,
+    "weight": 3
+   },
+   {
+    "id": 34,
+    "amount": 3,
+    "weight": 2
+   },
+   {
+    "id": 31,
+    "amount": 4,
+    "weight": 2
+   },
+   {
+    "id": 35,
+    "amount": 6,
+    "weight": 2
+   },
+   {
+    "id": 150,
+    "weight": 2
+   },
+   {
+    "id": 104,
+    "weight": 2
+   },
+   {
+    "id": 18,
+    "weight": 1
+   },
+   {
+    "id": 28,
+    "weight": 1
+   },
+   {
+    "id": 41,
+    "weight": 1
+   },
+   {
+    "id": 10,
+    "amount": 25,
+    "weight": 1
+   }
+  ],
+  "89": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "id": 209,
+    "weight": 0
+   }
+  ],
+  "94": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "reference": "rare",
+    "weight": 1
+   },
+   {
+    "id": 10,
+    "amount": 4,
+    "weight": 23
+   },
+   {
+    "id": 156,
+    "weight": 13
+   },
+   {
+    "id": 10,
+    "amount": 10,
+    "weight": 12
+   },
+   {
+    "id": 168,
+    "weight": 10
+   },
+   {
+    "id": 169,
+    "weight": 7
+   },
+   {
+    "id": 104,
+    "weight": 4
+   },
+   {
+    "id": 41,
+    "weight": 4
+   },
+   {
+    "id": 40,
+    "weight": 4
+   },
+   {
+    "id": 151,
+    "weight": 4
+   },
+   {
+    "id": 150,
+    "weight": 3
+   },
+   {
+    "id": 170,
+    "weight": 3
+   },
+   {
+    "id": 202,
+    "weight": 3
+   },
+   {
+    "id": 155,
+    "weight": 2
+   },
+   {
+    "id": 205,
+    "weight": 2
+   },
+   {
+    "id": 10,
+    "amount": 30,
+    "weight": 2
+   },
+   {
+    "id": 89,
+    "weight": 1
+   }
+  ],
+  "100": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "id": 10,
+    "weight": 38
+   },
+   {
+    "id": 10,
+    "amount": 4,
+    "weight": 16
+   },
+   {
+    "id": 10,
+    "amount": 7,
+    "weight": 10
+   },
+   {
+    "id": 10,
+    "amount": 12,
+    "weight": 9
+   },
+   {
+    "id": 28,
+    "weight": 6
+   },
+   {
+    "id": 104,
+    "weight": 4
+   },
+   {
+    "id": 10,
+    "amount": 17,
+    "weight": 4
+   },
+   {
+    "id": 10,
+    "amount": 25,
+    "weight": 4
+   },
+   {
+    "id": 11,
+    "weight": 3
+   },
+   {
+    "id": 10,
+    "amount": 30,
+    "weight": 2
+   },
+   {
+    "id": 33,
+    "amount": 4,
+    "weight": 2
+   },
+   {
+    "id": 11,
+    "amount": 2,
+    "weight": 2
+   },
+   {
+    "id": 34,
+    "weight": 2
+   },
+   {
+    "id": 31,
+    "weight": 2
+   },
+   {
+    "id": 70,
+    "weight": 1
+   },
+   {
+    "id": 619,
+    "weight": 1
+   },
+   {
+    "id": 41,
+    "weight": 1
+   },
+   {
+    "id": 40,
+    "weight": 1
+   },
+   {
+    "id": 29,
+    "weight": 1
+   },
+   {
+    "id": 151,
+    "weight": 1
+   }
+  ],
+  "102": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "reference": "herb",
+    "weight": 5
+   },
+   {
+    "reference": "rare",
+    "weight": 1
+   },
+   {
+    "id": 10,
+    "amount": 48,
+    "weight": 37
+   },
+   {
+    "id": 10,
+    "amount": 15,
+    "weight": 18
+   },
+   {
+    "id": 10,
+    "amount": 70,
+    "weight": 9
+   },
+   {
+    "id": 170,
+    "amount": 3,
+    "weight": 8
+   },
+   {
+    "id": 10,
+    "amount": 8,
+    "weight": 7
+   },
+   {
+    "id": 10,
+    "amount": 2,
+    "weight": 5
+   },
+   {
+    "id": 41,
+    "amount": 2,
+    "weight": 5
+   },
+   {
+    "id": 40,
+    "amount": 3,
+    "weight": 4
+   },
+   {
+    "id": 10,
+    "amount": 120,
+    "weight": 3
+   },
+   {
+    "id": 36,
+    "amount": 8,
+    "weight": 3
+   },
+   {
+    "id": 35,
+    "amount": 3,
+    "weight": 2
+   },
+   {
+    "id": 32,
+    "amount": 20,
+    "weight": 3
+   },
+   {
+    "id": 188,
+    "weight": 3
+   },
+   {
+    "id": 71,
+    "weight": 2
+   },
+   {
+    "id": 105,
+    "weight": 2
+   },
+   {
+    "id": 67,
+    "weight": 2
+   },
+   {
+    "id": 170,
+    "weight": 2
+   },
+   {
+    "id": 619,
+    "weight": 1
+   },
+   {
+    "id": 42,
+    "weight": 1
+   },
+   {
+    "id": 136,
+    "weight": 1
+   },
+   {
+    "id": 151,
+    "weight": 1
+   },
+   {
+    "id": 263,
+    "weight": 1
+   }
+  ],
+  "104": [
+   {
+    "id": 413,
+    "weight": 0
+   },
+   {
+    "reference": "herb",
+    "weight": 5
+   },
+   {
+    "reference": "rare",
+    "weight": 4
+   },
+   {
+    "id": 10,
+    "amount": 82,
+    "weight": 35
+   },
+   {
+    "id": 10,
+    "amount": 37,
+    "weight": 19
+   },
+   {
+    "id": 10,
+    "amount": 15,
+    "weight": 10
+   },
+   {
+    "id": 10,
+    "amount": 119,
+    "weight": 10
+   },
+   {
+    "id": 171,
+    "weight": 6
+   },
+   {
+    "id": 432,
+    "weight": 5
+   },
+   {
+    "id": 42,
+    "amount": 2,
+    "weight": 4
+   },
+   {
+    "id": 34,
+    "amount": 18,
+    "weight": 3
+   },
+   {
+    "id": 41,
+    "amount": 5,
+    "weight": 3
+   },
+   {
+    "id": 33,
+    "amount": 12,
+    "weight": 3
+   },
+   {
+    "id": 40,
+    "amount": 4,
+    "weight": 3
+   },
+   {
+    "id": 46,
+    "amount": 2,
+    "weight": 2
+   },
+   {
+    "id": 198,
+    "weight": 2
+   },
+   {
+    "id": 68,
+    "weight": 2
+   },
+   {
+    "id": 105,
+    "weight": 2
+   },
+   {
+    "id": 10,
+    "amount": 300,
+    "weight": 2
+   },
+   {
+    "id": 129,
+    "weight": 1
+   },
+   {
+    "id": 38,
+    "amount": 2,
+    "weight": 1
+   },
+   {
+    "id": 619,
+    "weight": 1
+   },
+   {
+    "id": 10,
+    "amount": 5,
+    "weight": 2
+   },
+   {
+    "id": 179,
+    "weight": 1
+   },
+   {
+    "id": 186,
+    "weight": 1
+   },
+   {
+    "id": 155,
+    "weight": 1
+   }
+  ],
+  "109": [
+   {
+    "id": 20,
+    "weight": 0
+   }
+  ],
+  "114": [
+   {
+    "id": 29,
+    "weight": 10
+   },
+   {
+    "id": 190,
+    "weight": 8
+   },
+   {
+    "id": 207,
+    "weight": 8
+   },
+   {
+    "id": 168,
+    "weight": 8
+   },
+   {
+    "id": 185,
+    "weight": 8
+   },
+   {
+    "id": 181,
+    "weight": 6
+   },
+   {
+    "id": 19,
+    "weight": 5
+   },
+   {
+    "id": 133,
+    "weight": 5
+   },
+   {
+    "id": 231,
+    "weight": 5
+   },
+   {
+    "id": 232,
+    "weight": 5
+   },
+   {
+    "id": 233,
+    "weight": 5
+   },
+   {
+    "id": 234,
+    "weight": 5
+   },
+   {
+    "id": 166,
+    "weight": 5
+   },
+   {
+    "id": 139,
+    "weight": 4
+   },
+   {
+    "id": 134,
+    "weight": 4
+   },
+   {
+    "id": 21,
+    "weight": 4
+   },
+   {
+    "id": 55,
+    "weight": 4
+   },
+   {
+    "id": 149,
+    "weight": 4
+   },
+   {
+    "id": 144,
+    "weight": 4
+   },
+   {
+    "id": 137,
+    "weight": 2
+   },
+   {
+    "id": 18,
+    "weight": 2
+   },
+   {
+    "id": 136,
+    "weight": 2
+   },
+   {
+    "id": 192,
+    "weight": 2
+   },
+   {
+    "id": 201,
+    "weight": 2
+   },
+   {
+    "id": 140,
+    "weight": 2
+   },
+   {
+    "id": 135,
+    "weight": 2
+   },
+   {
+    "id": 50,
+    "weight": 2
+   },
+   {
+    "id": 141,
+    "weight": 2
+   },
+   {
+    "id": 138,
+    "weight": 1
+   },
+   {
+    "id": 132,
+    "weight": 1
+   },
+   {
+    "id": 58,
+    "weight": 1
+   }
+  ],
+  "135": [
+   {
+    "id": 413,
+    "weight": 0
+   },
+   {
+    "reference": "rare",
+    "weight": 4
+   },
+   {
+    "id": 10,
+    "amount": 117,
+    "weight": 40
+   },
+   {
+    "id": 10,
+    "amount": 53,
+    "weight": 12
+   },
+   {
+    "id": 10,
+    "amount": 196,
+    "weight": 10
+   },
+   {
+    "id": 10,
+    "amount": 8,
+    "weight": 7
+   },
+   {
+    "id": 10,
+    "amount": 22,
+    "weight": 6
+   },
+   {
+    "id": 77,
+    "weight": 5
+   },
+   {
+    "id": 88,
+    "weight": 4
+   },
+   {
+    "id": 433,
+    "weight": 4
+   },
+   {
+    "id": 67,
+    "weight": 4
+   },
+   {
+    "id": 40,
+    "amount": 4,
+    "weight": 4
+   },
+   {
+    "id": 36,
+    "amount": 25,
+    "weight": 3
+   },
+   {
+    "id": 35,
+    "amount": 16,
+    "weight": 3
+   },
+   {
+    "id": 142,
+    "weight": 3
+   },
+   {
+    "id": 42,
+    "amount": 2,
+    "weight": 2
+   },
+   {
+    "id": 10,
+    "amount": 400,
+    "weight": 2
+   },
+   {
+    "id": 215,
+    "weight": 1
+   },
+   {
+    "id": 96,
+    "weight": 1
+   },
+   {
+    "id": 126,
+    "weight": 1
+   },
+   {
+    "id": 249,
+    "weight": 1
+   },
+   {
+    "id": 153,
+    "weight": 1
+   },
+   {
+    "id": 46,
+    "amount": 3,
+    "weight": 1
+   },
+   {
+    "id": 619,
+    "weight": 1
+   },
+   {
+    "id": 38,
+    "amount": 2,
+    "weight": 1
+   },
+   {
+    "id": 32,
+    "amount": 8,
+    "weight": 1
+   }
+  ],
+  "137": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "reference": "rare",
+    "weight": 1
+   },
+   {
+    "id": 10,
+    "amount": 4,
+    "weight": 28
+   },
+   {
+    "id": 609,
+    "weight": 12
+   },
+   {
+    "id": 10,
+    "amount": 25,
+    "weight": 10
+   },
+   {
+    "id": 82,
+    "weight": 10
+   },
+   {
+    "id": 10,
+    "amount": 12,
+    "weight": 7
+   },
+   {
+    "id": 10,
+    "amount": 7,
+    "weight": 6
+   },
+   {
+    "id": 28,
+    "weight": 6
+   },
+   {
+    "id": 41,
+    "weight": 5
+   },
+   {
+    "id": 40,
+    "weight": 5
+   },
+   {
+    "id": 10,
+    "amount": 35,
+    "weight": 4
+   },
+   {
+    "id": 11,
+    "amount": 12,
+    "weight": 3
+   },
+   {
+    "id": 11,
+    "amount": 9,
+    "weight": 2
+   },
+   {
+    "id": 33,
+    "amount": 7,
+    "weight": 2
+   },
+   {
+    "id": 34,
+    "amount": 3,
+    "weight": 2
+   },
+   {
+    "id": 31,
+    "amount": 3,
+    "weight": 2
+   },
+   {
+    "id": 8,
+    "weight": 1
+   },
+   {
+    "id": 10,
+    "amount": 55,
+    "weight": 1
+   },
+   {
+    "id": 192,
+    "weight": 1
+   },
+   {
+    "id": 170,
+    "weight": 1
+   },
+   {
+    "id": 42,
+    "weight": 1
+   }
+  ],
+  "139": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "id": 95,
+    "weight": 0
+   }
+  ],
+  "153": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "id": 82,
+    "weight": 1
+   },
+   {
+    "id": 87,
+    "weight": 3
+   },
+   {
+    "id": 827,
+    "weight": 9
+   },
+   {
+    "id": 41,
+    "weight": 1
+   },
+   {
+    "id": 40,
+    "weight": 1
+   },
+   {
+    "id": 35,
+    "weight": 3
+   },
+   {
+    "id": 34,
+    "amount": 3,
+    "weight": 3
+   },
+   {
+    "id": 36,
+    "weight": 3
+   },
+   {
+    "id": 11,
+    "amount": 7,
+    "weight": 3
+   },
+   {
+    "reference": "herb",
+    "weight": 2
+   },
+   {
+    "id": 10,
+    "amount": 24,
+    "weight": 3
+   },
+   {
+    "id": 10,
+    "amount": 16,
+    "weight": 7
+   },
+   {
+    "id": 10,
+    "amount": 5,
+    "weight": 8
+   },
+   {
+    "id": 10,
+    "amount": 3,
+    "weight": 13
+   },
+   {
+    "id": 10,
+    "weight": 34
+   },
+   {
+    "id": 202,
+    "weight": 1
+   },
+   {
+    "id": 183,
+    "weight": 1
+   },
+   {
+    "id": 143,
+    "weight": 1
+   },
+   {
+    "id": 273,
+    "weight": 10
+   }
+  ],
+  "154": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "id": 82,
+    "weight": 1
+   },
+   {
+    "id": 87,
+    "weight": 3
+   },
+   {
+    "id": 827,
+    "weight": 9
+   },
+   {
+    "id": 41,
+    "weight": 1
+   },
+   {
+    "id": 40,
+    "weight": 1
+   },
+   {
+    "id": 35,
+    "weight": 3
+   },
+   {
+    "id": 34,
+    "amount": 3,
+    "weight": 3
+   },
+   {
+    "id": 36,
+    "weight": 3
+   },
+   {
+    "id": 11,
+    "amount": 7,
+    "weight": 3
+   },
+   {
+    "reference": "herb",
+    "weight": 2
+   },
+   {
+    "id": 10,
+    "amount": 24,
+    "weight": 3
+   },
+   {
+    "id": 10,
+    "amount": 16,
+    "weight": 7
+   },
+   {
+    "id": 10,
+    "amount": 5,
+    "weight": 8
+   },
+   {
+    "id": 10,
+    "amount": 3,
+    "weight": 13
+   },
+   {
+    "id": 10,
+    "weight": 34
+   },
+   {
+    "id": 202,
+    "weight": 1
+   },
+   {
+    "id": 183,
+    "weight": 1
+   },
+   {
+    "id": 143,
+    "weight": 1
+   },
+   {
+    "id": 273,
+    "weight": 10
+   }
+  ],
+  "158": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "reference": "herb",
+    "weight": 10
+   },
+   {
+    "reference": "rare",
+    "weight": 3
+   },
+   {
+    "id": 10,
+    "amount": 15,
+    "weight": 57
+   },
+   {
+    "id": 40,
+    "amount": 3,
+    "weight": 10
+   },
+   {
+    "id": 41,
+    "amount": 2,
+    "weight": 8
+   },
+   {
+    "id": 42,
+    "weight": 7
+   },
+   {
+    "id": 46,
+    "weight": 5
+   },
+   {
+    "id": 38,
+    "weight": 3
+   },
+   {
+    "id": 89,
+    "weight": 3
+   },
+   {
+    "id": 827,
+    "weight": 3
+   },
+   {
+    "id": 96,
+    "weight": 1
+   },
+   {
+    "id": 619,
+    "weight": 1
+   }
+  ],
+  "159": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "reference": "herb",
+    "weight": 23
+   },
+   {
+    "id": 10,
+    "amount": 3,
+    "weight": 38
+   },
+   {
+    "id": 10,
+    "amount": 5,
+    "weight": 9
+   },
+   {
+    "id": 380,
+    "weight": 5
+   },
+   {
+    "id": 10,
+    "amount": 15,
+    "weight": 4
+   },
+   {
+    "id": 11,
+    "amount": 7,
+    "weight": 3
+   },
+   {
+    "id": 34,
+    "amount": 3,
+    "weight": 2
+   },
+   {
+    "id": 31,
+    "amount": 4,
+    "weight": 2
+   },
+   {
+    "id": 35,
+    "amount": 6,
+    "weight": 2
+   },
+   {
+    "id": 150,
+    "weight": 2
+   },
+   {
+    "id": 104,
+    "weight": 2
+   },
+   {
+    "id": 18,
+    "weight": 1
+   },
+   {
+    "id": 28,
+    "weight": 1
+   },
+   {
+    "id": 41,
+    "weight": 1
+   },
+   {
+    "id": 10,
+    "amount": 25,
+    "weight": 1
+   }
+  ],
+  "177": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "id": 503,
+    "weight": 0
+   },
+   {
+    "id": 390,
+    "weight": 0
+   }
+  ],
+  "178": [
+   {
+    "id": 391,
+    "weight": 0
+   }
+  ],
+  "179": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "reference": "herb",
+    "weight": 20
+   },
+   {
+    "reference": "rare",
+    "weight": 1
+   },
+   {
+    "id": 10,
+    "amount": 5,
+    "weight": 25
+   },
+   {
+    "id": 10,
+    "amount": 10,
+    "weight": 24
+   },
+   {
+    "id": 10,
+    "amount": 25,
+    "weight": 8
+   },
+   {
+    "id": 5,
+    "weight": 6
+   },
+   {
+    "id": 169,
+    "weight": 5
+   },
+   {
+    "id": 1,
+    "weight": 4
+   },
+   {
+    "id": 10,
+    "amount": 45,
+    "weight": 4
+   },
+   {
+    "id": 10,
+    "amount": 65,
+    "weight": 3
+   },
+   {
+    "id": 32,
+    "amount": 6,
+    "weight": 3
+   },
+   {
+    "id": 33,
+    "amount": 10,
+    "weight": 3
+   },
+   {
+    "id": 41,
+    "amount": 3,
+    "weight": 3
+   },
+   {
+    "id": 12,
+    "weight": 2
+   },
+   {
+    "id": 42,
+    "weight": 2
+   },
+   {
+    "id": 10,
+    "weight": 2
+   },
+   {
+    "id": 83,
+    "weight": 1
+   },
+   {
+    "id": 113,
+    "weight": 1
+   },
+   {
+    "id": 46,
+    "weight": 1
+   },
+   {
+    "id": 392,
+    "weight": 0
+   }
+  ],
+  "180": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "reference": "herb",
+    "weight": 20
+   },
+   {
+    "reference": "rare",
+    "weight": 1
+   },
+   {
+    "id": 10,
+    "amount": 5,
+    "weight": 25
+   },
+   {
+    "id": 10,
+    "amount": 10,
+    "weight": 24
+   },
+   {
+    "id": 10,
+    "amount": 25,
+    "weight": 8
+   },
+   {
+    "id": 5,
+    "weight": 6
+   },
+   {
+    "id": 169,
+    "weight": 5
+   },
+   {
+    "id": 1,
+    "weight": 4
+   },
+   {
+    "id": 10,
+    "amount": 45,
+    "weight": 4
+   },
+   {
+    "id": 10,
+    "amount": 65,
+    "weight": 3
+   },
+   {
+    "id": 32,
+    "amount": 6,
+    "weight": 3
+   },
+   {
+    "id": 33,
+    "amount": 10,
+    "weight": 3
+   },
+   {
+    "id": 41,
+    "amount": 3,
+    "weight": 3
+   },
+   {
+    "id": 10,
+    "weight": 2
+   },
+   {
+    "id": 42,
+    "weight": 2
+   },
+   {
+    "id": 12,
+    "weight": 2
+   },
+   {
+    "id": 83,
+    "weight": 1
+   },
+   {
+    "id": 113,
+    "weight": 1
+   },
+   {
+    "id": 46,
+    "weight": 1
+   },
+   {
+    "id": 393,
+    "weight": 0
+   }
+  ],
+  "181": [
+   {
+    "id": 181,
+    "weight": 0
+   },
+   {
+    "id": 115,
+    "weight": 1
+   },
+   {
+    "id": 126,
+    "weight": 1
+   },
+   {
+    "id": 399,
+    "weight": 1
+   },
+   {
+    "id": 84,
+    "weight": 3
+   },
+   {
+    "id": 88,
+    "weight": 4
+   },
+   {
+    "id": 109,
+    "weight": 4
+   },
+   {
+    "id": 31,
+    "amount": 20,
+    "weight": 1
+   },
+   {
+    "id": 31,
+    "amount": 40,
+    "weight": 8
+   },
+   {
+    "id": 38,
+    "amount": 2,
+    "weight": 3
+   },
+   {
+    "id": 41,
+    "amount": 8,
+    "weight": 5
+   },
+   {
+    "reference": "herb",
+    "weight": 1
+   },
+   {
+    "id": 10,
+    "amount": 10,
+    "weight": 7
+   },
+   {
+    "id": 10,
+    "amount": 40,
+    "weight": 29
+   },
+   {
+    "id": 10,
+    "amount": 120,
+    "weight": 40
+   },
+   {
+    "id": 10,
+    "amount": 200,
+    "weight": 10
+   },
+   {
+    "id": 152,
+    "weight": 2
+   },
+   {
+    "id": 142,
+    "amount": 2,
+    "weight": 3
+   },
+   {
+    "reference": "rare",
+    "weight": 4
+   },
+   {
+    "id": 395,
+    "weight": 0
+   }
+  ],
+  "182": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "id": 10,
+    "weight": 17
+   },
+   {
+    "id": 10,
+    "amount": 2,
+    "weight": 16
+   },
+   {
+    "id": 10,
+    "amount": 4,
+    "weight": 9
+   },
+   {
+    "id": 100,
+    "weight": 8
+   },
+   {
+    "id": 40,
+    "amount": 3,
+    "weight": 6
+   },
+   {
+    "id": 41,
+    "amount": 3,
+    "weight": 6
+   },
+   {
+    "id": 199,
+    "weight": 4
+   },
+   {
+    "id": 216,
+    "weight": 3
+   },
+   {
+    "id": 31,
+    "amount": 7,
+    "weight": 3
+   },
+   {
+    "id": 10,
+    "amount": 29,
+    "weight": 3
+   },
+   {
+    "id": 32,
+    "amount": 7,
+    "weight": 3
+   },
+   {
+    "id": 33,
+    "amount": 7,
+    "weight": 3
+   },
+   {
+    "id": 34,
+    "amount": 7,
+    "weight": 3
+   },
+   {
+    "id": 35,
+    "amount": 7,
+    "weight": 3
+   },
+   {
+    "id": 36,
+    "amount": 7,
+    "weight": 3
+   },
+   {
+    "id": 619,
+    "weight": 2
+   },
+   {
+    "id": 31,
+    "amount": 12,
+    "weight": 2
+   },
+   {
+    "id": 32,
+    "amount": 12,
+    "weight": 2
+   },
+   {
+    "id": 33,
+    "amount": 12,
+    "weight": 2
+   },
+   {
+    "id": 34,
+    "amount": 12,
+    "weight": 2
+   },
+   {
+    "id": 35,
+    "amount": 12,
+    "weight": 2
+   },
+   {
+    "id": 36,
+    "amount": 12,
+    "weight": 2
+   },
+   {
+    "id": 42,
+    "amount": 2,
+    "weight": 1
+   },
+   {
+    "id": 46,
+    "weight": 1
+   },
+   {
+    "id": 10,
+    "amount": 30,
+    "weight": 1
+   },
+   {
+    "id": 394,
+    "weight": 0
+   }
+  ],
+  "184": [
+   {
+    "id": 181,
+    "weight": 0
+   },
+   {
+    "id": 10,
+    "amount": 132,
+    "weight": 40
+   },
+   {
+    "reference": "rare",
+    "weight": 5
+   },
+   {
+    "id": 10,
+    "amount": 44,
+    "weight": 29
+   },
+   {
+    "id": 10,
+    "amount": 220,
+    "weight": 10
+   },
+   {
+    "id": 31,
+    "amount": 50,
+    "weight": 8
+   },
+   {
+    "id": 10,
+    "amount": 11,
+    "weight": 7
+   },
+   {
+    "id": 78,
+    "weight": 4
+   },
+   {
+    "id": 88,
+    "weight": 3
+   },
+   {
+    "id": 90,
+    "weight": 3
+   },
+   {
+    "id": 41,
+    "amount": 10,
+    "weight": 3
+   },
+   {
+    "id": 38,
+    "amount": 3,
+    "weight": 3
+   },
+   {
+    "id": 367,
+    "amount": 2,
+    "weight": 3
+   },
+   {
+    "id": 172,
+    "weight": 2
+   },
+   {
+    "id": 130,
+    "weight": 1
+   },
+   {
+    "id": 112,
+    "weight": 1
+   },
+   {
+    "id": 123,
+    "weight": 1
+   },
+   {
+    "id": 31,
+    "amount": 25,
+    "weight": 1
+   },
+   {
+    "id": 10,
+    "amount": 460,
+    "weight": 1
+   },
+   {
+    "id": 43,
+    "amount": 10,
+    "weight": 1
+   }
+  ],
+  "188": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "id": 502,
+    "weight": 0
+   },
+   {
+    "id": 146,
+    "weight": 0
+   }
+  ],
+  "189": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "reference": "herb",
+    "weight": 3
+   },
+   {
+    "reference": "rare",
+    "weight": 3
+   },
+   {
+    "id": 10,
+    "amount": 35,
+    "weight": 37
+   },
+   {
+    "id": 10,
+    "amount": 12,
+    "weight": 14
+   },
+   {
+    "id": 10,
+    "weight": 12
+   },
+   {
+    "id": 10,
+    "amount": 58,
+    "weight": 12
+   },
+   {
+    "id": 10,
+    "amount": 6,
+    "weight": 10
+   },
+   {
+    "id": 171,
+    "weight": 6
+   },
+   {
+    "id": 1,
+    "weight": 4
+   },
+   {
+    "id": 34,
+    "amount": 7,
+    "weight": 3
+   },
+   {
+    "id": 41,
+    "amount": 4,
+    "weight": 3
+   },
+   {
+    "id": 36,
+    "amount": 6,
+    "weight": 3
+   },
+   {
+    "id": 6,
+    "weight": 2
+   },
+   {
+    "id": 42,
+    "amount": 2,
+    "weight": 2
+   },
+   {
+    "id": 38,
+    "weight": 2
+   },
+   {
+    "id": 10,
+    "amount": 80,
+    "weight": 2
+   },
+   {
+    "id": 189,
+    "weight": 1
+   },
+   {
+    "id": 95,
+    "weight": 1
+   },
+   {
+    "id": 35,
+    "weight": 1
+   },
+   {
+    "id": 46,
+    "weight": 1
+   },
+   {
+    "id": 138,
+    "weight": 1
+   },
+   {
+    "id": 202,
+    "weight": 1
+   },
+   {
+    "id": 23,
+    "weight": 1
+   }
+  ],
+  "190": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "reference": "rare",
+    "weight": 4
+   },
+   {
+    "id": 10,
+    "amount": 92,
+    "weight": 40
+   },
+   {
+    "id": 10,
+    "amount": 47,
+    "weight": 18
+   },
+   {
+    "id": 10,
+    "amount": 25,
+    "weight": 11
+   },
+   {
+    "id": 10,
+    "amount": 150,
+    "weight": 10
+   },
+   {
+    "id": 414,
+    "weight": 7
+   },
+   {
+    "id": 173,
+    "weight": 6
+   },
+   {
+    "id": 42,
+    "amount": 2,
+    "weight": 4
+   },
+   {
+    "id": 40,
+    "amount": 6,
+    "weight": 3
+   },
+   {
+    "id": 41,
+    "amount": 7,
+    "weight": 3
+   },
+   {
+    "id": 35,
+    "amount": 25,
+    "weight": 3
+   },
+   {
+    "id": 33,
+    "amount": 16,
+    "weight": 3
+   },
+   {
+    "id": 109,
+    "weight": 2
+   },
+   {
+    "id": 46,
+    "amount": 2,
+    "weight": 2
+   },
+   {
+    "id": 10,
+    "amount": 350,
+    "weight": 2
+   },
+   {
+    "id": 10,
+    "amount": 15,
+    "weight": 2
+   },
+   {
+    "id": 32,
+    "amount": 7,
+    "weight": 1
+   },
+   {
+    "id": 38,
+    "amount": 2,
+    "weight": 1
+   },
+   {
+    "id": 126,
+    "weight": 1
+   },
+   {
+    "id": 73,
+    "weight": 1
+   },
+   {
+    "id": 319,
+    "weight": 1
+   },
+   {
+    "id": 320,
+    "weight": 1
+   },
+   {
+    "id": 155,
+    "weight": 1
+   }
+  ],
+  "195": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "reference": "herb",
+    "weight": 20
+   },
+   {
+    "reference": "rare",
+    "weight": 1
+   },
+   {
+    "id": 10,
+    "amount": 5,
+    "weight": 25
+   },
+   {
+    "id": 10,
+    "amount": 10,
+    "weight": 24
+   },
+   {
+    "id": 10,
+    "amount": 25,
+    "weight": 8
+   },
+   {
+    "id": 5,
+    "weight": 6
+   },
+   {
+    "id": 169,
+    "weight": 5
+   },
+   {
+    "id": 1,
+    "weight": 4
+   },
+   {
+    "id": 10,
+    "amount": 45,
+    "weight": 4
+   },
+   {
+    "id": 10,
+    "amount": 65,
+    "weight": 3
+   },
+   {
+    "id": 32,
+    "amount": 6,
+    "weight": 3
+   },
+   {
+    "id": 33,
+    "amount": 10,
+    "weight": 3
+   },
+   {
+    "id": 41,
+    "amount": 3,
+    "weight": 3
+   },
+   {
+    "id": 12,
+    "weight": 2
+   },
+   {
+    "id": 42,
+    "weight": 2
+   },
+   {
+    "id": 10,
+    "weight": 2
+   },
+   {
+    "id": 83,
+    "weight": 1
+   },
+   {
+    "id": 113,
+    "weight": 1
+   },
+   {
+    "id": 46,
+    "weight": 1
+   }
+  ],
+  "199": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "reference": "herb",
+    "weight": 3
+   },
+   {
+    "id": 10,
+    "weight": 31
+   },
+   {
+    "id": 10,
+    "amount": 2,
+    "weight": 20
+   },
+   {
+    "id": 10,
+    "amount": 6,
+    "weight": 20
+   },
+   {
+    "id": 10,
+    "amount": 13,
+    "weight": 7
+   },
+   {
+    "id": 10,
+    "amount": 20,
+    "weight": 6
+   },
+   {
+    "id": 10,
+    "amount": 30,
+    "weight": 2
+   },
+   {
+    "id": 11,
+    "amount": 8,
+    "weight": 4
+   },
+   {
+    "id": 35,
+    "weight": 3
+   },
+   {
+    "id": 104,
+    "weight": 3
+   },
+   {
+    "id": 40,
+    "amount": 2,
+    "weight": 2
+   },
+   {
+    "id": 32,
+    "amount": 2,
+    "weight": 2
+   },
+   {
+    "id": 430,
+    "weight": 1
+   },
+   {
+    "id": 0,
+    "weight": 1
+   },
+   {
+    "id": 470,
+    "weight": 1
+   },
+   {
+    "id": 41,
+    "weight": 1
+   },
+   {
+    "id": 34,
+    "weight": 1
+   },
+   {
+    "id": 151,
+    "weight": 1
+   },
+   {
+    "id": 355,
+    "weight": 1
+   }
+  ],
+  "200": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "reference": "herb",
+    "weight": 29
+   },
+   {
+    "id": 10,
+    "amount": 2,
+    "weight": 10
+   },
+   {
+    "id": 465,
+    "weight": 10
+   },
+   {
+    "id": 28,
+    "weight": 6
+   },
+   {
+    "id": 607,
+    "weight": 6
+   },
+   {
+    "id": 608,
+    "weight": 5
+   },
+   {
+    "id": 34,
+    "amount": 18,
+    "weight": 4
+   },
+   {
+    "id": 10,
+    "amount": 4,
+    "weight": 4
+   },
+   {
+    "id": 10,
+    "amount": 15,
+    "weight": 3
+   },
+   {
+    "id": 220,
+    "weight": 3
+   },
+   {
+    "id": 188,
+    "weight": 2
+   },
+   {
+    "id": 34,
+    "amount": 6,
+    "weight": 2
+   },
+   {
+    "id": 31,
+    "amount": 6,
+    "weight": 2
+   },
+   {
+    "id": 41,
+    "amount": 2,
+    "weight": 2
+   },
+   {
+    "id": 32,
+    "amount": 6,
+    "weight": 2
+   },
+   {
+    "id": 42,
+    "weight": 1
+   },
+   {
+    "id": 566,
+    "weight": 1
+   }
+  ],
+  "201": [
+   {
+    "id": 814,
+    "weight": 0
+   },
+   {
+    "reference": "herb",
+    "weight": 2
+   },
+   {
+    "reference": "rare",
+    "weight": 5
+   },
+   {
+    "id": 10,
+    "amount": 196,
+    "weight": 40
+   },
+   {
+    "id": 10,
+    "amount": 66,
+    "weight": 29
+   },
+   {
+    "id": 10,
+    "amount": 330,
+    "weight": 10
+   },
+   {
+    "id": 31,
+    "amount": 50,
+    "weight": 6
+   },
+   {
+    "id": 42,
+    "amount": 2,
+    "weight": 5
+   },
+   {
+    "id": 619,
+    "weight": 4
+   },
+   {
+    "id": 79,
+    "weight": 4
+   },
+   {
+    "id": 38,
+    "amount": 3,
+    "weight": 3
+   },
+   {
+    "id": 203,
+    "weight": 3
+   },
+   {
+    "id": 91,
+    "weight": 3
+   },
+   {
+    "id": 10,
+    "amount": 16,
+    "weight": 3
+   },
+   {
+    "id": 332,
+    "weight": 2
+   },
+   {
+    "id": 332,
+    "amount": 2,
+    "weight": 1
+   },
+   {
+    "id": 174,
+    "weight": 3
+   },
+   {
+    "id": 75,
+    "weight": 1
+   },
+   {
+    "id": 120,
+    "weight": 1
+   },
+   {
+    "id": 10,
+    "amount": 690,
+    "weight": 1
+   },
+   {
+    "id": 130,
+    "weight": 1
+   }
+  ],
+  "202": [
+   {
+    "id": 814,
+    "weight": 0
+   },
+   {
+    "id": 10,
+    "amount": 44,
+    "weight": 29
+   },
+   {
+    "reference": "herb",
+    "weight": 15
+   },
+   {
+    "reference": "rare",
+    "weight": 5
+   },
+   {
+    "id": 10,
+    "amount": 132,
+    "weight": 25
+   },
+   {
+    "id": 10,
+    "amount": 200,
+    "weight": 10
+   },
+   {
+    "id": 32,
+    "amount": 50,
+    "weight": 8
+   },
+   {
+    "id": 40,
+    "amount": 10,
+    "weight": 5
+   },
+   {
+    "id": 10,
+    "amount": 11,
+    "weight": 5
+   },
+   {
+    "id": 121,
+    "weight": 4
+   },
+   {
+    "id": 203,
+    "weight": 3
+   },
+   {
+    "id": 90,
+    "weight": 3
+   },
+   {
+    "id": 42,
+    "amount": 2,
+    "weight": 3
+   },
+   {
+    "id": 154,
+    "weight": 3
+   },
+   {
+    "id": 555,
+    "amount": 2,
+    "weight": 1
+   },
+   {
+    "id": 555,
+    "weight": 2
+   },
+   {
+    "id": 1090,
+    "weight": 2
+   },
+   {
+    "id": 396,
+    "weight": 1
+   },
+   {
+    "id": 130,
+    "weight": 1
+   },
+   {
+    "id": 111,
+    "weight": 1
+   },
+   {
+    "id": 31,
+    "amount": 25,
+    "weight": 1
+   },
+   {
+    "id": 10,
+    "amount": 440,
+    "weight": 1
+   }
+  ],
+  "214": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "reference": "herb",
+    "weight": 4
+   },
+   {
+    "id": 87,
+    "weight": 50
+   },
+   {
+    "id": 380,
+    "amount": 5,
+    "weight": 46
+   },
+   {
+    "id": 104,
+    "weight": 4
+   },
+   {
+    "id": 33,
+    "amount": 9,
+    "weight": 4
+   },
+   {
+    "id": 11,
+    "amount": 8,
+    "weight": 4
+   },
+   {
+    "id": 10,
+    "amount": 18,
+    "weight": 3
+   },
+   {
+    "id": 10,
+    "amount": 28,
+    "weight": 2
+   },
+   {
+    "id": 70,
+    "weight": 1
+   },
+   {
+    "id": 12,
+    "weight": 1
+   },
+   {
+    "id": 40,
+    "amount": 4,
+    "weight": 1
+   }
+  ],
+  "232": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "reference": "herb",
+    "weight": 37
+   },
+   {
+    "reference": "rare",
+    "weight": 3
+   },
+   {
+    "id": 10,
+    "amount": 35,
+    "weight": 26
+   },
+   {
+    "id": 10,
+    "amount": 12,
+    "weight": 13
+   },
+   {
+    "id": 10,
+    "amount": 53,
+    "weight": 10
+   },
+   {
+    "id": 10,
+    "weight": 7
+   },
+   {
+    "id": 155,
+    "weight": 6
+   },
+   {
+    "id": 83,
+    "weight": 4
+   },
+   {
+    "id": 32,
+    "amount": 6,
+    "weight": 3
+   },
+   {
+    "id": 41,
+    "amount": 4,
+    "weight": 3
+   },
+   {
+    "id": 33,
+    "amount": 7,
+    "weight": 2
+   },
+   {
+    "id": 38,
+    "weight": 2
+   },
+   {
+    "id": 42,
+    "amount": 2,
+    "weight": 2
+   },
+   {
+    "id": 125,
+    "weight": 2
+   },
+   {
+    "id": 10,
+    "amount": 80,
+    "weight": 2
+   },
+   {
+    "id": 88,
+    "weight": 1
+   },
+   {
+    "id": 188,
+    "weight": 1
+   },
+   {
+    "id": 619,
+    "weight": 1
+   },
+   {
+    "id": 35,
+    "weight": 1
+   },
+   {
+    "id": 40,
+    "weight": 1
+   }
+  ],
+  "234": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "reference": "herb",
+    "weight": 37
+   },
+   {
+    "reference": "rare",
+    "weight": 3
+   },
+   {
+    "id": 10,
+    "amount": 35,
+    "weight": 26
+   },
+   {
+    "id": 10,
+    "amount": 12,
+    "weight": 13
+   },
+   {
+    "id": 10,
+    "amount": 53,
+    "weight": 10
+   },
+   {
+    "id": 10,
+    "weight": 7
+   },
+   {
+    "id": 155,
+    "weight": 6
+   },
+   {
+    "id": 83,
+    "weight": 4
+   },
+   {
+    "id": 32,
+    "amount": 6,
+    "weight": 3
+   },
+   {
+    "id": 41,
+    "amount": 4,
+    "weight": 3
+   },
+   {
+    "id": 33,
+    "amount": 7,
+    "weight": 2
+   },
+   {
+    "id": 38,
+    "weight": 2
+   },
+   {
+    "id": 42,
+    "amount": 2,
+    "weight": 2
+   },
+   {
+    "id": 125,
+    "weight": 2
+   },
+   {
+    "id": 10,
+    "amount": 80,
+    "weight": 2
+   },
+   {
+    "id": 88,
+    "weight": 1
+   },
+   {
+    "id": 188,
+    "weight": 1
+   },
+   {
+    "id": 619,
+    "weight": 1
+   },
+   {
+    "id": 35,
+    "weight": 1
+   },
+   {
+    "id": 40,
+    "weight": 1
+   }
+  ],
+  "236": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "reference": "herb",
+    "weight": 15
+   },
+   {
+    "reference": "rare",
+    "weight": 2
+   },
+   {
+    "id": 10,
+    "amount": 48,
+    "weight": 30
+   },
+   {
+    "id": 10,
+    "amount": 15,
+    "weight": 18
+   },
+   {
+    "id": 10,
+    "amount": 8,
+    "weight": 11
+   },
+   {
+    "id": 10,
+    "amount": 70,
+    "weight": 10
+   },
+   {
+    "id": 383,
+    "amount": 3,
+    "weight": 9
+   },
+   {
+    "id": 10,
+    "amount": 5,
+    "weight": 5
+   },
+   {
+    "id": 40,
+    "amount": 3,
+    "weight": 4
+   },
+   {
+    "id": 42,
+    "weight": 4
+   },
+   {
+    "id": 32,
+    "amount": 20,
+    "weight": 3
+   },
+   {
+    "id": 36,
+    "amount": 8,
+    "weight": 3
+   },
+   {
+    "id": 41,
+    "amount": 2,
+    "weight": 3
+   },
+   {
+    "id": 10,
+    "amount": 150,
+    "weight": 2
+   },
+   {
+    "id": 535,
+    "weight": 2
+   },
+   {
+    "id": 383,
+    "amount": 2,
+    "weight": 1
+   },
+   {
+    "id": 383,
+    "weight": 1
+   },
+   {
+    "id": 35,
+    "amount": 3,
+    "weight": 1
+   },
+   {
+    "id": 72,
+    "weight": 1
+   },
+   {
+    "id": 109,
+    "weight": 1
+   }
+  ],
+  "237": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "reference": "herb",
+    "weight": 15
+   },
+   {
+    "reference": "rare",
+    "weight": 2
+   },
+   {
+    "id": 10,
+    "amount": 48,
+    "weight": 30
+   },
+   {
+    "id": 10,
+    "amount": 15,
+    "weight": 18
+   },
+   {
+    "id": 10,
+    "amount": 8,
+    "weight": 11
+   },
+   {
+    "id": 10,
+    "amount": 70,
+    "weight": 10
+   },
+   {
+    "id": 383,
+    "amount": 3,
+    "weight": 9
+   },
+   {
+    "id": 10,
+    "amount": 5,
+    "weight": 5
+   },
+   {
+    "id": 40,
+    "amount": 3,
+    "weight": 4
+   },
+   {
+    "id": 42,
+    "weight": 4
+   },
+   {
+    "id": 32,
+    "amount": 20,
+    "weight": 3
+   },
+   {
+    "id": 36,
+    "amount": 8,
+    "weight": 3
+   },
+   {
+    "id": 41,
+    "amount": 2,
+    "weight": 3
+   },
+   {
+    "id": 10,
+    "amount": 150,
+    "weight": 2
+   },
+   {
+    "id": 535,
+    "weight": 2
+   },
+   {
+    "id": 383,
+    "amount": 2,
+    "weight": 1
+   },
+   {
+    "id": 383,
+    "weight": 1
+   },
+   {
+    "id": 35,
+    "amount": 3,
+    "weight": 1
+   },
+   {
+    "id": 72,
+    "weight": 1
+   },
+   {
+    "id": 109,
+    "weight": 1
+   }
+  ],
+  "238": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "reference": "herb",
+    "weight": 15
+   },
+   {
+    "reference": "rare",
+    "weight": 2
+   },
+   {
+    "id": 10,
+    "amount": 48,
+    "weight": 30
+   },
+   {
+    "id": 10,
+    "amount": 15,
+    "weight": 18
+   },
+   {
+    "id": 10,
+    "amount": 8,
+    "weight": 11
+   },
+   {
+    "id": 10,
+    "amount": 70,
+    "weight": 10
+   },
+   {
+    "id": 383,
+    "amount": 3,
+    "weight": 9
+   },
+   {
+    "id": 10,
+    "amount": 5,
+    "weight": 5
+   },
+   {
+    "id": 40,
+    "amount": 3,
+    "weight": 4
+   },
+   {
+    "id": 42,
+    "weight": 4
+   },
+   {
+    "id": 32,
+    "amount": 20,
+    "weight": 3
+   },
+   {
+    "id": 36,
+    "amount": 8,
+    "weight": 3
+   },
+   {
+    "id": 41,
+    "amount": 2,
+    "weight": 3
+   },
+   {
+    "id": 10,
+    "amount": 150,
+    "weight": 2
+   },
+   {
+    "id": 535,
+    "weight": 2
+   },
+   {
+    "id": 383,
+    "amount": 2,
+    "weight": 1
+   },
+   {
+    "id": 383,
+    "weight": 1
+   },
+   {
+    "id": 35,
+    "amount": 3,
+    "weight": 1
+   },
+   {
+    "id": 72,
+    "weight": 1
+   },
+   {
+    "id": 109,
+    "weight": 1
+   }
+  ],
+  "243": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "id": 541,
+    "weight": 0
+   }
+  ],
+  "251": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "reference": "herb",
+    "weight": 24
+   },
+   {
+    "reference": "rare",
+    "weight": 1
+   },
+   {
+    "id": 10,
+    "amount": 8,
+    "weight": 23
+   },
+   {
+    "id": 40,
+    "weight": 13
+   },
+   {
+    "id": 10,
+    "amount": 15,
+    "weight": 12
+   },
+   {
+    "id": 5,
+    "weight": 4
+   },
+   {
+    "id": 41,
+    "weight": 4
+   },
+   {
+    "id": 151,
+    "weight": 4
+   },
+   {
+    "id": 155,
+    "weight": 2
+   },
+   {
+    "id": 170,
+    "weight": 2
+   },
+   {
+    "id": 89,
+    "weight": 2
+   },
+   {
+    "id": 10,
+    "amount": 30,
+    "weight": 2
+   },
+   {
+    "id": 88,
+    "weight": 1
+   },
+   {
+    "id": 46,
+    "weight": 1
+   },
+   {
+    "id": 38,
+    "weight": 1
+   },
+   {
+    "id": 42,
+    "weight": 1
+   }
+  ],
+  "252": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "id": 557,
+    "weight": 0
+   }
+  ],
+  "254": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "reference": "herb",
+    "weight": 10
+   },
+   {
+    "reference": "rare",
+    "weight": 3
+   },
+   {
+    "id": 10,
+    "amount": 15,
+    "weight": 57
+   },
+   {
+    "id": 40,
+    "amount": 3,
+    "weight": 10
+   },
+   {
+    "id": 41,
+    "amount": 2,
+    "weight": 8
+   },
+   {
+    "id": 42,
+    "weight": 7
+   },
+   {
+    "id": 46,
+    "weight": 5
+   },
+   {
+    "id": 38,
+    "weight": 3
+   },
+   {
+    "id": 89,
+    "weight": 3
+   },
+   {
+    "id": 827,
+    "weight": 3
+   },
+   {
+    "id": 96,
+    "weight": 1
+   },
+   {
+    "id": 619,
+    "weight": 1
+   },
+   {
+    "id": 556,
+    "weight": 0
+   }
+  ],
+  "264": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "reference": "rare",
+    "weight": 1
+   },
+   {
+    "id": 10,
+    "amount": 4,
+    "weight": 28
+   },
+   {
+    "id": 609,
+    "weight": 12
+   },
+   {
+    "id": 10,
+    "amount": 25,
+    "weight": 10
+   },
+   {
+    "id": 82,
+    "weight": 10
+   },
+   {
+    "id": 10,
+    "amount": 12,
+    "weight": 7
+   },
+   {
+    "id": 10,
+    "amount": 7,
+    "weight": 6
+   },
+   {
+    "id": 28,
+    "weight": 6
+   },
+   {
+    "id": 41,
+    "weight": 5
+   },
+   {
+    "id": 40,
+    "weight": 5
+   },
+   {
+    "id": 10,
+    "amount": 35,
+    "weight": 4
+   },
+   {
+    "id": 11,
+    "amount": 12,
+    "weight": 3
+   },
+   {
+    "id": 11,
+    "amount": 9,
+    "weight": 2
+   },
+   {
+    "id": 33,
+    "amount": 7,
+    "weight": 2
+   },
+   {
+    "id": 34,
+    "amount": 3,
+    "weight": 2
+   },
+   {
+    "id": 31,
+    "amount": 3,
+    "weight": 2
+   },
+   {
+    "id": 8,
+    "weight": 1
+   },
+   {
+    "id": 10,
+    "amount": 55,
+    "weight": 1
+   },
+   {
+    "id": 192,
+    "weight": 1
+   },
+   {
+    "id": 170,
+    "weight": 1
+   },
+   {
+    "id": 42,
+    "weight": 1
+   }
+  ],
+  "265": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "reference": "herb",
+    "weight": 3
+   },
+   {
+    "reference": "rare",
+    "weight": 3
+   },
+   {
+    "id": 10,
+    "amount": 35,
+    "weight": 37
+   },
+   {
+    "id": 10,
+    "amount": 12,
+    "weight": 14
+   },
+   {
+    "id": 10,
+    "weight": 12
+   },
+   {
+    "id": 10,
+    "amount": 58,
+    "weight": 12
+   },
+   {
+    "id": 10,
+    "amount": 6,
+    "weight": 10
+   },
+   {
+    "id": 171,
+    "weight": 6
+   },
+   {
+    "id": 1,
+    "weight": 4
+   },
+   {
+    "id": 34,
+    "amount": 7,
+    "weight": 3
+   },
+   {
+    "id": 41,
+    "amount": 4,
+    "weight": 3
+   },
+   {
+    "id": 36,
+    "amount": 6,
+    "weight": 3
+   },
+   {
+    "id": 6,
+    "weight": 2
+   },
+   {
+    "id": 42,
+    "amount": 2,
+    "weight": 2
+   },
+   {
+    "id": 38,
+    "weight": 2
+   },
+   {
+    "id": 10,
+    "amount": 80,
+    "weight": 2
+   },
+   {
+    "id": 189,
+    "weight": 1
+   },
+   {
+    "id": 95,
+    "weight": 1
+   },
+   {
+    "id": 35,
+    "weight": 1
+   },
+   {
+    "id": 46,
+    "weight": 1
+   },
+   {
+    "id": 138,
+    "weight": 1
+   },
+   {
+    "id": 202,
+    "weight": 1
+   },
+   {
+    "id": 23,
+    "weight": 1
+   },
+   {
+    "id": 595,
+    "weight": 0
+   }
+  ],
+  "266": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "reference": "herb",
+    "weight": 3
+   },
+   {
+    "reference": "rare",
+    "weight": 3
+   },
+   {
+    "id": 10,
+    "amount": 35,
+    "weight": 37
+   },
+   {
+    "id": 10,
+    "amount": 12,
+    "weight": 14
+   },
+   {
+    "id": 10,
+    "weight": 12
+   },
+   {
+    "id": 10,
+    "amount": 58,
+    "weight": 12
+   },
+   {
+    "id": 10,
+    "amount": 6,
+    "weight": 10
+   },
+   {
+    "id": 171,
+    "weight": 6
+   },
+   {
+    "id": 1,
+    "weight": 4
+   },
+   {
+    "id": 34,
+    "amount": 7,
+    "weight": 3
+   },
+   {
+    "id": 41,
+    "amount": 4,
+    "weight": 3
+   },
+   {
+    "id": 36,
+    "amount": 6,
+    "weight": 3
+   },
+   {
+    "id": 6,
+    "weight": 2
+   },
+   {
+    "id": 42,
+    "amount": 2,
+    "weight": 2
+   },
+   {
+    "id": 38,
+    "weight": 2
+   },
+   {
+    "id": 10,
+    "amount": 80,
+    "weight": 2
+   },
+   {
+    "id": 189,
+    "weight": 1
+   },
+   {
+    "id": 95,
+    "weight": 1
+   },
+   {
+    "id": 35,
+    "weight": 1
+   },
+   {
+    "id": 46,
+    "weight": 1
+   },
+   {
+    "id": 138,
+    "weight": 1
+   },
+   {
+    "id": 202,
+    "weight": 1
+   },
+   {
+    "id": 23,
+    "weight": 1
+   }
+  ],
+  "270": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "reference": "herb",
+    "weight": 35
+   },
+   {
+    "reference": "rare",
+    "weight": 1
+   },
+   {
+    "id": 464,
+    "weight": 10
+   },
+   {
+    "id": 42,
+    "weight": 7
+   },
+   {
+    "id": 10,
+    "amount": 3,
+    "weight": 5
+   },
+   {
+    "id": 10,
+    "amount": 8,
+    "weight": 5
+   },
+   {
+    "id": 10,
+    "amount": 29,
+    "weight": 3
+   },
+   {
+    "id": 33,
+    "amount": 24,
+    "weight": 3
+   },
+   {
+    "id": 35,
+    "amount": 8,
+    "weight": 2
+   },
+   {
+    "id": 36,
+    "amount": 6,
+    "weight": 2
+   },
+   {
+    "id": 34,
+    "amount": 6,
+    "weight": 2
+   },
+   {
+    "id": 40,
+    "amount": 2,
+    "weight": 1
+   },
+   {
+    "id": 70,
+    "weight": 1
+   },
+   {
+    "id": 10,
+    "amount": 35,
+    "weight": 1
+   },
+   {
+    "id": 469,
+    "weight": 1
+   },
+   {
+    "id": 1026,
+    "weight": 1
+   },
+   {
+    "reference": "chaos-druid-double-drop-270",
+    "weight": 11
+   }
+  ],
+  "277": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "reference": "herb",
+    "weight": 3
+   },
+   {
+    "reference": "rare",
+    "weight": 3
+   },
+   {
+    "id": 10,
+    "amount": 35,
+    "weight": 37
+   },
+   {
+    "id": 10,
+    "amount": 12,
+    "weight": 14
+   },
+   {
+    "id": 10,
+    "weight": 12
+   },
+   {
+    "id": 10,
+    "amount": 58,
+    "weight": 12
+   },
+   {
+    "id": 10,
+    "amount": 6,
+    "weight": 10
+   },
+   {
+    "id": 171,
+    "weight": 6
+   },
+   {
+    "id": 1,
+    "weight": 4
+   },
+   {
+    "id": 34,
+    "amount": 7,
+    "weight": 3
+   },
+   {
+    "id": 41,
+    "amount": 4,
+    "weight": 3
+   },
+   {
+    "id": 36,
+    "amount": 6,
+    "weight": 3
+   },
+   {
+    "id": 6,
+    "weight": 2
+   },
+   {
+    "id": 42,
+    "amount": 2,
+    "weight": 2
+   },
+   {
+    "id": 38,
+    "weight": 2
+   },
+   {
+    "id": 10,
+    "amount": 80,
+    "weight": 2
+   },
+   {
+    "id": 189,
+    "weight": 1
+   },
+   {
+    "id": 95,
+    "weight": 1
+   },
+   {
+    "id": 35,
+    "weight": 1
+   },
+   {
+    "id": 46,
+    "weight": 1
+   },
+   {
+    "id": 138,
+    "weight": 1
+   },
+   {
+    "id": 202,
+    "weight": 1
+   },
+   {
+    "id": 23,
+    "weight": 1
+   }
+  ],
+  "290": [
+   {
+    "id": 181,
+    "weight": 0
+   },
+   {
+    "reference": "herb",
+    "weight": 23
+   },
+   {
+    "reference": "rare",
+    "weight": 5
+   },
+   {
+    "reference": "ultra-rare",
+    "weight": 1
+   },
+   {
+    "id": 10,
+    "amount": 132,
+    "weight": 40
+   },
+   {
+    "id": 10,
+    "amount": 30,
+    "weight": 7
+   },
+   {
+    "id": 10,
+    "amount": 44,
+    "weight": 6
+   },
+   {
+    "id": 10,
+    "amount": 220,
+    "weight": 6
+   },
+   {
+    "id": 33,
+    "amount": 50,
+    "weight": 8
+   },
+   {
+    "id": 41,
+    "amount": 10,
+    "weight": 7
+   },
+   {
+    "id": 619,
+    "amount": 5,
+    "weight": 4
+   },
+   {
+    "id": 424,
+    "weight": 4
+   },
+   {
+    "id": 90,
+    "weight": 3
+   },
+   {
+    "id": 373,
+    "amount": 2,
+    "weight": 3
+   },
+   {
+    "id": 428,
+    "weight": 2
+   },
+   {
+    "id": 174,
+    "weight": 2
+   },
+   {
+    "id": 400,
+    "weight": 1
+   },
+   {
+    "id": 130,
+    "weight": 1
+   },
+   {
+    "id": 399,
+    "weight": 1
+   },
+   {
+    "id": 42,
+    "amount": 3,
+    "weight": 1
+   },
+   {
+    "id": 31,
+    "amount": 25,
+    "weight": 1
+   },
+   {
+    "id": 10,
+    "amount": 460,
+    "weight": 1
+   },
+   {
+    "id": 480,
+    "weight": 1
+   }
+  ],
+  "291": [
+   {
+    "id": 814,
+    "weight": 0
+   },
+   {
+    "id": 10,
+    "amount": 196,
+    "weight": 40
+   },
+   {
+    "reference": "herb",
+    "weight": 3
+   },
+   {
+    "reference": "rare",
+    "weight": 3
+   },
+   {
+    "reference": "ultra-rare",
+    "weight": 2
+   },
+   {
+    "id": 10,
+    "amount": 66,
+    "weight": 20
+   },
+   {
+    "id": 10,
+    "amount": 330,
+    "weight": 10
+   },
+   {
+    "id": 31,
+    "amount": 50,
+    "weight": 8
+   },
+   {
+    "id": 10,
+    "amount": 16,
+    "weight": 6
+   },
+   {
+    "id": 38,
+    "amount": 3,
+    "weight": 3
+   },
+   {
+    "id": 42,
+    "amount": 2,
+    "weight": 5
+   },
+   {
+    "id": 79,
+    "weight": 4
+   },
+   {
+    "id": 203,
+    "weight": 3
+   },
+   {
+    "id": 619,
+    "amount": 10,
+    "weight": 3
+   },
+   {
+    "id": 91,
+    "weight": 3
+   },
+   {
+    "id": 332,
+    "amount": 2,
+    "weight": 1
+   },
+   {
+    "id": 332,
+    "weight": 2
+   },
+   {
+    "id": 174,
+    "amount": 2,
+    "weight": 1
+   },
+   {
+    "id": 174,
+    "weight": 2
+   },
+   {
+    "id": 130,
+    "weight": 1
+   },
+   {
+    "id": 120,
+    "weight": 1
+   },
+   {
+    "id": 75,
+    "weight": 1
+   },
+   {
+    "id": 33,
+    "amount": 50,
+    "weight": 1
+   },
+   {
+    "id": 10,
+    "amount": 690,
+    "weight": 1
+   }
+  ],
+  "295": [
+   {
+    "id": 89,
+    "weight": 0
+   }
+  ],
+  "296": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "id": 466,
+    "weight": 0
+   }
+  ],
+  "298": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "reference": "rare",
+    "weight": 3
+   },
+   {
+    "id": 10,
+    "amount": 2,
+    "weight": 0
+   },
+   {
+    "id": 41,
+    "amount": 2,
+    "weight": 8
+   },
+   {
+    "id": 42,
+    "weight": 7
+   },
+   {
+    "id": 46,
+    "weight": 5
+   },
+   {
+    "id": 38,
+    "weight": 4
+   },
+   {
+    "id": 286,
+    "weight": 2
+   },
+   {
+    "id": 96,
+    "weight": 1
+   }
+  ],
+  "311": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "reference": "herb",
+    "weight": 7
+   },
+   {
+    "reference": "rare",
+    "weight": 2
+   },
+   {
+    "id": 10,
+    "amount": 15,
+    "weight": 36
+   },
+   {
+    "id": 220,
+    "weight": 22
+   },
+   {
+    "id": 10,
+    "amount": 5,
+    "weight": 12
+   },
+   {
+    "id": 10,
+    "amount": 28,
+    "weight": 10
+   },
+   {
+    "id": 10,
+    "amount": 62,
+    "weight": 4
+   },
+   {
+    "id": 10,
+    "amount": 42,
+    "weight": 3
+   },
+   {
+    "id": 827,
+    "weight": 3
+   },
+   {
+    "id": 1,
+    "weight": 3
+   },
+   {
+    "id": 63,
+    "weight": 3
+   },
+   {
+    "id": 42,
+    "weight": 3
+   },
+   {
+    "id": 1088,
+    "weight": 2
+   },
+   {
+    "id": 1089,
+    "weight": 2
+   },
+   {
+    "id": 36,
+    "amount": 4,
+    "weight": 2
+   },
+   {
+    "id": 41,
+    "amount": 2,
+    "weight": 2
+   },
+   {
+    "id": 31,
+    "amount": 5,
+    "weight": 2
+   },
+   {
+    "id": 40,
+    "amount": 3,
+    "weight": 2
+   },
+   {
+    "id": 32,
+    "weight": 2
+   },
+   {
+    "id": 273,
+    "weight": 2
+   },
+   {
+    "id": 60,
+    "weight": 1
+   },
+   {
+    "id": 72,
+    "weight": 1
+   },
+   {
+    "id": 46,
+    "weight": 1
+   }
+  ],
+  "318": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "reference": "herb",
+    "weight": 23
+   },
+   {
+    "id": 10,
+    "amount": 3,
+    "weight": 38
+   },
+   {
+    "id": 10,
+    "amount": 5,
+    "weight": 9
+   },
+   {
+    "id": 380,
+    "weight": 5
+   },
+   {
+    "id": 10,
+    "amount": 15,
+    "weight": 4
+   },
+   {
+    "id": 11,
+    "amount": 7,
+    "weight": 3
+   },
+   {
+    "id": 34,
+    "amount": 3,
+    "weight": 2
+   },
+   {
+    "id": 31,
+    "amount": 4,
+    "weight": 2
+   },
+   {
+    "id": 35,
+    "amount": 6,
+    "weight": 2
+   },
+   {
+    "id": 150,
+    "weight": 2
+   },
+   {
+    "id": 104,
+    "weight": 2
+   },
+   {
+    "id": 18,
+    "weight": 1
+   },
+   {
+    "id": 28,
+    "weight": 1
+   },
+   {
+    "id": 41,
+    "weight": 1
+   },
+   {
+    "id": 10,
+    "amount": 25,
+    "weight": 1
+   }
+  ],
+  "319": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "reference": "herb",
+    "weight": 23
+   },
+   {
+    "id": 10,
+    "amount": 3,
+    "weight": 38
+   },
+   {
+    "id": 10,
+    "amount": 5,
+    "weight": 9
+   },
+   {
+    "id": 380,
+    "weight": 5
+   },
+   {
+    "id": 10,
+    "amount": 15,
+    "weight": 4
+   },
+   {
+    "id": 11,
+    "amount": 7,
+    "weight": 3
+   },
+   {
+    "id": 34,
+    "amount": 3,
+    "weight": 2
+   },
+   {
+    "id": 31,
+    "amount": 4,
+    "weight": 2
+   },
+   {
+    "id": 35,
+    "amount": 6,
+    "weight": 2
+   },
+   {
+    "id": 150,
+    "weight": 2
+   },
+   {
+    "id": 104,
+    "weight": 2
+   },
+   {
+    "id": 18,
+    "weight": 1
+   },
+   {
+    "id": 28,
+    "weight": 1
+   },
+   {
+    "id": 41,
+    "weight": 1
+   },
+   {
+    "id": 10,
+    "amount": 25,
+    "weight": 1
+   }
+  ],
+  "320": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "reference": "herb",
+    "weight": 23
+   },
+   {
+    "id": 10,
+    "amount": 3,
+    "weight": 38
+   },
+   {
+    "id": 10,
+    "amount": 5,
+    "weight": 9
+   },
+   {
+    "id": 380,
+    "weight": 5
+   },
+   {
+    "id": 10,
+    "amount": 15,
+    "weight": 4
+   },
+   {
+    "id": 11,
+    "amount": 7,
+    "weight": 3
+   },
+   {
+    "id": 34,
+    "amount": 3,
+    "weight": 2
+   },
+   {
+    "id": 31,
+    "amount": 4,
+    "weight": 2
+   },
+   {
+    "id": 35,
+    "amount": 6,
+    "weight": 2
+   },
+   {
+    "id": 150,
+    "weight": 2
+   },
+   {
+    "id": 104,
+    "weight": 2
+   },
+   {
+    "id": 18,
+    "weight": 1
+   },
+   {
+    "id": 28,
+    "weight": 1
+   },
+   {
+    "id": 41,
+    "weight": 1
+   },
+   {
+    "id": 10,
+    "amount": 25,
+    "weight": 1
+   }
+  ],
+  "321": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "id": 10,
+    "weight": 38
+   },
+   {
+    "id": 10,
+    "amount": 4,
+    "weight": 16
+   },
+   {
+    "id": 10,
+    "amount": 7,
+    "weight": 10
+   },
+   {
+    "id": 10,
+    "amount": 12,
+    "weight": 9
+   },
+   {
+    "id": 28,
+    "weight": 6
+   },
+   {
+    "id": 104,
+    "weight": 4
+   },
+   {
+    "id": 10,
+    "amount": 17,
+    "weight": 4
+   },
+   {
+    "id": 10,
+    "amount": 25,
+    "weight": 4
+   },
+   {
+    "id": 11,
+    "weight": 3
+   },
+   {
+    "id": 10,
+    "amount": 30,
+    "weight": 2
+   },
+   {
+    "id": 33,
+    "amount": 4,
+    "weight": 2
+   },
+   {
+    "id": 11,
+    "amount": 2,
+    "weight": 2
+   },
+   {
+    "id": 34,
+    "weight": 2
+   },
+   {
+    "id": 31,
+    "weight": 2
+   },
+   {
+    "id": 70,
+    "weight": 1
+   },
+   {
+    "id": 619,
+    "weight": 1
+   },
+   {
+    "id": 41,
+    "weight": 1
+   },
+   {
+    "id": 40,
+    "weight": 1
+   },
+   {
+    "id": 29,
+    "weight": 1
+   },
+   {
+    "id": 151,
+    "weight": 1
+   }
+  ],
+  "323": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "reference": "herb",
+    "weight": 8
+   },
+   {
+    "reference": "rare",
+    "weight": 2
+   },
+   {
+    "id": 10,
+    "amount": 48,
+    "weight": 40
+   },
+   {
+    "id": 10,
+    "amount": 15,
+    "weight": 19
+   },
+   {
+    "id": 10,
+    "amount": 2,
+    "weight": 16
+   },
+   {
+    "id": 32,
+    "amount": 20,
+    "weight": 13
+   },
+   {
+    "id": 173,
+    "weight": 1
+   },
+   {
+    "id": 10,
+    "amount": 8,
+    "weight": 10
+   },
+   {
+    "reference": "paladin-steel-bar-323",
+    "weight": 1
+   },
+   {
+    "reference": "paladin-iron-bar-323",
+    "weight": 9
+   },
+   {
+    "id": 67,
+    "weight": 2
+   },
+   {
+    "id": 10,
+    "amount": 120,
+    "weight": 2
+   },
+   {
+    "id": 109,
+    "weight": 1
+   },
+   {
+    "id": 72,
+    "weight": 1
+   },
+   {
+    "id": 619,
+    "weight": 1
+   }
+  ],
+  "342": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "reference": "herb",
+    "weight": 23
+   },
+   {
+    "id": 10,
+    "amount": 3,
+    "weight": 38
+   },
+   {
+    "id": 10,
+    "amount": 5,
+    "weight": 9
+   },
+   {
+    "id": 380,
+    "weight": 5
+   },
+   {
+    "id": 10,
+    "amount": 15,
+    "weight": 4
+   },
+   {
+    "id": 11,
+    "amount": 7,
+    "weight": 3
+   },
+   {
+    "id": 34,
+    "amount": 3,
+    "weight": 2
+   },
+   {
+    "id": 31,
+    "amount": 4,
+    "weight": 2
+   },
+   {
+    "id": 35,
+    "amount": 6,
+    "weight": 2
+   },
+   {
+    "id": 150,
+    "weight": 2
+   },
+   {
+    "id": 104,
+    "weight": 2
+   },
+   {
+    "id": 18,
+    "weight": 1
+   },
+   {
+    "id": 28,
+    "weight": 1
+   },
+   {
+    "id": 41,
+    "weight": 1
+   },
+   {
+    "id": 10,
+    "amount": 25,
+    "weight": 1
+   }
+  ],
+  "344": [
+   {
+    "id": 413,
+    "weight": 0
+   },
+   {
+    "reference": "herb",
+    "weight": 19
+   },
+   {
+    "reference": "rare",
+    "weight": 3
+   },
+   {
+    "reference": "ultra-rare",
+    "weight": 1
+   },
+   {
+    "id": 10,
+    "amount": 60,
+    "weight": 40
+   },
+   {
+    "id": 31,
+    "amount": 50,
+    "weight": 8
+   },
+   {
+    "id": 41,
+    "amount": 3,
+    "weight": 7
+   },
+   {
+    "id": 10,
+    "amount": 15,
+    "weight": 7
+   },
+   {
+    "id": 619,
+    "amount": 3,
+    "weight": 4
+   },
+   {
+    "id": 88,
+    "weight": 3
+   },
+   {
+    "id": 31,
+    "amount": 100,
+    "weight": 2
+   },
+   {
+    "id": 126,
+    "weight": 2
+   },
+   {
+    "id": 171,
+    "weight": 2
+   },
+   {
+    "id": 373,
+    "amount": 2,
+    "weight": 2
+   },
+   {
+    "id": 373,
+    "weight": 2
+   },
+   {
+    "id": 615,
+    "weight": 1
+   },
+   {
+    "id": 398,
+    "weight": 1
+   },
+   {
+    "id": 31,
+    "amount": 25,
+    "weight": 1
+   },
+   {
+    "id": 42,
+    "weight": 1
+   },
+   {
+    "id": 10,
+    "amount": 50,
+    "weight": 1
+   },
+   {
+    "id": 223,
+    "weight": 1
+   },
+   {
+    "id": 224,
+    "weight": 1
+   }
+  ],
+  "348": [
+   {
+    "id": 20,
+    "weight": 0
+   }
+  ],
+  "351": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "reference": "herb",
+    "weight": 23
+   },
+   {
+    "id": 10,
+    "amount": 3,
+    "weight": 38
+   },
+   {
+    "id": 10,
+    "amount": 5,
+    "weight": 9
+   },
+   {
+    "id": 380,
+    "weight": 5
+   },
+   {
+    "id": 10,
+    "amount": 15,
+    "weight": 4
+   },
+   {
+    "id": 11,
+    "amount": 7,
+    "weight": 3
+   },
+   {
+    "id": 34,
+    "amount": 3,
+    "weight": 2
+   },
+   {
+    "id": 31,
+    "amount": 4,
+    "weight": 2
+   },
+   {
+    "id": 35,
+    "amount": 6,
+    "weight": 2
+   },
+   {
+    "id": 150,
+    "weight": 2
+   },
+   {
+    "id": 104,
+    "weight": 2
+   },
+   {
+    "id": 18,
+    "weight": 1
+   },
+   {
+    "id": 28,
+    "weight": 1
+   },
+   {
+    "id": 41,
+    "weight": 1
+   },
+   {
+    "id": 10,
+    "amount": 25,
+    "weight": 1
+   }
+  ],
+  "352": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "reference": "herb",
+    "weight": 23
+   },
+   {
+    "id": 10,
+    "amount": 3,
+    "weight": 38
+   },
+   {
+    "id": 10,
+    "amount": 5,
+    "weight": 9
+   },
+   {
+    "id": 380,
+    "weight": 5
+   },
+   {
+    "id": 10,
+    "amount": 15,
+    "weight": 4
+   },
+   {
+    "id": 11,
+    "amount": 7,
+    "weight": 3
+   },
+   {
+    "id": 34,
+    "amount": 3,
+    "weight": 2
+   },
+   {
+    "id": 31,
+    "amount": 4,
+    "weight": 2
+   },
+   {
+    "id": 35,
+    "amount": 6,
+    "weight": 2
+   },
+   {
+    "id": 150,
+    "weight": 2
+   },
+   {
+    "id": 104,
+    "weight": 2
+   },
+   {
+    "id": 18,
+    "weight": 1
+   },
+   {
+    "id": 28,
+    "weight": 1
+   },
+   {
+    "id": 41,
+    "weight": 1
+   },
+   {
+    "id": 10,
+    "amount": 25,
+    "weight": 1
+   }
+  ],
+  "356": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "reference": "rare",
+    "weight": 1
+   },
+   {
+    "id": 10,
+    "amount": 4,
+    "weight": 23
+   },
+   {
+    "id": 156,
+    "weight": 13
+   },
+   {
+    "id": 10,
+    "amount": 10,
+    "weight": 12
+   },
+   {
+    "id": 168,
+    "weight": 10
+   },
+   {
+    "id": 169,
+    "weight": 7
+   },
+   {
+    "id": 104,
+    "weight": 4
+   },
+   {
+    "id": 41,
+    "weight": 4
+   },
+   {
+    "id": 40,
+    "weight": 4
+   },
+   {
+    "id": 151,
+    "weight": 4
+   },
+   {
+    "id": 150,
+    "weight": 3
+   },
+   {
+    "id": 170,
+    "weight": 3
+   },
+   {
+    "id": 202,
+    "weight": 3
+   },
+   {
+    "id": 155,
+    "weight": 2
+   },
+   {
+    "id": 205,
+    "weight": 2
+   },
+   {
+    "id": 10,
+    "amount": 30,
+    "weight": 2
+   },
+   {
+    "id": 89,
+    "weight": 1
+   }
+  ],
+  "358": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "id": 10,
+    "weight": 17
+   },
+   {
+    "id": 10,
+    "amount": 2,
+    "weight": 16
+   },
+   {
+    "id": 10,
+    "amount": 4,
+    "weight": 9
+   },
+   {
+    "id": 100,
+    "weight": 8
+   },
+   {
+    "id": 197,
+    "weight": 8
+   },
+   {
+    "id": 40,
+    "amount": 3,
+    "weight": 6
+   },
+   {
+    "id": 41,
+    "amount": 3,
+    "weight": 6
+   },
+   {
+    "id": 703,
+    "weight": 4
+   },
+   {
+    "id": 10,
+    "amount": 29,
+    "weight": 3
+   },
+   {
+    "id": 702,
+    "weight": 3
+   },
+   {
+    "id": 31,
+    "amount": 7,
+    "weight": 3
+   },
+   {
+    "id": 32,
+    "amount": 7,
+    "weight": 3
+   },
+   {
+    "id": 33,
+    "amount": 7,
+    "weight": 3
+   },
+   {
+    "id": 34,
+    "amount": 7,
+    "weight": 3
+   },
+   {
+    "id": 35,
+    "amount": 7,
+    "weight": 3
+   },
+   {
+    "id": 36,
+    "amount": 7,
+    "weight": 3
+   },
+   {
+    "id": 31,
+    "amount": 12,
+    "weight": 2
+   },
+   {
+    "id": 32,
+    "amount": 12,
+    "weight": 2
+   },
+   {
+    "id": 33,
+    "amount": 12,
+    "weight": 2
+   },
+   {
+    "id": 34,
+    "amount": 12,
+    "weight": 2
+   },
+   {
+    "id": 35,
+    "amount": 12,
+    "weight": 2
+   },
+   {
+    "id": 36,
+    "amount": 12,
+    "weight": 2
+   },
+   {
+    "id": 619,
+    "weight": 2
+   },
+   {
+    "id": 42,
+    "amount": 2,
+    "weight": 1
+   },
+   {
+    "id": 46,
+    "weight": 1
+   }
+  ],
+  "359": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "id": 10,
+    "amount": 18,
+    "weight": 21
+   },
+   {
+    "id": 10,
+    "amount": 10,
+    "weight": 10
+   },
+   {
+    "id": 10,
+    "amount": 26,
+    "weight": 8
+   },
+   {
+    "id": 10,
+    "amount": 35,
+    "weight": 6
+   },
+   {
+    "id": 0,
+    "weight": 3
+   },
+   {
+    "id": 33,
+    "amount": 2,
+    "weight": 3
+   },
+   {
+    "id": 28,
+    "weight": 2
+   },
+   {
+    "id": 60,
+    "weight": 2
+   },
+   {
+    "id": 36,
+    "amount": 2,
+    "weight": 2
+   },
+   {
+    "id": 166,
+    "weight": 2
+   },
+   {
+    "id": 128,
+    "weight": 1
+   },
+   {
+    "id": 46,
+    "weight": 1
+   },
+   {
+    "id": 202,
+    "weight": 1
+   },
+   {
+    "id": 270,
+    "weight": 1
+   },
+   {
+    "id": 31,
+    "amount": 5,
+    "weight": 1
+   }
+  ],
+  "364": [
+   {
+    "id": 20,
+    "weight": 0
+   }
+  ],
+  "367": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "id": 503,
+    "weight": 0
+   }
+  ],
+  "420": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "id": 10,
+    "weight": 38
+   },
+   {
+    "id": 10,
+    "amount": 4,
+    "weight": 16
+   },
+   {
+    "id": 10,
+    "amount": 7,
+    "weight": 10
+   },
+   {
+    "id": 10,
+    "amount": 12,
+    "weight": 9
+   },
+   {
+    "id": 28,
+    "weight": 6
+   },
+   {
+    "id": 104,
+    "weight": 4
+   },
+   {
+    "id": 10,
+    "amount": 17,
+    "weight": 4
+   },
+   {
+    "id": 10,
+    "amount": 25,
+    "weight": 4
+   },
+   {
+    "id": 11,
+    "weight": 3
+   },
+   {
+    "id": 10,
+    "amount": 30,
+    "weight": 2
+   },
+   {
+    "id": 33,
+    "amount": 4,
+    "weight": 2
+   },
+   {
+    "id": 11,
+    "amount": 2,
+    "weight": 2
+   },
+   {
+    "id": 34,
+    "weight": 2
+   },
+   {
+    "id": 31,
+    "weight": 2
+   },
+   {
+    "id": 70,
+    "weight": 1
+   },
+   {
+    "id": 619,
+    "weight": 1
+   },
+   {
+    "id": 41,
+    "weight": 1
+   },
+   {
+    "id": 40,
+    "weight": 1
+   },
+   {
+    "id": 29,
+    "weight": 1
+   },
+   {
+    "id": 151,
+    "weight": 1
+   }
+  ],
+  "421": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "reference": "herb",
+    "weight": 11
+   },
+   {
+    "reference": "rare",
+    "weight": 2
+   },
+   {
+    "id": 10,
+    "amount": 15,
+    "weight": 25
+   },
+   {
+    "id": 469,
+    "weight": 23
+   },
+   {
+    "id": 10,
+    "amount": 28,
+    "weight": 12
+   },
+   {
+    "id": 220,
+    "weight": 12
+   },
+   {
+    "id": 40,
+    "amount": 2,
+    "weight": 8
+   },
+   {
+    "id": 10,
+    "amount": 62,
+    "weight": 5
+   },
+   {
+    "id": 152,
+    "weight": 5
+   },
+   {
+    "id": 10,
+    "amount": 42,
+    "weight": 3
+   },
+   {
+    "id": 827,
+    "amount": 2,
+    "weight": 4
+   },
+   {
+    "id": 827,
+    "weight": 3
+   },
+   {
+    "id": 570,
+    "weight": 3
+   },
+   {
+    "id": 1090,
+    "weight": 3
+   },
+   {
+    "id": 1088,
+    "weight": 2
+   },
+   {
+    "id": 574,
+    "amount": 5,
+    "weight": 2
+   },
+   {
+    "id": 592,
+    "amount": 4,
+    "weight": 2
+   },
+   {
+    "id": 569,
+    "weight": 1
+   }
+  ],
+  "426": [
+   {
+    "id": 20,
+    "weight": 0
+   }
+  ],
+  "430": [
+   {
+    "id": 758,
+    "weight": 0
+   }
+  ],
+  "431": [
+   {
+    "id": 762,
+    "weight": 0
+   }
+  ],
+  "432": [
+   {
+    "id": 763,
+    "weight": 0
+   }
+  ],
+  "433": [
+   {
+    "id": 764,
+    "weight": 0
+   }
+  ],
+  "477": [
+   {
+    "id": 814,
+    "weight": 0
+   },
+   {
+    "reference": "rare",
+    "weight": 2
+   },
+   {
+    "reference": "ultra-rare",
+    "weight": 8
+   },
+   {
+    "id": 75,
+    "weight": 10
+   },
+   {
+    "id": 120,
+    "weight": 9
+   },
+   {
+    "id": 204,
+    "weight": 2
+   },
+   {
+    "id": 42,
+    "amount": 10,
+    "weight": 5
+   },
+   {
+    "id": 795,
+    "weight": 1
+   },
+   {
+    "id": 91,
+    "weight": 1
+   },
+   {
+    "id": 638,
+    "amount": 690,
+    "weight": 10
+   },
+   {
+    "id": 31,
+    "amount": 70,
+    "weight": 11
+   },
+   {
+    "id": 33,
+    "amount": 70,
+    "weight": 20
+   },
+   {
+    "id": 619,
+    "amount": 10,
+    "weight": 19
+   },
+   {
+    "id": 38,
+    "amount": 5,
+    "weight": 3
+   },
+   {
+    "id": 546,
+    "amount": 4,
+    "weight": 4
+   },
+   {
+    "id": 793,
+    "weight": 1
+   },
+   {
+    "id": 517,
+    "amount": 20,
+    "weight": 2
+   },
+   {
+    "id": 711,
+    "amount": 20,
+    "weight": 10
+   },
+   {
+    "id": 174,
+    "weight": 3
+   },
+   {
+    "id": 316,
+    "weight": 7
+   }
+  ],
+  "495": [
+   {
+    "id": 20,
+    "weight": 0
+   }
+  ],
+  "498": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "reference": "herb",
+    "weight": 21
+   },
+   {
+    "id": 10,
+    "amount": 2,
+    "weight": 28
+   },
+   {
+    "id": 10,
+    "amount": 6,
+    "weight": 21
+   },
+   {
+    "id": 10,
+    "weight": 8
+   },
+   {
+    "id": 10,
+    "amount": 13,
+    "weight": 7
+   },
+   {
+    "id": 10,
+    "amount": 20,
+    "weight": 4
+   },
+   {
+    "id": 11,
+    "amount": 8,
+    "weight": 4
+   },
+   {
+    "id": 10,
+    "amount": 30,
+    "weight": 3
+   },
+   {
+    "id": 104,
+    "weight": 3
+   },
+   {
+    "id": 35,
+    "weight": 3
+   },
+   {
+    "id": 40,
+    "amount": 2,
+    "weight": 2
+   },
+   {
+    "id": 34,
+    "weight": 2
+   },
+   {
+    "id": 32,
+    "amount": 2,
+    "weight": 2
+   },
+   {
+    "id": 41,
+    "weight": 1
+   },
+   {
+    "id": 113,
+    "weight": 1
+   },
+   {
+    "id": 16,
+    "weight": 1
+   },
+   {
+    "id": 0,
+    "weight": 1
+   },
+   {
+    "id": 21,
+    "weight": 1
+   }
+  ],
+  "516": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "id": 10,
+    "amount": 18,
+    "weight": 21
+   },
+   {
+    "id": 10,
+    "amount": 10,
+    "weight": 10
+   },
+   {
+    "id": 10,
+    "amount": 26,
+    "weight": 8
+   },
+   {
+    "id": 10,
+    "amount": 35,
+    "weight": 6
+   },
+   {
+    "id": 0,
+    "weight": 3
+   },
+   {
+    "id": 33,
+    "amount": 2,
+    "weight": 3
+   },
+   {
+    "id": 28,
+    "weight": 2
+   },
+   {
+    "id": 60,
+    "weight": 2
+   },
+   {
+    "id": 36,
+    "amount": 2,
+    "weight": 2
+   },
+   {
+    "id": 166,
+    "weight": 2
+   },
+   {
+    "id": 128,
+    "weight": 1
+   },
+   {
+    "id": 46,
+    "weight": 1
+   },
+   {
+    "id": 202,
+    "weight": 1
+   },
+   {
+    "id": 270,
+    "weight": 1
+   },
+   {
+    "id": 31,
+    "amount": 5,
+    "weight": 1
+   }
+  ],
+  "523": [
+   {
+    "id": 413,
+    "weight": 0
+   },
+   {
+    "reference": "herb",
+    "weight": 14
+   },
+   {
+    "reference": "jogre-one-bone-523",
+    "weight": 3
+   },
+   {
+    "reference": "jogre-two-bones-523",
+    "weight": 2
+   },
+   {
+    "reference": "rare",
+    "weight": 1
+   },
+   {
+    "id": 827,
+    "weight": 30
+   },
+   {
+    "id": 10,
+    "amount": 22,
+    "weight": 26
+   },
+   {
+    "id": 249,
+    "amount": 2,
+    "weight": 10
+   },
+   {
+    "id": 748,
+    "amount": 2,
+    "weight": 8
+   },
+   {
+    "id": 249,
+    "weight": 5
+   },
+   {
+    "id": 13,
+    "weight": 5
+   },
+   {
+    "id": 1088,
+    "weight": 4
+   },
+   {
+    "id": 40,
+    "amount": 3,
+    "weight": 2
+   },
+   {
+    "id": 40,
+    "amount": 7,
+    "weight": 2
+   },
+   {
+    "id": 40,
+    "weight": 1
+   }
+  ],
+  "550": [
+   {
+    "id": 20,
+    "weight": 0
+   }
+  ],
+  "555": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "reference": "herb",
+    "weight": 34
+   },
+   {
+    "reference": "rare",
+    "weight": 1
+   },
+   {
+    "id": 497,
+    "weight": 12
+   },
+   {
+    "id": 471,
+    "weight": 5
+   },
+   {
+    "id": 31,
+    "amount": 8,
+    "weight": 5
+   },
+   {
+    "id": 42,
+    "weight": 4
+   },
+   {
+    "id": 10,
+    "amount": 29,
+    "weight": 3
+   },
+   {
+    "id": 10,
+    "amount": 3,
+    "weight": 3
+   },
+   {
+    "id": 34,
+    "amount": 6,
+    "weight": 2
+   },
+   {
+    "id": 473,
+    "weight": 2
+   },
+   {
+    "id": 220,
+    "amount": 2,
+    "weight": 2
+   },
+   {
+    "id": 10,
+    "amount": 10,
+    "weight": 1
+   },
+   {
+    "id": 423,
+    "weight": 1
+   },
+   {
+    "id": 40,
+    "amount": 2,
+    "weight": 1
+   },
+   {
+    "id": 33,
+    "amount": 24,
+    "weight": 1
+   },
+   {
+    "id": 469,
+    "weight": 1
+   },
+   {
+    "id": 220,
+    "weight": 1
+   },
+   {
+    "id": 220,
+    "amount": 3,
+    "weight": 1
+   },
+   {
+    "id": 464,
+    "weight": 1
+   },
+   {
+    "reference": "chaos-druid-warrior-double-drop-555",
+    "weight": 10
+   }
+  ],
+  "567": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "reference": "herb",
+    "weight": 34
+   },
+   {
+    "reference": "rare",
+    "weight": 1
+   },
+   {
+    "id": 497,
+    "weight": 11
+   },
+   {
+    "id": 932,
+    "weight": 10
+   },
+   {
+    "id": 32,
+    "amount": 12,
+    "weight": 5
+   },
+   {
+    "id": 471,
+    "weight": 5
+   },
+   {
+    "id": 10,
+    "amount": 3,
+    "weight": 5
+   },
+   {
+    "id": 42,
+    "amount": 2,
+    "weight": 4
+   },
+   {
+    "id": 10,
+    "amount": 24,
+    "weight": 3
+   },
+   {
+    "id": 10,
+    "amount": 10,
+    "weight": 3
+   },
+   {
+    "id": 423,
+    "weight": 1
+   },
+   {
+    "id": 40,
+    "amount": 3,
+    "weight": 1
+   },
+   {
+    "id": 31,
+    "amount": 36,
+    "weight": 1
+   },
+   {
+    "id": 469,
+    "weight": 1
+   },
+   {
+    "id": 464,
+    "weight": 1
+   },
+   {
+    "reference": "salarin-the-twisted-double-drop-567",
+    "weight": 5
+   }
+  ],
+  "584": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "reference": "herb",
+    "weight": 14
+   },
+   {
+    "reference": "rare",
+    "weight": 2
+   },
+   {
+    "id": 1089,
+    "weight": 3
+   },
+   {
+    "id": 103,
+    "weight": 2
+   },
+   {
+    "id": 10,
+    "amount": 12,
+    "weight": 36
+   },
+   {
+    "id": 34,
+    "amount": 8,
+    "weight": 13
+   },
+   {
+    "id": 40,
+    "amount": 2,
+    "weight": 9
+   },
+   {
+    "id": 41,
+    "amount": 2,
+    "weight": 7
+   },
+   {
+    "id": 42,
+    "weight": 6
+   },
+   {
+    "id": 38,
+    "weight": 4
+   },
+   {
+    "id": 34,
+    "amount": 40,
+    "weight": 3
+   },
+   {
+    "id": 619,
+    "weight": 1
+   }
+  ],
+  "594": [
+   {
+    "id": 413,
+    "weight": 0
+   },
+   {
+    "reference": "herb",
+    "weight": 5
+   },
+   {
+    "reference": "rare",
+    "weight": 4
+   },
+   {
+    "id": 10,
+    "amount": 82,
+    "weight": 35
+   },
+   {
+    "id": 10,
+    "amount": 37,
+    "weight": 19
+   },
+   {
+    "id": 10,
+    "amount": 15,
+    "weight": 10
+   },
+   {
+    "id": 10,
+    "amount": 119,
+    "weight": 10
+   },
+   {
+    "id": 171,
+    "weight": 6
+   },
+   {
+    "id": 432,
+    "weight": 5
+   },
+   {
+    "id": 42,
+    "amount": 2,
+    "weight": 4
+   },
+   {
+    "id": 34,
+    "amount": 18,
+    "weight": 3
+   },
+   {
+    "id": 41,
+    "amount": 5,
+    "weight": 3
+   },
+   {
+    "id": 33,
+    "amount": 12,
+    "weight": 3
+   },
+   {
+    "id": 40,
+    "amount": 4,
+    "weight": 3
+   },
+   {
+    "id": 46,
+    "amount": 2,
+    "weight": 2
+   },
+   {
+    "id": 198,
+    "weight": 2
+   },
+   {
+    "id": 68,
+    "weight": 2
+   },
+   {
+    "id": 105,
+    "weight": 2
+   },
+   {
+    "id": 10,
+    "amount": 300,
+    "weight": 2
+   },
+   {
+    "id": 129,
+    "weight": 1
+   },
+   {
+    "id": 38,
+    "amount": 2,
+    "weight": 1
+   },
+   {
+    "id": 619,
+    "weight": 1
+   },
+   {
+    "id": 10,
+    "amount": 5,
+    "weight": 2
+   },
+   {
+    "id": 179,
+    "weight": 1
+   },
+   {
+    "id": 186,
+    "weight": 1
+   },
+   {
+    "id": 155,
+    "weight": 1
+   }
+  ],
+  "595": [
+   {
+    "id": 20,
+    "weight": 0
+   }
+  ],
+  "597": [
+   {
+    "id": 20,
+    "weight": 0
+   }
+  ],
+  "598": [
+   {
+    "id": 20,
+    "weight": 0
+   }
+  ],
+  "599": [
+   {
+    "id": 20,
+    "weight": 0
+   }
+  ],
+  "600": [
+   {
+    "id": 20,
+    "weight": 0
+   }
+  ],
+  "602": [
+   {
+    "id": 20,
+    "weight": 0
+   }
+  ],
+  "603": [
+   {
+    "id": 20,
+    "weight": 0
+   }
+  ],
+  "604": [
+   {
+    "id": 20,
+    "weight": 0
+   }
+  ],
+  "605": [
+   {
+    "id": 20,
+    "weight": 0
+   }
+  ],
+  "606": [
+   {
+    "id": 20,
+    "weight": 0
+   }
+  ],
+  "607": [
+   {
+    "id": 20,
+    "weight": 0
+   }
+  ],
+  "608": [
+   {
+    "id": 20,
+    "weight": 0
+   }
+  ],
+  "632": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "reference": "herb",
+    "weight": 8
+   },
+   {
+    "reference": "rare",
+    "weight": 2
+   },
+   {
+    "id": 10,
+    "amount": 48,
+    "weight": 40
+   },
+   {
+    "id": 10,
+    "amount": 15,
+    "weight": 19
+   },
+   {
+    "id": 10,
+    "amount": 2,
+    "weight": 16
+   },
+   {
+    "id": 32,
+    "amount": 20,
+    "weight": 13
+   },
+   {
+    "id": 173,
+    "weight": 1
+   },
+   {
+    "id": 10,
+    "amount": 8,
+    "weight": 10
+   },
+   {
+    "reference": "paladin-steel-bar-323",
+    "weight": 1
+   },
+   {
+    "reference": "paladin-iron-bar-323",
+    "weight": 9
+   },
+   {
+    "id": 67,
+    "weight": 2
+   },
+   {
+    "id": 10,
+    "amount": 120,
+    "weight": 2
+   },
+   {
+    "id": 109,
+    "weight": 1
+   },
+   {
+    "id": 72,
+    "weight": 1
+   },
+   {
+    "id": 619,
+    "weight": 1
+   }
+  ],
+  "633": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "reference": "herb",
+    "weight": 8
+   },
+   {
+    "reference": "rare",
+    "weight": 2
+   },
+   {
+    "id": 10,
+    "amount": 48,
+    "weight": 40
+   },
+   {
+    "id": 10,
+    "amount": 15,
+    "weight": 19
+   },
+   {
+    "id": 10,
+    "amount": 2,
+    "weight": 16
+   },
+   {
+    "id": 32,
+    "amount": 20,
+    "weight": 13
+   },
+   {
+    "id": 173,
+    "weight": 1
+   },
+   {
+    "id": 10,
+    "amount": 8,
+    "weight": 10
+   },
+   {
+    "reference": "paladin-steel-bar-323",
+    "weight": 1
+   },
+   {
+    "reference": "paladin-iron-bar-323",
+    "weight": 9
+   },
+   {
+    "id": 67,
+    "weight": 2
+   },
+   {
+    "id": 10,
+    "amount": 120,
+    "weight": 2
+   },
+   {
+    "id": 109,
+    "weight": 1
+   },
+   {
+    "id": 72,
+    "weight": 1
+   },
+   {
+    "id": 619,
+    "weight": 1
+   }
+  ],
+  "641": [
+   {
+    "id": 20,
+    "weight": 0
+   }
+  ],
+  "653": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "id": 1101,
+    "weight": 0
+   }
+  ],
+  "660": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "reference": "herb",
+    "weight": 2
+   },
+   {
+    "id": 10,
+    "weight": 34
+   },
+   {
+    "id": 10,
+    "amount": 3,
+    "weight": 13
+   },
+   {
+    "id": 827,
+    "weight": 9
+   },
+   {
+    "id": 10,
+    "amount": 5,
+    "weight": 8
+   },
+   {
+    "id": 10,
+    "amount": 16,
+    "weight": 7
+   },
+   {
+    "id": 87,
+    "weight": 3
+   },
+   {
+    "id": 35,
+    "weight": 3
+   },
+   {
+    "id": 34,
+    "amount": 3,
+    "weight": 3
+   },
+   {
+    "id": 36,
+    "weight": 3
+   },
+   {
+    "id": 11,
+    "amount": 7,
+    "weight": 3
+   },
+   {
+    "id": 10,
+    "amount": 24,
+    "weight": 3
+   },
+   {
+    "id": 82,
+    "weight": 1
+   },
+   {
+    "id": 41,
+    "weight": 1
+   },
+   {
+    "id": 40,
+    "weight": 1
+   }
+  ],
+  "663": [
+   {
+    "id": 20,
+    "weight": 0
+   }
+  ],
+  "694": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "reference": "rare",
+    "weight": 1
+   },
+   {
+    "id": 10,
+    "amount": 4,
+    "weight": 23
+   },
+   {
+    "id": 156,
+    "weight": 13
+   },
+   {
+    "id": 10,
+    "amount": 10,
+    "weight": 12
+   },
+   {
+    "id": 168,
+    "weight": 10
+   },
+   {
+    "id": 169,
+    "weight": 7
+   },
+   {
+    "id": 104,
+    "weight": 4
+   },
+   {
+    "id": 41,
+    "weight": 4
+   },
+   {
+    "id": 40,
+    "weight": 4
+   },
+   {
+    "id": 151,
+    "weight": 4
+   },
+   {
+    "id": 150,
+    "weight": 3
+   },
+   {
+    "id": 170,
+    "weight": 3
+   },
+   {
+    "id": 202,
+    "weight": 3
+   },
+   {
+    "id": 155,
+    "weight": 2
+   },
+   {
+    "id": 205,
+    "weight": 2
+   },
+   {
+    "id": 10,
+    "amount": 30,
+    "weight": 2
+   },
+   {
+    "id": 89,
+    "weight": 1
+   }
+  ],
+  "699": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "reference": "rare",
+    "weight": 1
+   },
+   {
+    "id": 10,
+    "amount": 4,
+    "weight": 23
+   },
+   {
+    "id": 156,
+    "weight": 13
+   },
+   {
+    "id": 10,
+    "amount": 10,
+    "weight": 12
+   },
+   {
+    "id": 168,
+    "weight": 10
+   },
+   {
+    "id": 169,
+    "weight": 7
+   },
+   {
+    "id": 104,
+    "weight": 4
+   },
+   {
+    "id": 41,
+    "weight": 4
+   },
+   {
+    "id": 40,
+    "weight": 4
+   },
+   {
+    "id": 151,
+    "weight": 4
+   },
+   {
+    "id": 150,
+    "weight": 3
+   },
+   {
+    "id": 170,
+    "weight": 3
+   },
+   {
+    "id": 202,
+    "weight": 3
+   },
+   {
+    "id": 155,
+    "weight": 2
+   },
+   {
+    "id": 205,
+    "weight": 2
+   },
+   {
+    "id": 10,
+    "amount": 30,
+    "weight": 2
+   },
+   {
+    "id": 89,
+    "weight": 1
+   }
+  ],
+  "705": [
+   {
+    "id": 20,
+    "weight": 0
+   }
+  ],
+  "710": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "id": 10,
+    "weight": 38
+   },
+   {
+    "id": 10,
+    "amount": 4,
+    "weight": 16
+   },
+   {
+    "id": 10,
+    "amount": 7,
+    "weight": 10
+   },
+   {
+    "id": 10,
+    "amount": 12,
+    "weight": 9
+   },
+   {
+    "id": 28,
+    "weight": 6
+   },
+   {
+    "id": 104,
+    "weight": 4
+   },
+   {
+    "id": 10,
+    "amount": 17,
+    "weight": 4
+   },
+   {
+    "id": 10,
+    "amount": 25,
+    "weight": 4
+   },
+   {
+    "id": 11,
+    "weight": 3
+   },
+   {
+    "id": 10,
+    "amount": 30,
+    "weight": 2
+   },
+   {
+    "id": 33,
+    "amount": 4,
+    "weight": 2
+   },
+   {
+    "id": 11,
+    "amount": 2,
+    "weight": 2
+   },
+   {
+    "id": 34,
+    "weight": 2
+   },
+   {
+    "id": 31,
+    "weight": 2
+   },
+   {
+    "id": 70,
+    "weight": 1
+   },
+   {
+    "id": 619,
+    "weight": 1
+   },
+   {
+    "id": 41,
+    "weight": 1
+   },
+   {
+    "id": 40,
+    "weight": 1
+   },
+   {
+    "id": 29,
+    "weight": 1
+   },
+   {
+    "id": 151,
+    "weight": 1
+   }
+  ],
+  "761": [
+   {
+    "id": 20,
+    "weight": 0
+   }
+  ],
+  "762": [
+   {
+    "id": 20,
+    "weight": 0
+   }
+  ],
+  "767": [
+   {
+    "id": 20,
+    "weight": 0
+   }
+  ],
+  "772": [
+   {
+    "id": 20,
+    "weight": 0
+   }
+  ],
+  "777": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "id": 1268,
+    "weight": 0
+   }
+  ],
+  "787": [
+   {
+    "id": 20,
+    "weight": 0
+   },
+   {
+    "reference": "herb",
+    "weight": 18
+   },
+   {
+    "reference": "rare",
+    "weight": 8
+   },
+   {
+    "id": 10,
+    "amount": 8,
+    "weight": 47
+   },
+   {
+    "id": 46,
+    "amount": 2,
+    "weight": 9
+   },
+   {
+    "id": 619,
+    "weight": 6
+   },
+   {
+    "id": 33,
+    "amount": 30,
+    "weight": 4
+   },
+   {
+    "id": 38,
+    "weight": 4
+   },
+   {
+    "id": 173,
+    "weight": 4
+   },
+   {
+    "id": 572,
+    "weight": 1
+   },
+   {
+    "id": 1091,
+    "weight": 1
+   },
+   {
+    "id": 565,
+    "weight": 1
+   },
+   {
+    "id": 1081,
+    "weight": 1
+   },
+   {
+    "id": 425,
+    "weight": 1
+   },
+   {
+    "id": 216,
+    "weight": 1
+   }
+  ],
+  "chaos-druid-270": [
+   {
+    "reference": "herb",
+    "weight": 56
+   },
+   {
+    "reference": "rare",
+    "weight": 2
+   },
+   {
+    "id": 464,
+    "weight": 16
+   },
+   {
+    "id": 42,
+    "weight": 11
+   },
+   {
+    "id": 10,
+    "amount": 3,
+    "weight": 8
+   },
+   {
+    "id": 10,
+    "amount": 8,
+    "weight": 8
+   },
+   {
+    "id": 10,
+    "amount": 29,
+    "weight": 5
+   },
+   {
+    "id": 33,
+    "amount": 24,
+    "weight": 5
+   },
+   {
+    "id": 35,
+    "amount": 8,
+    "weight": 3
+   },
+   {
+    "id": 36,
+    "amount": 6,
+    "weight": 3
+   },
+   {
+    "id": 34,
+    "amount": 6,
+    "weight": 3
+   },
+   {
+    "id": 40,
+    "amount": 2,
+    "weight": 2
+   },
+   {
+    "id": 70,
+    "weight": 2
+   },
+   {
+    "id": 10,
+    "amount": 35,
+    "weight": 2
+   },
+   {
+    "id": 469,
+    "weight": 1
+   },
+   {
+    "id": 1026,
+    "weight": 1
+   }
+  ],
+  "chaos-druid-double-drop-270": [
+   {
+    "reference": "herb",
+    "weight": 0
+   },
+   {
+    "reference": "chaos-druid-270",
+    "weight": 0
+   }
+  ],
+  "chaos-druid-warrior-555": [
+   {
+    "reference": "herb",
+    "weight": 54
+   },
+   {
+    "reference": "rare",
+    "weight": 2
+   },
+   {
+    "id": 497,
+    "weight": 19
+   },
+   {
+    "id": 471,
+    "weight": 8
+   },
+   {
+    "id": 31,
+    "amount": 8,
+    "weight": 8
+   },
+   {
+    "id": 42,
+    "weight": 6
+   },
+   {
+    "id": 10,
+    "amount": 29,
+    "weight": 5
+   },
+   {
+    "id": 10,
+    "amount": 3,
+    "weight": 5
+   },
+   {
+    "id": 34,
+    "amount": 6,
+    "weight": 3
+   },
+   {
+    "id": 473,
+    "weight": 3
+   },
+   {
+    "id": 220,
+    "amount": 2,
+    "weight": 3
+   },
+   {
+    "id": 10,
+    "amount": 10,
+    "weight": 2
+   },
+   {
+    "id": 423,
+    "weight": 2
+   },
+   {
+    "id": 40,
+    "amount": 2,
+    "weight": 2
+   },
+   {
+    "id": 33,
+    "amount": 24,
+    "weight": 2
+   },
+   {
+    "id": 469,
+    "weight": 1
+   },
+   {
+    "id": 220,
+    "weight": 1
+   },
+   {
+    "id": 220,
+    "amount": 3,
+    "weight": 1
+   },
+   {
+    "id": 464,
+    "weight": 1
+   }
+  ],
+  "chaos-druid-warrior-double-drop-555": [
+   {
+    "reference": "herb",
+    "weight": 0
+   },
+   {
+    "reference": "chaos-druid-warrior-555",
+    "weight": 0
+   }
+  ],
+  "herb": [
+   {
+    "id": 165,
+    "weight": 33
+   },
+   {
+    "id": 435,
+    "weight": 25
+   },
+   {
+    "id": 436,
+    "weight": 19
+   },
+   {
+    "id": 437,
+    "weight": 14
+   },
+   {
+    "id": 438,
+    "weight": 11
+   },
+   {
+    "id": 439,
+    "weight": 8
+   },
+   {
+    "id": 440,
+    "weight": 6
+   },
+   {
+    "id": 441,
+    "weight": 5
+   },
+   {
+    "id": 442,
+    "weight": 4
+   },
+   {
+    "id": 443,
+    "weight": 3
+   }
+  ],
+  "jogre-one-bone-523": [
+   {
+    "id": 413,
+    "weight": 0
+   },
+   {
+    "id": 20,
+    "weight": 0
+   }
+  ],
+  "jogre-two-bones-523": [
+   {
+    "id": 413,
+    "amount": 2,
+    "weight": 0
+   },
+   {
+    "id": 20,
+    "amount": 2,
+    "weight": 0
+   }
+  ],
+  "mega-rare": [
+   {
+    "id": 1092,
+    "weight": 1
+   },
+   {
+    "id": 1277,
+    "weight": 3
+   }
+  ],
+  "paladin-iron-bar-323": [
+   {
+    "id": 170,
+    "weight": 0
+   },
+   {
+    "id": 171,
+    "weight": 0
+   },
+   {
+    "id": 173,
+    "weight": 0
+   }
+  ],
+  "paladin-steel-bar-323": [
+   {
+    "id": 171,
+    "weight": 0
+   },
+   {
+    "id": 173,
+    "weight": 0
+   }
+  ],
+  "rare": [
+   {
+    "reference": "mega-rare",
+    "weight": 1
+   },
+   {
+    "id": 160,
+    "weight": 32
+   },
+   {
+    "id": 159,
+    "weight": 16
+   },
+   {
+    "id": 158,
+    "weight": 8
+   },
+   {
+    "id": 157,
+    "weight": 2
+   },
+   {
+    "id": 526,
+    "weight": 1
+   },
+   {
+    "id": 527,
+    "weight": 1
+   }
+  ],
+  "salarin-the-twisted-567": [
+   {
+    "reference": "herb",
+    "weight": 51
+   },
+   {
+    "reference": "rare",
+    "weight": 2
+   },
+   {
+    "id": 497,
+    "weight": 16
+   },
+   {
+    "id": 932,
+    "weight": 15
+   },
+   {
+    "id": 32,
+    "amount": 12,
+    "weight": 7
+   },
+   {
+    "id": 471,
+    "weight": 7
+   },
+   {
+    "id": 10,
+    "amount": 3,
+    "weight": 7
+   },
+   {
+    "id": 42,
+    "amount": 2,
+    "weight": 6
+   },
+   {
+    "id": 10,
+    "amount": 24,
+    "weight": 4
+   },
+   {
+    "id": 10,
+    "amount": 10,
+    "weight": 4
+   },
+   {
+    "id": 423,
+    "weight": 2
+   },
+   {
+    "id": 40,
+    "amount": 3,
+    "weight": 2
+   },
+   {
+    "id": 31,
+    "amount": 36,
+    "weight": 2
+   },
+   {
+    "id": 469,
+    "weight": 2
+   },
+   {
+    "id": 464,
+    "weight": 1
+   }
+  ],
+  "salarin-the-twisted-double-drop-567": [
+   {
+    "reference": "herb",
+    "weight": 0
+   },
+   {
+    "reference": "salarin-the-twisted-567",
+    "weight": 0
+   }
+  ],
+  "ultra-rare": [
+   {
+    "id": 404,
+    "weight": 1
+   },
+   {
+    "id": 403,
+    "weight": 2
+   },
+   {
+    "id": 523,
+    "weight": 2
+   },
+   {
+    "id": 795,
+    "weight": 1
+   },
+   {
+    "id": 526,
+    "weight": 19
+   },
+   {
+    "id": 527,
+    "weight": 20
+   },
+   {
+    "reference": "mega-rare",
+    "weight": 15
+   },
+   {
+    "reference": "rare",
+    "weight": 20
+   },
+   {
+    "id": 405,
+    "weight": 3
+   },
+   {
+    "id": 408,
+    "weight": 2
+   },
+   {
+    "id": 81,
+    "weight": 3
+   },
+   {
+    "id": 93,
+    "weight": 2
+   },
+   {
+    "id": 42,
+    "amount": 30,
+    "weight": 3
+   },
+   {
+    "id": 38,
+    "amount": 30,
+    "weight": 2
+   },
+   {
+    "id": 11,
+    "amount": 300,
+    "weight": 2
+   },
+   {
+    "id": 520,
+    "amount": 20,
+    "weight": 2
+   },
+   {
+    "id": 518,
+    "amount": 20,
+    "weight": 2
+   },
+   {
+    "id": 40,
+    "amount": 45,
+    "weight": 2
+   },
+   {
+    "id": 10,
+    "amount": 3000,
+    "weight": 25
+   }
+  ]
+ }
+}
