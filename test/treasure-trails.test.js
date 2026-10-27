@@ -686,6 +686,21 @@ test('::clue tp teleports to the current step', () => {
     assert.deepEqual(player.teleports[0].slice(0, 2), [step.x, step.y]);
 });
 
+test('::clue tp lands beside an npc or object on an open tile, and on a dig tile itself', () => {
+    const step = { type: 'talk', x: 100, y: 100 };
+    // obstacle cells are tile coordinates * 2 here; (98..102, 98) is scenery, the first open tile at distance 2 wins
+    const blocked = new Set(['98,98', '99,98', '100,98', '101,98', '102,98']);
+    const pathFinder = {
+        obstacles: { get: (ox, oy) => blocked.has(`${Math.floor(ox / 2)},${Math.floor(oy / 2)}`) },
+        gameCoordsToObstacleCoords: ({ x, y }) => ({ x: x * 2, y: y * 2 })
+    };
+
+    const land = clues.landingTile({ pathFinder }, step);
+    assert.equal(Math.max(Math.abs(land.x - 100), Math.abs(land.y - 100)), 2);
+    assert.ok(!blocked.has(`${land.x},${land.y}`));
+    assert.deepEqual(clues.landingTile({ pathFinder }, { type: 'dig', x: 5, y: 6 }), { x: 5, y: 6 });
+});
+
 test('::clue skip advances the trail', () => {
     const player = fakePlayer({ admin: true });
     clues.command(player, ['medium']);

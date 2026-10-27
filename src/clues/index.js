@@ -474,6 +474,50 @@ function rollSkillDrop(player, skill, random = Math.random) {
     return { tier, id: config.scrolls[tier] };
 }
 
+// all four obstacle cells of the tile set: scenery fills it (as character.js isTileBlocked)
+function tileBlocked(pathFinder, x, y) {
+    if (!pathFinder || !pathFinder.obstacles) {
+        return false;
+    }
+
+    const { x: ox, y: oy } = pathFinder.gameCoordsToObstacleCoords({ x, y });
+    const { obstacles } = pathFinder;
+
+    return !!(
+        obstacles.get(ox, oy) &&
+        obstacles.get(ox + 1, oy) &&
+        obstacles.get(ox, oy + 1) &&
+        obstacles.get(ox + 1, oy + 1)
+    );
+}
+
+// where ::clue tp puts you: the dig tile itself; for an NPC or an object, an
+// open tile two or three away (an NPC's spawn tile can sit inside a building
+// where a teleported player sees nothing, an object's tile is the object)
+function landingTile(world, step) {
+    if (step.type === 'dig') {
+        return { x: step.x, y: step.y };
+    }
+
+    const pathFinder = world && world.pathFinder;
+
+    for (const r of [2, 3, 1]) {
+        for (let dx = -r; dx <= r; dx += 1) {
+            for (let dy = -r; dy <= r; dy += 1) {
+                if (Math.max(Math.abs(dx), Math.abs(dy)) !== r) {
+                    continue;
+                }
+
+                if (!tileBlocked(pathFinder, step.x + dx, step.y + dy)) {
+                    return { x: step.x + dx, y: step.y + dy };
+                }
+            }
+        }
+    }
+
+    return { x: step.x, y: step.y };
+}
+
 // ::clue <tier> | ::clue tp [tier] | ::clue skip [tier] | ::clue info [tier] | ::clue set <step id>
 // Who may use it is the world's command policy (world-admin canUseCommands,
 // ARSC_CMD_POLICY), checked by packet-handlers/command.js before this runs:
@@ -524,10 +568,12 @@ function command(player, args) {
     const step = STEPS.get(state.step);
 
     switch (action) {
-        case 'tp':
-            player.teleport(step.x, step.y, true);
+        case 'tp': {
+            const { x, y } = landingTile(player.world, step);
+            player.teleport(x, y, true);
             player.message(`${tier} step ${step.id}: ${step.type} at ${step.area || ''} (${step.x}, ${step.y})`);
             break;
+        }
         case 'skip':
             advance(player, tier);
             break;
@@ -571,5 +617,6 @@ module.exports = {
     npcCombatLevel,
     scrollName,
     withArticle,
+    landingTile,
     command
 };
