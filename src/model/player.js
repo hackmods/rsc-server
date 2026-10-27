@@ -1045,7 +1045,7 @@ class Player extends Character {
             world.addPlayerDrop(owner, item, this.x, this.y);
         }
 
-        this.inventory.items.length = 0;
+        this.inventory.clear(); // ARSC: the equipment slots too
 
         if (killer) {
             // bones for the killer, the kill experience and the message

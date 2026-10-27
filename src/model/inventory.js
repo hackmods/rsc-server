@@ -450,6 +450,19 @@ class Inventory {
         return false;
     }
 
+    // ARSC: empty the inventory and the equipment slots that index into it. Emptying only the items left
+    // equipmentSlots pointing at slots that were gone: a ranged shot in flight then read items[index].id of
+    // undefined and the whole server exited (::clearinventory mid-fight, live scenario 2026-10-27; death too).
+    clear() {
+        this.items.length = 0;
+
+        for (const type of Object.keys(this.equipmentSlots)) {
+            this.equipmentSlots[type] = -1;
+        }
+
+        this.updateEquipmentBonuses();
+    }
+
     getRangedWeapon() {
         const index = this.equipmentSlots['right-hand'];
 
@@ -459,7 +472,8 @@ class Inventory {
 
         const item = this.items[index];
 
-        if (rangedWeapons[item.id]) {
+        // ARSC: a stale slot (the item is gone) wields nothing
+        if (item && item.equipped && rangedWeapons[item.id]) {
             return item;
         }
     }
@@ -469,8 +483,10 @@ class Inventory {
     // found
     getAmmunitionID(messages = true) {
         const equippedItem = this.items[this.equipmentSlots['right-hand']];
+        const bow = equippedItem && rangedWeapons[equippedItem.id];
 
-        for (const ammunitionID of rangedWeapons[equippedItem.id].ammunition) {
+        // ARSC: no bow in hand (a stale slot) has no ammunition
+        for (const ammunitionID of bow ? bow.ammunition : []) {
             if (this.has(ammunitionID)) {
                 return ammunitionID;
             }

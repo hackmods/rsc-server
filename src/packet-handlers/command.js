@@ -253,7 +253,7 @@ async function command({ player }, { command, args }) {
             break;
         }
         case 'clearinventory': {
-            player.inventory.items = [];
+            player.inventory.clear(); // ARSC: the equipment slots too (a stale bow slot crashed the server)
             player.inventory.sendAll();
             break;
         }

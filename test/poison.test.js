@@ -181,6 +181,7 @@ test('Player#die clears poison', () => {
     player.poison(38);
     player.inventory.removeMostValuable = () => [];
     player.inventory.sendAll = () => {};
+    player.inventory.clear = () => player.inventory.items.splice(0);
     player.teleport = () => {};
     player.sendDeath = () => {};
     Player.prototype.die.call(player);

@@ -94,6 +94,10 @@ function makePlayer(world, extra = {}) {
                     this.unequipped.push(index);
                 },
                 sendAll() {},
+                // Inventory#clear: the items and the equipment slots (none in this fake)
+                clear() {
+                    bag.length = 0;
+                },
                 add(item) {
                     bag.push(item);
                 },
