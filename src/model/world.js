@@ -283,6 +283,8 @@ class World {
         // ARSC: without ticks the caller removes it (Peter Panelist hops on his own timer)
         if (ticks) {
             this.setTickTimeout(() => {
+                // ARSC: a player still fighting it would stay locked for ever
+                npc.abandonFight();
                 this.removeEntity('npcs', npc);
             }, ticks);
         }

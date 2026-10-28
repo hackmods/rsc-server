@@ -910,6 +910,7 @@ function despawnEventNpc(id) {
     state.eventNpcs.delete(id);
 
     try {
+        npc.abandonFight();
         state.world.removeEntity('npcs', npc);
     } catch (e) {
         // already gone

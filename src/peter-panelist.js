@@ -144,6 +144,7 @@ function hop(world) {
     }
 
     if (old) {
+        old.abandonFight();
         world.removeEntity('npcs', old);
     }
 

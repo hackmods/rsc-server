@@ -53,3 +53,30 @@ test('logout and teleport both end the fight first', () => {
         assert.match(body, /this\.abandonFight\(\)/, `${name} must call abandonFight`);
     }
 });
+
+test('a despawned npc frees the player it was fighting (the npc side of abandonFight)', () => {
+    const { player, npc } = fighters();
+    npc.abandonFight = Character.prototype.abandonFight;
+    player.locked = true;
+    player.unlock = function () {
+        this.locked = false;
+    };
+    player.faceDirection = () => {};
+    npc.abandonFight();
+    assert.strictEqual(player.opponent, null);
+    assert.strictEqual(npc.opponent, null);
+    assert.strictEqual(player.locked, false, 'the player stays locked');
+});
+
+test('timed npc removal, the admin despawn and Peter Panelist end the fight first', () => {
+    for (const [file, anchor] of [
+        ['../src/model/world.js', "this.removeEntity('npcs', npc);"],
+        ['../src/world-admin.js', "state.world.removeEntity('npcs', npc);"],
+        ['../src/peter-panelist.js', "world.removeEntity('npcs', old);"]
+    ]) {
+        const src = fs.readFileSync(path.join(__dirname, file), 'utf8');
+        const at = src.indexOf(anchor);
+        assert.ok(at > 0, file);
+        assert.match(src.slice(Math.max(0, at - 120), at), /abandonFight()/, `${file} must call abandonFight before removing`);
+    }
+});
