@@ -1,3 +1,18 @@
+const items = require('@2003scape/rsc-data/config/items');
+// ARSC: rsc-data rolls/ says "multiple are dropped if non-stackable": an amount of 3 on iron bars is three bars, not
+// one ground item holding 3 (a non-stackable item with an amount was a single item to pick up)
+function pushDrop(currentDrops, id, amount) {
+    if (amount > 1 && !(items[id] && items[id].stackable)) {
+        for (let i = 0; i < amount; i += 1) {
+            currentDrops.push({ id, amount: 1 });
+        }
+
+        return;
+    }
+
+    currentDrops.push({ id, amount });
+}
+
 // for recursively adding item drops
 function addItemDrop(drops, currentDrops, entry) {
     if (entry.reference) {
@@ -7,16 +22,14 @@ function addItemDrop(drops, currentDrops, entry) {
         // if id is an array, drop multiple items in one entry
         if (Array.isArray(entry.id)) {
             for (let i = 0; i < entry.id.length; i += 1) {
-                currentDrops.push({
-                    id: entry.id[i],
-                    amount: Array.isArray(entry.amount) ? entry.amount[i] : 1
-                });
+                pushDrop(
+                    currentDrops,
+                    entry.id[i],
+                    Array.isArray(entry.amount) ? entry.amount[i] : 1
+                );
             }
         } else {
-            currentDrops.push({
-                id: entry.id,
-                amount: entry.amount || 1
-            });
+            pushDrop(currentDrops, entry.id, entry.amount || 1);
         }
     }
 }
@@ -104,4 +117,4 @@ function rollCascadedSkillSuccess(rolls, level) {
     return -1;
 }
 
-module.exports = { rollItemDrop, rollSkillSuccess, rollCascadedSkillSuccess };
+module.exports = { pushDrop, rollItemDrop, rollSkillSuccess, rollCascadedSkillSuccess };
