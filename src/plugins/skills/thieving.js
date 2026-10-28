@@ -6,6 +6,7 @@
 // Every id the data names is claimed (returns true) so the server does not also say "Nothing interesting happens".
 
 const items = require('@2003scape/rsc-data/config/items');
+const npcs = require('@2003scape/rsc-data/config/npcs');
 const thieving = require('@2003scape/rsc-data/skills/thieving');
 const rolls = require('../../rolls');
 
@@ -26,13 +27,20 @@ const stalls = resolveTable(thieving.stalls);
 const chests = resolveTable(thieving.chests);
 const doors = resolveTable(thieving.doors);
 
-// npcs whose menu says "Pickpocket" but rsc-data has no entry for: the same marks under other ids
-// (men, a farmer and warriors elsewhere in the world)
-const POCKET_ALIASES = { 72: 11, 318: 11, 319: 63, 159: 86, 320: 86 };
+// npcs whose menu says "Pickpocket" but rsc-data has no entry for: the marks of the npc of the same name (men, a farmer
+// and warriors elsewhere in the world). By name, so a new copy of a pickpocketable npc needs no line here; one with no
+// namesake (the "civillian") stays without
+for (const [id, definition] of npcs.entries()) {
+    if (!definition || definition.command !== 'pickpocket' || pickpocketNPCs.has(id)) {
+        continue;
+    }
 
-for (const [id, mark] of Object.entries(POCKET_ALIASES)) {
-    if (!pickpocketNPCs.has(Number(id))) {
-        pickpocketNPCs.set(Number(id), pickpocketNPCs.get(mark));
+    const twin = [...pickpocketNPCs.keys()].find(
+        (other) => npcs[other] && npcs[other].name.toLowerCase() === definition.name.toLowerCase()
+    );
+
+    if (typeof twin !== 'undefined') {
+        pickpocketNPCs.set(id, pickpocketNPCs.get(twin));
     }
 }
 

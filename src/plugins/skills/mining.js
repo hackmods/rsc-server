@@ -51,6 +51,21 @@ for (const id of ROCK_IDS) {
     DEPLETED_IDS.add(getDepletedID(getDefinition(id)));
 }
 
+// ARSC: plain "Rock"/"Rocks" with a Mine option and no row in rsc-data (the scenery rocks around mines, 99, 164-172,
+// 497, 515-523, 532-552 ...) are empty: they say so instead of "Nothing interesting happens". Named ones (Daconia rock,
+// Rock of Dalgroth, Rockslide) and other models (mossy rock 555) belong to their quests.
+objects.forEach((definition, id) => {
+    if (
+        definition &&
+        /^rocks?$/i.test(definition.name) &&
+        /^rocks[0-9]*$/i.test((definition.model && definition.model.name) || '') &&
+        (definition.commands || []).some((command) => /^mine$/i.test(command)) &&
+        !ROCK_IDS.has(id)
+    ) {
+        DEPLETED_IDS.add(id);
+    }
+});
+
 // pick from a [{ id, weight }] table
 function rollWeighted(table) {
     let total = 0;

@@ -254,6 +254,15 @@
             },
             "note": "rsc-data row is {\"reference\":112} (gold rock 112, which gives gold nuggets 152); the Family Crest rock 315 gives perfect gold ore (690), respawn 70 s; rest copied from rock 112",
             "source": "Open-RSC server/conf/server/defs/extras/ObjectMining.xml, entry 315 (lines 152-161: oreId 690, exp 260, requiredLvl 40, respawnTime 70)"
+        },
+        {
+            "id": "crafting-dragonstone-amulet-string",
+            "file": "skills/crafting",
+            "path": "stringing.524",
+            "op": "set",
+            "value": 610,
+            "note": "rsc-data strings the dragonstone amulet (524) into the finished one (522); the Enchant lvl-5 spell (packet-handlers/magic.js, spell 42) turns the Unenchanted Dragonstone Amulet (610) into 522, so stringing gives 610",
+            "source": "rsc-data config/items.json: 610 Unenchanted Dragonstone Amulet, 522 Dragonstone Amulet; src/packet-handlers/magic.js spell 42 { from: 610, to: 522 }"
         }
     ]
 }

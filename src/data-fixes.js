@@ -8,6 +8,7 @@ const { fixes } = require('./data-fixes.json');
 const tables = {
     'config/npcs': require('@2003scape/rsc-data/config/npcs'),
     'skills/cooking': require('@2003scape/rsc-data/skills/cooking'),
+    'skills/crafting': require('@2003scape/rsc-data/skills/crafting'),
     'skills/fishing': require('@2003scape/rsc-data/skills/fishing'),
     'skills/herblaw': require('@2003scape/rsc-data/skills/herblaw'),
     'skills/mining': require('@2003scape/rsc-data/skills/mining'),
