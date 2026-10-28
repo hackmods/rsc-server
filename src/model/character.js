@@ -407,6 +407,29 @@ class Character extends Entity {
         return true;
     }
 
+    // ARSC: end a fight because this character left it (logged out, or was
+    // teleported away). retreat() is for a fight that is still there: it makes
+    // the npc re-attack, and without any cleanup the npc kept fighting a player
+    // who was gone, locked in place and swinging at nothing.
+    abandonFight() {
+        const opponent = this.opponent;
+
+        this.fightStage = -1;
+        this.opponent = null;
+
+        if (!opponent) {
+            return;
+        }
+
+        opponent.opponent = null;
+        opponent.fightStage = -1;
+        opponent.unlock();
+
+        if (opponent.direction >= 8) {
+            opponent.faceDirection(0, 0);
+        }
+    }
+
     async retreat() {
         if (this.fightStage === -1 || this.retreating) {
             return;

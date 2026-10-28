@@ -250,6 +250,9 @@ class Player extends Character {
 
         this.loggedIn = false;
 
+        // ARSC: leaving mid-fight must free the npc (it kept fighting a ghost)
+        this.abandonFight();
+
         if (this.dontAnswer) {
             this.dontAnswer();
         }
@@ -1390,6 +1393,9 @@ class Player extends Character {
         }
 
         y = y % (this.world.planeElevation * 4);
+
+        // ARSC: teleporting out of a fight must free the npc (it kept fighting a ghost)
+        this.abandonFight();
 
         this.lock();
         this.endWalkFunction = null;
