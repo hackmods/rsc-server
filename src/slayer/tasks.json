@@ -1,0 +1,146 @@
+[
+    {
+        "id": "chickens",
+        "npcId": 3,
+        "name": "Chickens",
+        "minCount": 5,
+        "maxCount": 12,
+        "pointsPerKill": 1,
+        "combatMin": 1
+    },
+    {
+        "id": "goblins",
+        "npcId": 4,
+        "name": "Goblins",
+        "minCount": 8,
+        "maxCount": 15,
+        "pointsPerKill": 1,
+        "combatMin": 1
+    },
+    {
+        "id": "goblins-level2",
+        "npcId": 62,
+        "name": "Goblins",
+        "minCount": 8,
+        "maxCount": 15,
+        "pointsPerKill": 1,
+        "combatMin": 5
+    },
+    {
+        "id": "cows",
+        "npcId": 6,
+        "name": "Cows",
+        "minCount": 5,
+        "maxCount": 10,
+        "pointsPerKill": 1,
+        "combatMin": 1
+    },
+    {
+        "id": "men",
+        "npcId": 11,
+        "name": "Men",
+        "minCount": 5,
+        "maxCount": 12,
+        "pointsPerKill": 2,
+        "combatMin": 5
+    },
+    {
+        "id": "rats",
+        "npcId": 19,
+        "name": "Rats",
+        "minCount": 10,
+        "maxCount": 20,
+        "pointsPerKill": 1,
+        "combatMin": 1
+    },
+    {
+        "id": "skeletons",
+        "npcId": 40,
+        "name": "Skeletons",
+        "minCount": 5,
+        "maxCount": 12,
+        "pointsPerKill": 2,
+        "combatMin": 10
+    },
+    {
+        "id": "zombies",
+        "npcId": 41,
+        "name": "Zombies",
+        "minCount": 5,
+        "maxCount": 12,
+        "pointsPerKill": 2,
+        "combatMin": 12
+    },
+    {
+        "id": "guards",
+        "npcId": 65,
+        "name": "Guards",
+        "minCount": 4,
+        "maxCount": 8,
+        "pointsPerKill": 3,
+        "combatMin": 20
+    },
+    {
+        "id": "warriors",
+        "npcId": 86,
+        "name": "Warriors",
+        "minCount": 5,
+        "maxCount": 10,
+        "pointsPerKill": 2,
+        "combatMin": 15
+    },
+    {
+        "id": "highwaymen",
+        "npcId": 89,
+        "name": "Highwaymen",
+        "minCount": 5,
+        "maxCount": 10,
+        "pointsPerKill": 2,
+        "combatMin": 10
+    },
+    {
+        "id": "darkwizards",
+        "npcId": 57,
+        "name": "Darkwizards",
+        "minCount": 4,
+        "maxCount": 8,
+        "pointsPerKill": 3,
+        "combatMin": 18
+    },
+    {
+        "id": "hobgoblins",
+        "npcId": 67,
+        "name": "Hobgoblins",
+        "minCount": 4,
+        "maxCount": 10,
+        "pointsPerKill": 3,
+        "combatMin": 25
+    },
+    {
+        "id": "giants",
+        "npcId": 61,
+        "name": "Giants",
+        "minCount": 3,
+        "maxCount": 7,
+        "pointsPerKill": 4,
+        "combatMin": 30
+    },
+    {
+        "id": "moss-giants",
+        "npcId": 104,
+        "name": "Moss Giants",
+        "minCount": 3,
+        "maxCount": 6,
+        "pointsPerKill": 5,
+        "combatMin": 40
+    },
+    {
+        "id": "white-knights",
+        "npcId": 102,
+        "name": "White Knights",
+        "minCount": 3,
+        "maxCount": 6,
+        "pointsPerKill": 4,
+        "combatMin": 35
+    }
+]

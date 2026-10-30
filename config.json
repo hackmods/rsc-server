@@ -11,5 +11,8 @@
     "experienceRate": 1,
     "fatigue": true,
     "bankCertificates": false,
-    "rememberCombatStyle": false
+    "rememberCombatStyle": false,
+    "slayerGuild": {
+        "enabled": true
+    }
 }

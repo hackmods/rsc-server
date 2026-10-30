@@ -143,6 +143,7 @@ module.exports = {
     "npcs.varrock.jolly-boar-bartender": require('./npcs/varrock/jolly-boar-bartender.js'),
     "npcs.varrock.lowe": require('./npcs/varrock/lowe.js'),
     "npcs.varrock.reldo": require('./npcs/varrock/reldo.js'),
+    "npcs.varrock.slayer-master": require('./npcs/varrock/slayer-master.js'),
     "npcs.varrock.sword-shopkeeper": require('./npcs/varrock/sword-shopkeeper.js'),
     "npcs.varrock.thessalia": require('./npcs/varrock/thessalia.js'),
     "npcs.varrock.thrander": require('./npcs/varrock/thrander.js'),
