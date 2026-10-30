@@ -16,6 +16,9 @@ const HOLIDAY_UNIQUES = {
 
 const FREE_BOUNDS = { minX: 48, maxX: 450, minY: 128, maxY: 766 };
 
+/** Default pad on either side of start/end (timezone / late-login cushion). Override with windowPadHours (0 disables). */
+const DEFAULT_WINDOW_PAD_HOURS = 12;
+
 /** Anonymous Gregorian algorithm → { month: 3|4, day }. */
 function westernEasterSunday(year) {
     const a = year % 19;
@@ -88,6 +91,26 @@ function stamp(p) {
     return ((p.year * 100 + p.month) * 100 + p.day) * 10000 + p.hour * 100 + p.minute;
 }
 
+/** Shift wall-clock parts by whole hours (calendar arithmetic in UTC fields). */
+function shiftParts(p, hours) {
+    const utc = Date.UTC(p.year, p.month - 1, p.day, p.hour, p.minute + hours * 60);
+    const d = new Date(utc);
+    return {
+        year: d.getUTCFullYear(),
+        month: d.getUTCMonth() + 1,
+        day: d.getUTCDate(),
+        hour: d.getUTCHours(),
+        minute: d.getUTCMinutes()
+    };
+}
+
+function windowPadHours(ev) {
+    if (ev && Number.isFinite(ev.windowPadHours)) {
+        return Math.max(0, Math.min(168, Number(ev.windowPadHours)));
+    }
+    return DEFAULT_WINDOW_PAD_HOURS;
+}
+
 /**
  * True when now falls inside the event window (Europe/London).
  * No start/end and no easterOffsetDays → always in window (legacy events).
@@ -130,7 +153,11 @@ function eventInWindow(ev, now = new Date()) {
         );
         if (!start || !end) continue;
 
-        if (nowStamp >= stamp(start) && nowStamp <= stamp(end)) {
+        const pad = windowPadHours(ev);
+        const paddedStart = pad ? shiftParts(start, -pad) : start;
+        const paddedEnd = pad ? shiftParts(end, pad) : end;
+
+        if (nowStamp >= stamp(paddedStart) && nowStamp <= stamp(paddedEnd)) {
             return true;
         }
     }
@@ -221,9 +248,12 @@ function pickScatterTile(world, region, random = Math.random) {
 
 module.exports = {
     TIMEZONE,
+    DEFAULT_WINDOW_PAD_HOURS,
     HOLIDAY_UNIQUES,
     westernEasterSunday,
     partsInLondon,
+    shiftParts,
+    windowPadHours,
     eventInWindow,
     ownsItem,
     uniqueMessage,

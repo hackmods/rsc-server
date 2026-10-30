@@ -20,9 +20,30 @@ test('eventInWindow: fixed Halloween day in London', () => {
         holiday.eventInWindow(ev, new Date('2026-10-31T12:00:00+00:00')),
         true
     );
+    // default ±12h pad: Oct 30 12:00 London is inside; Oct 30 11:00 is not
+    assert.equal(
+        holiday.eventInWindow(ev, new Date('2026-10-30T12:00:00+00:00')),
+        true
+    );
+    assert.equal(
+        holiday.eventInWindow(ev, new Date('2026-10-30T11:00:00+00:00')),
+        false
+    );
+});
+
+test('eventInWindow: windowPadHours 0 keeps exact day', () => {
+    const ev = {
+        start: { month: 10, day: 31, hour: 0, minute: 0 },
+        end: { month: 10, day: 31, hour: 23, minute: 59 },
+        windowPadHours: 0
+    };
     assert.equal(
         holiday.eventInWindow(ev, new Date('2026-10-30T12:00:00+00:00')),
         false
+    );
+    assert.equal(
+        holiday.eventInWindow(ev, new Date('2026-10-31T12:00:00+00:00')),
+        true
     );
 });
 

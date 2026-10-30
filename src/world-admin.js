@@ -589,6 +589,15 @@ function normalizeEvents(world, events, shopNames, errors) {
             ev.onePerPlayer = raw.onePerPlayer;
         }
 
+        if (raw.windowPadHours !== undefined) {
+            if (!Number.isInteger(raw.windowPadHours) || raw.windowPadHours < 0 || raw.windowPadHours > 168) {
+                errors.push(`${where}.windowPadHours: integer 0-168`);
+                return;
+            }
+
+            ev.windowPadHours = raw.windowPadHours;
+        }
+
         if (raw.type === 'broadcast') {
             if (!ev.message) {
                 errors.push(`${where}.message: required for broadcast`);
