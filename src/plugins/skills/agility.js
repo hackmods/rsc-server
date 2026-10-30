@@ -19,6 +19,8 @@
 
 const PLANE = 944;
 
+const { tryGrantLapPouch } = require('../items/agility-pouch');
+
 /**
  * The three courses, ported line for line from Open-RSC Core-Framework authentic/skills/agility/
  * GnomeAgilityCourse.java, BarbarianAgilityCourse.java and WildernessAgilityCourse.java (AGPL-3.0).
@@ -76,6 +78,7 @@ function completedObstacle(player, id, courseKey) {
         course.obstacles.every((obstacle) => done.has(obstacle))
     ) {
         player.addExperience('agility', course.lap);
+        tryGrantLapPouch(player, courseKey);
         progress.set(player, new Set());
     }
 }
@@ -1322,6 +1325,7 @@ Object.defineProperty(module.exports, '__test', {
         SHORTCUT_BY_ID,
         progress,
         rng,
-        PLANE
+        PLANE,
+        completedObstacle
     }
 });

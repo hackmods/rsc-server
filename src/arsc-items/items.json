@@ -1,0 +1,103 @@
+{
+    "about": "ARSC custom items after treasure trail caskets (1290-1292) and ironman reserve slots (1293-1298). Geode sprites reuse uncut gem art (73); agility pouches reuse the casket sprite (187) with course tints.",
+    "items": [
+        {
+            "id": 1299,
+            "name": "Small geode",
+            "description": "A small hollow rock lined with crystals",
+            "command": "crack",
+            "sprite": 73,
+            "price": 20,
+            "stackable": false,
+            "special": false,
+            "equip": null,
+            "colour": "rgb(180, 160, 140)",
+            "untradeable": false,
+            "members": true
+        },
+        {
+            "id": 1300,
+            "name": "Standard geode",
+            "description": "A geode with room for a decent find",
+            "command": "crack",
+            "sprite": 73,
+            "price": 40,
+            "stackable": false,
+            "special": false,
+            "equip": null,
+            "colour": "rgb(150, 130, 110)",
+            "untradeable": false,
+            "members": true
+        },
+        {
+            "id": 1301,
+            "name": "Large geode",
+            "description": "A hefty geode that might hide gems",
+            "command": "crack",
+            "sprite": 73,
+            "price": 80,
+            "stackable": false,
+            "special": false,
+            "equip": null,
+            "colour": "rgb(120, 100, 80)",
+            "untradeable": false,
+            "members": true
+        },
+        {
+            "id": 1302,
+            "name": "Huge geode",
+            "description": "An enormous geode, heavy with promise",
+            "command": "crack",
+            "sprite": 73,
+            "price": 150,
+            "stackable": false,
+            "special": false,
+            "equip": null,
+            "colour": "rgb(90, 70, 50)",
+            "untradeable": false,
+            "members": true
+        },
+        {
+            "id": 1303,
+            "name": "Agility pouch (gnome)",
+            "description": "A reward from the gnome agility course",
+            "command": "open",
+            "sprite": 187,
+            "price": 50,
+            "stackable": false,
+            "special": false,
+            "equip": null,
+            "colour": "rgb(90, 255, 90)",
+            "untradeable": false,
+            "members": true
+        },
+        {
+            "id": 1304,
+            "name": "Agility pouch (barbarian)",
+            "description": "A reward from the barbarian agility course",
+            "command": "open",
+            "sprite": 187,
+            "price": 75,
+            "stackable": false,
+            "special": false,
+            "equip": null,
+            "colour": "rgb(200, 120, 80)",
+            "untradeable": false,
+            "members": true
+        },
+        {
+            "id": 1305,
+            "name": "Agility pouch (wilderness)",
+            "description": "A reward from the wilderness agility course",
+            "command": "open",
+            "sprite": 187,
+            "price": 200,
+            "stackable": false,
+            "special": false,
+            "equip": null,
+            "colour": "rgb(255, 80, 80)",
+            "untradeable": false,
+            "members": true
+        }
+    ]
+}

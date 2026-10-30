@@ -18,16 +18,20 @@ function isOnEntrana(player) {
 }
 
 // weapons and armour: anything wieldable that adds to a combat bonus
+function isForbiddenItem(item) {
+    const wieldable = item.definition && item.definition.wieldable;
+
+    return (
+        wieldable &&
+        (wieldable.armour > 0 ||
+            wieldable.weaponAim > 0 ||
+            wieldable.weaponPower > 0)
+    );
+}
+
 function carriesForbidden(player) {
     for (const item of player.inventory.items) {
-        const wieldable = item.definition && item.definition.wieldable;
-
-        if (
-            wieldable &&
-            (wieldable.armour > 0 ||
-                wieldable.weaponAim > 0 ||
-                wieldable.weaponPower > 0)
-        ) {
+        if (isForbiddenItem(item)) {
             return true;
         }
     }
@@ -137,4 +141,9 @@ async function onGameObjectCommandOne(player, gameObject) {
     return true;
 }
 
-module.exports = { onTalkToNPC, onGameObjectCommandOne };
+module.exports = {
+    onTalkToNPC,
+    onGameObjectCommandOne,
+    carriesForbidden,
+    isForbiddenItem
+};

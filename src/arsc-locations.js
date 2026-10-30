@@ -16,6 +16,8 @@ module.exports = {
         { id: 26, direction: 0, x: 121, y: 508 }, // Varrock square
         { id: 26, direction: 0, x: 211, y: 628 }, // Draynor
         { id: 26, direction: 0, x: 269, y: 656 }, // Port Sarim
+        // Entrana safety deposit box (plugins/game-objects/entrana-safety-deposit.js), Port Sarim docks
+        { id: 942, direction: 0, x: 266, y: 660 },
         { id: 26, direction: 0, x: 225, y: 511 }, // Barbarian Village
         { id: 26, direction: 0, x: 371, y: 705 }, // Karamja, Musa Point
         { id: 26, direction: 0, x: 372, y: 500 }, // Taverley

@@ -7,6 +7,7 @@ const items = require('@2003scape/rsc-data/config/items');
 const objects = require('@2003scape/rsc-data/config/objects');
 const { pickaxes, gem, rocks } = require('@2003scape/rsc-data/skills/mining');
 const { rollSkillSuccess } = require('../../rolls');
+const { GEODE_CHANCE, rollMiningGeode } = require('../items/mining-geode');
 
 // rocks without a roll in rsc-data (copper, tin, clay)
 const DEFAULT_ROLL = [100, 350];
@@ -261,6 +262,12 @@ async function mine(player, gameObject, rockID, rock) {
     }
 
     player.inventory.add(oreID);
+
+    if (Math.random() < GEODE_CHANCE) {
+        const geodeID = rollMiningGeode();
+        player.inventory.add(geodeID);
+        player.message('@que@You find a ' + itemName(geodeID) + '!');
+    }
 
     return true;
 }
