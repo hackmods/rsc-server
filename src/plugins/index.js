@@ -47,6 +47,7 @@ module.exports = {
     "game-objects.wishing-fountains": require('./game-objects/wishing-fountains.js'),
     "items.casket": require('./items/casket.js'),
     "items.christmas-cracker": require('./items/christmas-cracker.js'),
+    "items.holiday-drops": require('../holiday-drops.js'),
     "items.dye-mix": require('./items/dye-mix.js'),
     "items.edible": require('./items/edible.js'),
     "items.oyster": require('./items/oyster.js'),

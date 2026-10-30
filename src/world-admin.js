@@ -31,6 +31,7 @@ const npcDefs = require('@2003scape/rsc-data/config/npcs');
 const Shop = require('./model/shop');
 const Item = require('./model/item');
 const NPC = require('./model/npc');
+const holidayDrops = require('./holiday-drops');
 
 const WORLD_FILE = process.env.ARSC_WORLD_FILE || '/config/world/world.json';
 const ADMIN_PORT = +(process.env.ARSC_ADMIN_PORT || 43600);
@@ -381,6 +382,127 @@ function normalizeVendors(world, vendors, shopNames, errors) {
     return out;
 }
 
+
+function normalizeDatePart(raw, where, errors, label) {
+    if (raw === undefined) {
+        return undefined;
+    }
+    if (!raw || typeof raw !== 'object') {
+        errors.push(where + '.' + label + ': must be an object');
+        return null;
+    }
+    const out = {};
+    if (raw.month !== undefined) {
+        if (!isInt(raw.month, 1, 12)) {
+            errors.push(where + '.' + label + '.month: 1-12');
+            return null;
+        }
+        out.month = raw.month;
+    }
+    if (raw.day !== undefined) {
+        if (!isInt(raw.day, 1, 31)) {
+            errors.push(where + '.' + label + '.day: 1-31');
+            return null;
+        }
+        out.day = raw.day;
+    }
+    if (raw.hour !== undefined) {
+        if (!isInt(raw.hour, 0, 23)) {
+            errors.push(where + '.' + label + '.hour: 0-23');
+            return null;
+        }
+        out.hour = raw.hour;
+    }
+    if (raw.minute !== undefined) {
+        if (!isInt(raw.minute, 0, 59)) {
+            errors.push(where + '.' + label + '.minute: 0-59');
+            return null;
+        }
+        out.minute = raw.minute;
+    }
+    if (raw.easterOffsetDays !== undefined) {
+        if (!Number.isInteger(raw.easterOffsetDays) || raw.easterOffsetDays < -7 || raw.easterOffsetDays > 7) {
+            errors.push(where + '.' + label + '.easterOffsetDays: integer -7..7');
+            return null;
+        }
+        out.easterOffsetDays = raw.easterOffsetDays;
+    }
+    return out;
+}
+
+function normalizeWindowFields(raw, where, errors) {
+    const start = normalizeDatePart(raw.start, where, errors, 'start');
+    const end = normalizeDatePart(raw.end, where, errors, 'end');
+    if (start === null || end === null) {
+        return null;
+    }
+    return { start, end };
+}
+
+function normalizeRegion(raw, where, world, errors) {
+    if (!raw || typeof raw !== 'object') {
+        errors.push(where + '.region: required object');
+        return null;
+    }
+    if (raw.radius !== undefined) {
+        if (!isInt(raw.x, 0, 5000) || !isInt(raw.y, 0, 5000)) {
+            errors.push(where + '.region.x/y: integers');
+            return null;
+        }
+        if (!isInt(raw.radius, 0, 80)) {
+            errors.push(where + '.region.radius: integer 0-80');
+            return null;
+        }
+        if (
+            !world.members &&
+            (raw.x < 48 || raw.x > 450 || raw.y % 944 < 128 || raw.y % 944 > 766)
+        ) {
+            errors.push(where + '.region: outside the free-to-play area');
+            return null;
+        }
+        return { x: raw.x, y: raw.y, radius: raw.radius };
+    }
+    if (
+        !isInt(raw.minX, 0, 5000) ||
+        !isInt(raw.maxX, 0, 5000) ||
+        !isInt(raw.minY, 0, 5000) ||
+        !isInt(raw.maxY, 0, 5000) ||
+        raw.minX > raw.maxX ||
+        raw.minY > raw.maxY
+    ) {
+        errors.push(where + '.region: min/max bounds required');
+        return null;
+    }
+    return { minX: raw.minX, maxX: raw.maxX, minY: raw.minY, maxY: raw.maxY };
+}
+
+function normalizeScatterItems(world, list, where, errors) {
+    const out = [];
+    if (!Array.isArray(list) || !list.length) {
+        errors.push(where + '.items: non-empty array');
+        return out;
+    }
+    list.forEach((entry, i) => {
+        const at = where + '.items[' + i + ']';
+        if (!entry || !isInt(entry.id, 0, items.length - 1) || !itemUsable(world, entry.id)) {
+            errors.push(at + ': invalid or members-only item');
+            return;
+        }
+        const weight = entry.weight === undefined ? 1 : entry.weight;
+        if (!isInt(weight, 1, 10000)) {
+            errors.push(at + '.weight: integer 1-10000');
+            return;
+        }
+        const amount = entry.amount === undefined ? 1 : entry.amount;
+        if (!isInt(amount, 1, STACK_CAP)) {
+            errors.push(at + '.amount: integer 1-' + STACK_CAP);
+            return;
+        }
+        out.push({ id: entry.id, weight, amount });
+    });
+    return out;
+}
+
 function normalizeEvents(world, events, shopNames, errors) {
     const out = [];
 
@@ -429,6 +551,42 @@ function normalizeEvents(world, events, shopNames, errors) {
             }
 
             ev.message = raw.message;
+        }
+
+        if (raw.easterOffsetDays !== undefined) {
+            if (
+                !Number.isInteger(raw.easterOffsetDays) ||
+                raw.easterOffsetDays < -7 ||
+                raw.easterOffsetDays > 7
+            ) {
+                errors.push(`${where}.easterOffsetDays: integer -7..7`);
+                return;
+            }
+
+            ev.easterOffsetDays = raw.easterOffsetDays;
+        }
+
+        const win = normalizeWindowFields(raw, where, errors);
+
+        if (win === null) {
+            return;
+        }
+
+        if (win.start) {
+            ev.start = win.start;
+        }
+
+        if (win.end) {
+            ev.end = win.end;
+        }
+
+        if (raw.onePerPlayer !== undefined) {
+            if (typeof raw.onePerPlayer !== 'boolean') {
+                errors.push(`${where}.onePerPlayer: boolean`);
+                return;
+            }
+
+            ev.onePerPlayer = raw.onePerPlayer;
         }
 
         if (raw.type === 'broadcast') {
@@ -500,9 +658,46 @@ function normalizeEvents(world, events, shopNames, errors) {
             ev.y = raw.y;
             ev.durationMinutes = duration;
             ev.radius = radius;
+        } else if (raw.type === 'groundScatter') {
+            const region = normalizeRegion(raw.region, where, world, errors);
+
+            if (!region) {
+                return;
+            }
+
+            const scatterItems = normalizeScatterItems(
+                world,
+                raw.items,
+                where,
+                errors
+            );
+
+            if (!scatterItems.length) {
+                return;
+            }
+
+            const count = raw.count === undefined ? 1 : raw.count;
+
+            if (!isInt(count, 1, 50)) {
+                errors.push(`${where}.count: integer 1-50`);
+                return;
+            }
+
+            // ~5 minutes at 640ms ticks
+            const ticks = raw.ticks === undefined ? 468 : raw.ticks;
+
+            if (!isInt(ticks, 1, 100000)) {
+                errors.push(`${where}.ticks: integer 1-100000`);
+                return;
+            }
+
+            ev.region = region;
+            ev.items = scatterItems;
+            ev.count = count;
+            ev.ticks = ticks;
         } else {
             errors.push(
-                `${where}.type: broadcast, stockDeal or roamingNpc expected`
+                `${where}.type: broadcast, stockDeal, roamingNpc or groundScatter expected`
             );
             return;
         }
@@ -917,8 +1112,12 @@ function despawnEventNpc(id) {
     }
 }
 
-function runEvent(ev) {
+function runEvent(ev, { force = false } = {}) {
     const { world } = state;
+
+    if (!force && !holidayDrops.eventInWindow(ev)) {
+        return;
+    }
 
     if (ev.type === 'broadcast') {
         broadcast(ev.message);
@@ -964,6 +1163,32 @@ function runEvent(ev) {
         state.eventNpcs.set(ev.id, npc);
 
         setTimeout(() => despawnEventNpc(ev.id), ev.durationMinutes * 60000);
+
+        if (ev.message) {
+            broadcast(ev.message);
+        }
+    } else if (ev.type === 'groundScatter') {
+        for (let n = 0; n < ev.count; n += 1) {
+            const tile = holidayDrops.pickScatterTile(world, ev.region);
+
+            if (!tile) {
+                continue;
+            }
+
+            const rolled = holidayDrops.rollWeighted(ev.items);
+
+            if (!rolled) {
+                continue;
+            }
+
+            world.addTimedGroundItem({
+                id: rolled.id,
+                amount: rolled.amount || 1,
+                x: tile.x,
+                y: tile.y,
+                ticks: ev.ticks
+            });
+        }
 
         if (ev.message) {
             broadcast(ev.message);
@@ -1348,7 +1573,11 @@ async function handle(req, res) {
             persistError: state.persistError
         });
     } else if (req.method === 'GET' && route === '/world') {
-        send(res, 200, state.doc);
+        const doc = state.doc || DEFAULT_DOC;
+        send(res, 200, {
+            ...doc,
+            activeEvents: holidayDrops.listActiveEvents(doc.events || [])
+        });
     } else if (req.method === 'PUT' && route === '/world') {
         let raw;
 
@@ -1468,7 +1697,7 @@ async function handle(req, res) {
             return;
         }
 
-        runEvent(ev);
+        runEvent(ev, { force: true });
         send(res, 200, { ok: true });
     } else {
         send(res, 404, { error: 'not found' });
@@ -1551,5 +1780,8 @@ module.exports = {
     canSkipSleepWord,
     normalize,
     vendorTalk,
+    runEvent,
+    eventInWindow: holidayDrops.eventInWindow,
+    listActiveEvents: holidayDrops.listActiveEvents,
     _state: state
 };
