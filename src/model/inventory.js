@@ -1,6 +1,6 @@
 const Item = require('./item');
 const items = require('@2003scape/rsc-data/config/items');
-const { formatSkillName } = require('../skills');
+const { equipmentRefusal, getEquipmentAnimationIndex: getAnimationIndex } = require('../equipment-eligibility');
 
 const {
     ammunition,
@@ -15,24 +15,6 @@ const EQUIPMENT_BONUS_NAMES = [
     'prayer'
 ];
 
-// character.animations index for each type of equipable item (order is
-// important)
-const EQUIPMENT_ANIMATION_INDEXES = [
-    { type: 'replace-head', index: 0 },
-    { type: 'replace-body', index: 1 },
-    { type: 'replace-legs', index: 2 },
-    { type: '2-handed', index: 4 },
-    { type: 'left-hand', index: 3 },
-    { type: 'right-hand', index: 4 },
-    { type: 'head', index: 5 },
-    { type: 'body', index: 6 },
-    { type: 'legs', index: 7 },
-    { type: 'hands', index: 8 },
-    { type: 'feet', index: 9 },
-    { type: 'chest', index: 10 },
-    { type: 'cape', index: 11 }
-];
-
 const CROSSBOW_ID = 60;
 const PHOENIX_CROSSBOW_ID = 59;
 
@@ -41,17 +23,6 @@ const ARROW_IDS = new Set(Object.keys(ammunition).map(Number));
 
 for (const boltID of BOLT_IDS) {
     ARROW_IDS.delete(boltID);
-}
-
-// get the correct player animation index for different equip types
-function getAnimationIndex(equip) {
-    for (const { type, index } of EQUIPMENT_ANIMATION_INDEXES) {
-        if (equip.indexOf(type) > -1) {
-            return index;
-        }
-    }
-
-    throw new RangeError(`unable to find animation index for ${equip}`);
 }
 
 class Inventory {
@@ -269,28 +240,9 @@ class Inventory {
             throw new RangeError(`equipping unequipable item index ${index}`);
         }
 
-        const { requirements } = item.definition.wieldable;
-
-        if (requirements) {
-            for (const [skillName, level] of Object.entries(requirements)) {
-                if (this.player.skills[skillName].base < level) {
-                    this.player.message(
-                        'You are not a high enough level to use this item',
-                        `You need to have a ${formatSkillName(skillName)} ` +
-                            `level of ${level}`
-                    );
-
-                    return;
-                }
-            }
-        }
-
-        if (item.definition.wieldable.female && this.player.isMale()) {
-            this.player.message(
-                "It doesn't fit!",
-                'Perhaps I should get someone to adjust it for me'
-            );
-
+        const refusal = equipmentRefusal(this.player, item);
+        if (refusal) {
+            this.player.message(...refusal);
             return;
         }
 
