@@ -530,11 +530,12 @@ class Character extends Entity {
         }
 
         // we aren't allowed to finish our path on a player (but walking through
-        // them is fine)
+        // them is fine). ARSC: a player's last step is an empty walk queue; stepsLeft is the NPC wander counter, which
+        // chase() and the player handler zero on players too, and reading it refused every step onto anyone after a
+        // player's first NPC talk (bots stuck behind people in one-tile doorways).
         if (
             !this.walkAction &&
-            (this.stepsLeft === 0 ||
-                (this.walkQueue && !this.walkQueue.length)) &&
+            (this.walkQueue ? !this.walkQueue.length : this.stepsLeft === 0) &&
             (this.world.players.getAtPoint(destX, destY).length ||
                 this.world.npcs.getAtPoint(destX, destY).length)
         ) {
