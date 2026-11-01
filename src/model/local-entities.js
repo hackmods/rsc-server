@@ -99,8 +99,15 @@ class LocalEntities {
 
     // mark out-of-range entities as removed and queue new ones
     updateNearby(type) {
+        const list = this.player.world[type];
+
         for (const entity of this.known[type]) {
-            if (!entity.withinRange(this.player, this.viewports[type])) {
+            // ARSC: an entity no longer in the world (removed while this
+            // player was not told) goes too, not only one out of range
+            if (
+                !entity.withinRange(this.player, this.viewports[type]) ||
+                list.getByIndex(entity.index) !== entity
+            ) {
                 this.removed[type].add(entity);
             }
         }

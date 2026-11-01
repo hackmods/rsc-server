@@ -237,8 +237,16 @@ class World {
                 return;
             }
 
-            if (player.localEntities.known[type].has(entity)) {
-                player.localEntities.removed[type].add(entity);
+            const local = player.localEntities;
+
+            if (local.known[type].has(entity)) {
+                local.removed[type].add(entity);
+            } else {
+                // ARSC: queued to appear this tick but gone before the update
+                // went out; it would have joined known with no removal ever
+                // sent (live 2026-10-31: bots attacking a dead npc's index for
+                // hours, "invalid npc index")
+                local.added[type].delete(entity);
             }
         }
     }
