@@ -218,9 +218,37 @@ function randInt(min, max, random = Math.random) {
     return min + Math.floor(random() * (max - min + 1));
 }
 
+const STEPS = [
+    { deltaX: 1, deltaY: 0 },
+    { deltaX: -1, deltaY: 0 },
+    { deltaX: 0, deltaY: 1 },
+    { deltaX: 0, deltaY: -1 }
+];
+
+/**
+ * ARSC: a drop must land where a player can stand and pick it up. A random tile in a wide region is often water, a wall,
+ * a tree or rock, or the inside of scenery (live on 31 Oct 2026 many masks and scythes fell where nobody could reach
+ * them). Open ground: the tile is not filled by scenery and a player can step off it in at least two directions.
+ * Without a path finder (tests, a world still loading) every tile counts.
+ */
+function isOpenGround(world, x, y) {
+    const pathFinder = world && world.pathFinder;
+    if (!pathFinder || !pathFinder.obstacles || typeof pathFinder.isValidGameStep !== 'function') return true;
+    const { x: ox, y: oy } = pathFinder.gameCoordsToObstacleCoords({ x, y });
+    const { obstacles } = pathFinder;
+    if (obstacles.get(ox, oy) && obstacles.get(ox + 1, oy) && obstacles.get(ox, oy + 1) && obstacles.get(ox + 1, oy + 1)) {
+        return false;
+    }
+    let exits = 0;
+    for (const step of STEPS) {
+        if (pathFinder.isValidGameStep({ x, y }, step)) exits += 1;
+    }
+    return exits >= 2;
+}
+
 function pickScatterTile(world, region, random = Math.random) {
     if (!region) return null;
-    for (let i = 0; i < 24; i += 1) {
+    for (let i = 0; i < 80; i += 1) {
         let x;
         let y;
         if (region.radius != null) {
@@ -239,6 +267,9 @@ function pickScatterTile(world, region, random = Math.random) {
                 y % 944 < FREE_BOUNDS.minY ||
                 y % 944 > FREE_BOUNDS.maxY)
         ) {
+            continue;
+        }
+        if (!isOpenGround(world, x, y)) {
             continue;
         }
         return { x, y };
@@ -260,5 +291,6 @@ module.exports = {
     onGroundItemTake,
     listActiveEvents,
     rollWeighted,
-    pickScatterTile
+    pickScatterTile,
+    isOpenGround
 };
