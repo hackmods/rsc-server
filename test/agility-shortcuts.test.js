@@ -3,6 +3,10 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
 
+// Match server startup: completed laps may award ARSC pouch item ids.
+require('../src/clues');
+require('../src/arsc-items');
+
 const objects = require('@2003scape/rsc-data/config/objects.json');
 const objectLocations = require('@2003scape/rsc-data/locations/objects.json');
 const agility = require('../src/plugins/skills/agility');
@@ -52,7 +56,14 @@ function fakePlayer({
             return answers.shift();
         },
         inventory: {
+            items: [],
             removed: [],
+            add(id, amount = 1) {
+                player.inventory.items.push({ id, amount });
+            },
+            has(id) {
+                return player.inventory.items.some(item => item.id === id);
+            },
             remove: (id) => player.inventory.removed.push(id)
         },
         world: {

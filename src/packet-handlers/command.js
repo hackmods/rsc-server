@@ -43,6 +43,13 @@ async function command({ player }, { command, args }) {
         return;
     }
 
+    // Ordinary banking: the module requires an open bank and validates the
+    // complete transfer before changing either store.
+    if (command === 'bankpreset') {
+        await require('../bank-presets').command(player, args);
+        return;
+    }
+
     if (!require('../world-admin').canUseCommands(player)) { // ARSC world-admin
         return;
     }

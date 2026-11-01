@@ -83,12 +83,19 @@ function exportedFns(mod) {
 }
 
 const indexSource = fs.readFileSync(INDEX, 'utf8');
-const indexed = [...indexSource.matchAll(/require\('(\.\/[^']+)'\)/g)].map((m) => rel(path.resolve(PLUGIN_DIR, m[1])));
+// Some registered handlers live in shared src modules outside plugins/.
+// Include both ./ and ../ imports instead of silently dropping the latter.
+const indexed = [...indexSource.matchAll(/require\('(\.\.?\/[^']+)'\)/g)].map((m) => rel(path.resolve(PLUGIN_DIR, m[1])));
 const load = (r) => require(path.join(PLUGIN_DIR, r));
 const pluginFiles = walk(PLUGIN_DIR).filter((file) => file !== INDEX);
 
 test('index.js lists every require it makes (the regex sees them all)', () => {
     assert.strictEqual(indexed.length, (indexSource.match(/require\(/g) || []).length);
+});
+
+test('shared holiday handlers are registered explicitly from outside the plugins directory', () => {
+    assert.deepStrictEqual(indexed.filter(file => file.startsWith('../')), ['../holiday-drops.js']);
+    assert.strictEqual(require(INDEX)['items.holiday-drops'], load('../holiday-drops.js'));
 });
 
 test('every exported on* function under src/plugins is a PLUGIN_TYPES name or INTERNAL_ON', () => {
