@@ -6,6 +6,7 @@ const {
     ammunition,
     weapons: rangedWeapons
 } = require('@2003scape/rsc-data/ranged');
+const { THROWING_IDS } = require('../ranged-data');
 
 const EQUIPMENT_BONUS_NAMES = [
     'armour',
@@ -424,8 +425,23 @@ class Inventory {
 
         const item = this.items[index];
 
-        // ARSC: a stale slot (the item is gone) wields nothing
-        if (item && item.equipped && rangedWeapons[item.id]) {
+        // ARSC: a stale slot (the item is gone) wields nothing. A wielded
+        // dart, throwing knife or spear is thrown (Open-RSC
+        // Player.getThrowingEquip; AttackHandler ranges instead of melee)
+        if (
+            item &&
+            item.equipped &&
+            (rangedWeapons[item.id] || THROWING_IDS.has(item.id))
+        ) {
+            return item;
+        }
+    }
+
+    // the wielded thrown weapon (its own ammunition), if any
+    getThrowingWeapon() {
+        const item = this.getRangedWeapon();
+
+        if (item && THROWING_IDS.has(item.id)) {
             return item;
         }
     }
@@ -435,6 +451,17 @@ class Inventory {
     // found
     getAmmunitionID(messages = true) {
         const equippedItem = this.items[this.equipmentSlots['right-hand']];
+
+        // a thrown weapon is its own ammunition (ThrowingEvent: the last copy
+        // in the inventory is thrown first, the wielded one last)
+        if (
+            equippedItem &&
+            equippedItem.equipped &&
+            THROWING_IDS.has(equippedItem.id)
+        ) {
+            return equippedItem.id;
+        }
+
         const bow = equippedItem && rangedWeapons[equippedItem.id];
 
         // ARSC: no bow in hand (a stale slot) has no ammunition

@@ -8,6 +8,7 @@
 
 const items = require('@2003scape/rsc-data/config/items.json');
 const { ammunition } = require('@2003scape/rsc-data/ranged');
+const { THROWING_IDS } = require('./ranged-data');
 
 // { npcID: power }: poison scorpion, poison spider, dungeon spider, tribesman, jungle savage
 const NPC_POISON_POWER = new Map([
@@ -83,11 +84,15 @@ function playerRound(player, target) {
 }
 
 // a player's arrow or bolt has hit (or tried to hit) the target
+// (ThrowingEvent.java:201-214: a thrown weapon whose name contains "poison",
+// same odds and power)
 function rangedHit(player, target, ammunitionID) {
-    if (
-        !ammunition[ammunitionID] ||
-        !POISONED_AMMUNITION.test(items[ammunitionID].name)
-    ) {
+    const poisoned = ammunition[ammunitionID]
+        ? POISONED_AMMUNITION.test(items[ammunitionID].name)
+        : THROWING_IDS.has(ammunitionID) &&
+          /poison/i.test(items[ammunitionID].name);
+
+    if (!poisoned) {
         return false;
     }
 
