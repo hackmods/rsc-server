@@ -510,7 +510,7 @@ async function golrie(player, npc) {
         await player.say('okay, take care golrie');
     }
 
-    if (player.cache.golrie_key === undefined) {
+    if (player.cache.golrie_key == null) {
         player.cache.golrie_key = true;
     }
 }
@@ -592,7 +592,7 @@ async function golriesGate(player, gate) {
         return;
     }
 
-    if ((player.y >= 3530 && player.cache.golrie_key !== undefined) || stageOf(player) === -1) {
+    if ((player.y >= 3530 && player.cache.golrie_key != null) || stageOf(player) === -1) {
         player.message('golrie has locked himself in');
         return;
     }
@@ -851,7 +851,7 @@ async function runeOnStand(player, stand, item) {
     const key = `waterfall_${stand.id}_${item.id}`;
     const name = RUNE_NAMES[item.id];
 
-    if (player.cache[key] === undefined) {
+    if (player.cache[key] == null) {
         player.message(`you place the ${name} on the stand`);
         player.message('the rune stone crumbles into dust');
         player.cache[key] = true;

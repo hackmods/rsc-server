@@ -81,11 +81,11 @@ function setStage(player, stage) {
 }
 
 function goodSide(player) {
-    return player.cache.good_side !== undefined;
+    return player.cache.good_side != null;
 }
 
 function evilSide(player) {
-    return player.cache.evil_side !== undefined;
+    return player.cache.evil_side != null;
 }
 
 // Open-RSC mes + delay(3)

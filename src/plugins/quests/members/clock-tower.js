@@ -70,7 +70,7 @@ function stageOf(player) {
 }
 
 function hasKey(player, key) {
-    return player.cache[key] !== undefined;
+    return player.cache[key] != null;
 }
 
 function carriesCog(player) {

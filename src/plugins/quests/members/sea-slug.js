@@ -407,7 +407,7 @@ async function kennith(player, npc) {
         await npc.say('i want to see daddy');
         await player.say("i'm working on it");
     } else if (stage === 5) {
-        if (player.cache.loose_panel !== undefined) {
+        if (player.cache.loose_panel != null) {
             await player.say("kennith i've made an opening in the wall", 'you can come out there');
             await npc.say('are their any sea slugs on the other side?'); // sic
             await player.say('not one');
@@ -454,7 +454,7 @@ async function bailey(player, npc) {
         );
         await player.say('i doubt they would taste too good');
     } else if (stage === 5) {
-        if (player.cache.lit_torch === undefined) {
+        if (player.cache.lit_torch == null) {
             await player.say('hello');
             await npc.say(
                 "oh thank god it's you",
@@ -699,7 +699,7 @@ async function onInventoryCommand(player, item) {
         // Firemaking.getExp(maxStat, 25) = (25 + maxStat * 1.75) * 4, quarter points
         player.addExperience('firemaking', Math.floor((25 + player.skills.firemaking.base * 1.75) * 4));
 
-        if (stageOf(player) === 5 && player.cache.lit_torch === undefined) {
+        if (stageOf(player) === 5 && player.cache.lit_torch == null) {
             player.cache.lit_torch = true;
         }
     } else {
