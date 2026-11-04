@@ -1,4 +1,5 @@
 const Item = require('./item');
+require('../data-fixes'); // ARSC: authentic stock (src/data-fixes.json, file shops) before any Shop reads it
 const shops = require('@2003scape/rsc-data/shops');
 
 // ARSC: shops rsc-data lacks (src/arsc-shops.js); upstream entries are never overwritten
