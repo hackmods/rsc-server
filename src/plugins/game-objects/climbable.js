@@ -1,5 +1,7 @@
 // 199: the black hole ladder (miniquests/black-hole.js)
-const EXCLUDE_IDS = new Set([130, 198, 199, 223, 227]);
+// 244: the Entrana dungeon ladder (the monk warns first, quests/members/lost-city.js)
+// 359: the White Wolf Mountain stairs (the dwarf guards them, quests/members/fishing-contest.js)
+const EXCLUDE_IDS = new Set([130, 198, 199, 223, 227, 244, 359]);
 // ladders, stairs and levers that move the player to a fixed tile (object-tele-points.js) are not plane shifts
 const { findTelePoint } = require('./object-tele-points');
 

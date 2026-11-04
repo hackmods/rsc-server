@@ -375,6 +375,47 @@ test('collect: what fits comes in with the save; a refusal takes it out again', 
     assert.strictEqual(toBank.player.bank.getItem({ id: 10 }).amount, 300);
 });
 
+test('collect with an empty box answers with a [GE] collected line (no pairs)', async () => {
+    // a bot waits for [GE] collected / refused: the sentence alone timed out
+    // 41,583 of 45,398 fleet collects (learned.json, 2026-11-03)
+    const empty = makePlayer({
+        handlers: { exchangeState: { success: true, offers: [], collect: [] } }
+    });
+
+    await exchange.command(empty.player, ['collect']);
+    assert.deepStrictEqual(geLines(empty.messages), ['[GE] collected']);
+    assert.ok(empty.messages.includes('Exchange: there is nothing waiting for you.'));
+    assert.strictEqual(empty.dataClient.sent.filter((m) => m.handler === 'exchangeCollect').length, 0);
+});
+
+test('login and minting push a closed state with the barred bit', async () => {
+    const state = { success: true, offers: [], collect: [{ itemId: COAL, amount: 2 }] };
+    const minted = makePlayer({ cache: { minted: 1 }, handlers: { exchangeState: state } });
+
+    await exchange.onLogin(minted.player);
+    const pushed = minted.player.packets.find((p) => p.type === 'exchangeState');
+    assert.ok(pushed, 'a state packet at login');
+    assert.strictEqual(pushed.flags & 1, 0, 'not opened: clients only refresh an open panel');
+    assert.strictEqual(pushed.flags & 2, 2, 'barred');
+    assert.deepStrictEqual(pushed.collect, [{ itemId: COAL, amount: 2 }]);
+    assert.ok(minted.messages.some((m) => /items waiting at the Exchange/.test(m)));
+
+    const clean = makePlayer({ handlers: { exchangeState: state } });
+    await exchange.onLogin(clean.player);
+    assert.strictEqual(clean.player.packets.find((p) => p.type === 'exchangeState').flags & 2, 0);
+
+    // minted mid-session (packet-handlers/command.js markMinted)
+    clean.player.cache.minted = Date.now();
+    exchange.onMinted(clean.player);
+    await new Promise((resolve) => setTimeout(resolve, 10));
+    const after = clean.player.packets.filter((p) => p.type === 'exchangeState');
+    assert.strictEqual(after.length, 2);
+    assert.strictEqual(after[1].flags & 2, 2);
+
+    // no data server wired (a fake world): nothing, and no throw
+    exchange.onMinted({ world: {}, cache: { minted: 1 } });
+});
+
 test('writes of one player run in order (a save cannot overtake an escrow)', async () => {
     const order = [];
     const { player } = makePlayer();

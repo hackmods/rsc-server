@@ -342,4 +342,6 @@ module.exports = {
     "npcs.brimhaven.customs-official": require('./npcs/brimhaven/customs-official.js'),
     "npcs.port-sarim.monks-of-entrana": require('./npcs/port-sarim/monks-of-entrana.js'),
     "npcs.peter-panelist": require('./npcs/peter-panelist.js'),
+    "quests.members.lost-city": require('./quests/members/lost-city.js'),
+    "wall-objects.loose-fence": require('./wall-objects/loose-fence.js'),
 };
