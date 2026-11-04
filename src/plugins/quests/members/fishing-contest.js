@@ -710,8 +710,32 @@ async function onUseWithGameObject(player, gameObject, item) {
     return true;
 }
 
-// one cast at a contest spot: `withWorms` and `withBait` are what each bait catches there
-async function castAtSpot(player, bonzo, withWorms, withBait, record) {
+// what a cast catches (Java's branches spelled out, so the item audit sees every catch): worms at the pipes catch a giant
+// carp, bait a sardine; worms at the oak tree catch a sardine, bait some shrimps. The bait is used up. Returns the id.
+function catchFish(player, spotID) {
+    const worms = player.inventory.has(RED_VINE_WORMS_ID);
+    let caught;
+
+    if (spotID === CARP_SPOT_ID && worms) {
+        player.message('You catch a giant carp');
+        player.inventory.add(RAW_GIANT_CARP_ID, 1);
+        caught = RAW_GIANT_CARP_ID;
+    } else if (worms || spotID === CARP_SPOT_ID) {
+        player.message('You catch a sardine');
+        player.inventory.add(RAW_SARDINE_ID, 1);
+        caught = RAW_SARDINE_ID;
+    } else {
+        player.message('You catch some shrimps');
+        player.inventory.add(RAW_SHRIMP_ID, 1);
+        caught = RAW_SHRIMP_ID;
+    }
+
+    player.inventory.remove(worms ? RED_VINE_WORMS_ID : FISHING_BAIT_ID);
+    return caught;
+}
+
+// one cast at a contest spot (the level, rod and bait checks first); the third catch ends the contest
+async function castAtSpot(player, bonzo, spotID) {
     if (player.skills.fishing.current < 10) {
         player.message('You need at least level 10 fishing to lure these fish');
         return;
@@ -727,17 +751,9 @@ async function castAtSpot(player, bonzo, withWorms, withBait, record) {
         return;
     }
 
-    const caught = player.inventory.has(RED_VINE_WORMS_ID) ? withWorms : withBait;
+    addCatch(player, catchFish(player, spotID));
 
-    player.message(caught.message);
-    player.inventory.add(caught.id, 1);
-    player.inventory.remove(player.inventory.has(RED_VINE_WORMS_ID) ? RED_VINE_WORMS_ID : FISHING_BAIT_ID);
-
-    if (record) {
-        addCatch(player, caught.id);
-    }
-
-    if (record && catches(player).length > 2 && bonzo) {
+    if (catches(player).length > 2 && bonzo) {
         await converse(player, bonzo, () => bonzoTimesUp(player, bonzo));
     }
 }
@@ -757,13 +773,7 @@ async function regularSpot(player) {
     }
 
     if (stageOf(player) > 0 && !player.cache.garlicActivated) {
-        await castAtSpot(
-            player,
-            bonzo,
-            { id: RAW_SARDINE_ID, message: 'You catch a sardine' },
-            { id: RAW_SHRIMP_ID, message: 'You catch some shrimps' },
-            true
-        );
+        await castAtSpot(player, bonzo, REGULAR_SPOT_ID);
     } else if (sinister) {
         await converse(player, sinister, (npc) => npc.say('I think you will find that is my spot'));
     }
@@ -785,13 +795,7 @@ async function carpSpot(player) {
     }
 
     if (stage > 0 && player.cache.garlicActivated) {
-        await castAtSpot(
-            player,
-            bonzo,
-            { id: RAW_GIANT_CARP_ID, message: 'You catch a giant carp' },
-            { id: RAW_SARDINE_ID, message: 'You catch a sardine' },
-            true
-        );
+        await castAtSpot(player, bonzo, CARP_SPOT_ID);
     } else if (stage === -1) {
         player.message('you have already won the fishing competition');
     } else if (sinister) {
