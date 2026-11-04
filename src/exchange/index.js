@@ -516,6 +516,9 @@ async function collect(player, toBank = false) {
     }
 
     if (!outcome.claim.length) {
+        // ARSC: the [GE] line answers a bot's collect; without it a bot waited
+        // out its reply timeout and asked again every two minutes
+        player.message(R.line('collected'));
         player.message('Exchange: there is nothing waiting for you.');
         return outcome.reply;
     }
@@ -816,9 +819,13 @@ async function priceCarried(player) {
 // hooks
 // ---------------------------------------------------------------------------
 
+// ARSC: every login pushes the state (closed: both clients only refresh an
+// open panel with it), so a bot knows at once that it is barred and what waits
+// for it. A minted bot used to learn it only from a refused offer and forgot it
+// at every reconnect (Tks: 75 of 77 raw lobster buys refused, 2026-11).
 async function onLogin(player) {
     try {
-        const state = await fetchState(player);
+        const state = await sendState(player);
 
         if (state && state.collect.length) {
             player.message(
@@ -829,6 +836,18 @@ async function onLogin(player) {
     } catch (e) {
         log.error(e);
     }
+}
+
+// the account was just minted (packet-handlers/command.js): push the barred
+// bit the same way
+function onMinted(player) {
+    const world = player && player.world;
+
+    if (!world || !world.server || !world.server.dataClient || !player.send) {
+        return;
+    }
+
+    sendState(player).catch((e) => log.error(e));
 }
 
 // a completed trade between a minted and an unminted account (logged only)
@@ -1040,6 +1059,7 @@ module.exports = {
     talk,
     command,
     onLogin,
+    onMinted,
     onTrade,
     init,
     handleHttp,

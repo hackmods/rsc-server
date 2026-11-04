@@ -108,7 +108,8 @@ test('shooting a player in the wilderness damages as ranged, uses an arrow, skul
     assert.ok(shooter.skulled > 0);
     assert.equal(shooter.lastCombatTick, 100);
     assert.equal(shooter.timeouts.length, 1);
-    assert.equal(shooter.timeouts[0].n, 4);
+    // Open-RSC RangeEvent: a shot every 3 ticks
+    assert.equal(shooter.timeouts[0].n, 3);
 });
 
 test('a target outside the wilderness is refused: no damage, no arrow, a message', async () => {
