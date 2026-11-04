@@ -283,10 +283,14 @@ class NPC extends Character {
     }
 
     broadcastChat(message) {
+        // ARSC: an npc that speaks without being engaged (a quest cutscene: the underground Narnode, Morgan Le Faye,
+        // a spawned guard) used to throw here and cut the dialogue short; it speaks to no one in particular instead
+        const playerIndex = this.interlocutor ? this.interlocutor.index : -1;
+
         for (const player of this.knownPlayers) {
             player.localEntities.characterUpdates.npcChat.push({
                 npcIndex: this.index,
-                playerIndex: this.interlocutor.index,
+                playerIndex,
                 message
             });
         }
