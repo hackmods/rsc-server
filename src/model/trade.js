@@ -253,6 +253,19 @@ function completeTrade(playerA, playerB) {
         return;
     }
 
+    // ARSC Iron Man mode: a trade opened before ::ironman changed a side
+    const ironman = require('../ironman');
+
+    if (ironman.isIronMan(playerA) || ironman.isIronMan(playerB)) {
+        failTrade(
+            playerA,
+            playerB,
+            ironman.tradeRefusal(playerA, playerB),
+            ironman.tradeRefusal(playerB, playerA)
+        );
+        return;
+    }
+
     if (!canHold(playerA, offerA, offerB)) {
         failTrade(
             playerA,
@@ -378,6 +391,14 @@ class Trade extends Container {
 
     request(otherPlayer) {
         // TODO: take privacy settings into account
+
+        // ARSC Iron Man mode (src/ironman.js, Open-RSC PlayerTradeHandler)
+        const ironman = require('../ironman').tradeRefusal(this.player, otherPlayer);
+
+        if (ironman) {
+            this.player.message(ironman);
+            return;
+        }
 
         if (otherPlayer.hasInterfaceOpen()) {
             this.player.message('That player is busy at the moment');

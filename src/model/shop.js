@@ -1,4 +1,5 @@
 const Item = require('./item');
+require('../data-fixes'); // ARSC: authentic stock (src/data-fixes.json, file shops) before any Shop reads it
 const shops = require('@2003scape/rsc-data/shops');
 
 // ARSC: shops rsc-data lacks (src/arsc-shops.js); upstream entries are never overwritten
@@ -134,6 +135,20 @@ class Shop {
 
         // trying to buy non-existent item
         if (!shopItem) {
+            return;
+        }
+
+        // ARSC Iron Man (src/ironman.js, Open-RSC InterfaceShopHandler):
+        // nothing other players sold past the normal stock
+        const baseStock = this.getShopInventory(shopItem);
+        const ironman = require('../ironman').shopRefusal(
+            player,
+            shopItem,
+            baseStock ? baseStock.amount : 0
+        );
+
+        if (ironman) {
+            player.message(ironman);
             return;
         }
 

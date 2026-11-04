@@ -13,6 +13,8 @@ const { PathFinder } = require('@2003scape/rsc-path-finder');
 
 const arscLocations = require('../arsc-locations');
 
+require('../arsc-npcs'); // ARSC: the NPC rows its spawns use (Iron Man tutors, 794+)
+
 const entityLocations = {
     npcs: require('@2003scape/rsc-data/locations/npcs'),
     gameObjects: require('@2003scape/rsc-data/locations/objects'),
@@ -312,6 +314,7 @@ class World {
 
         if (typeof owner !== 'undefined') {
             groundItem.owner = typeof owner === 'object' ? owner.id : owner;
+            groundItem.droppedBy = groundItem.owner; // ARSC Iron Man (src/ironman.js)
         }
 
         this.addEntity('groundItems', groundItem);
@@ -468,6 +471,10 @@ class World {
 
         groundItem.owner = player.id;
 
+        // ARSC Iron Man (src/ironman.js): whose drop this is, kept after owner
+        // times out (OpenRSC GroundItem keeps its owner hash for good)
+        groundItem.droppedBy = player.id;
+
         // if we never delete the owner property, it never shows up to other
         // players and still disappears after DROP_DISAPPEAR_TIMEOUT
         if (
@@ -482,6 +489,8 @@ class World {
         }, DROP_DISAPPEAR_TIMEOUT);
 
         this.addEntity('groundItems', groundItem);
+
+        return groundItem;
     }
 
     getPlayerByUsername(username) {
