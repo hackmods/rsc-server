@@ -277,6 +277,39 @@ async function command({ player }, { command, args }) {
 
             break;
         }
+        case 'npcrangeevent2': {
+            // Open-RSC Admins.npcRangedPlayer: the NPC of that id within 7
+            // tiles across and 10 up/down shoots the caller (RangeEventNpc)
+            const npcID = +args[0];
+
+            if (!args[0] || Number.isNaN(npcID)) {
+                player.message('Invalid args. Syntax: NPCRANGEEVENT2 [npc_id]');
+                break;
+            }
+
+            // the nearest one (Open-RSC takes the first the region lists)
+            const distance = (npc) =>
+                Math.max(Math.abs(npc.x - player.x), Math.abs(npc.y - player.y));
+
+            const [shooter] = world.npcs
+                .getInArea(player.x, player.y, 21)
+                .filter(
+                    (npc) =>
+                        npc.id === npcID &&
+                        Math.abs(npc.x - player.x) <= 7 &&
+                        Math.abs(npc.y - player.y) <= 10
+                )
+                .sort((a, b) => distance(a) - distance(b));
+
+            if (!shooter) {
+                player.message('Unable to find the specified NPC');
+                break;
+            }
+
+            require('../npc-ranged').startNpcRanged(shooter, player);
+            break;
+        }
+
         case 'ironman': { // ARSC: ::ironman <user> <none|ironman|ultimate|hardcore> (src/ironman.js)
             const ironman = require('../ironman');
             const target = args[0] ? world.getPlayerByUsername(args[0].replace(/_/g, ' ')) : null;

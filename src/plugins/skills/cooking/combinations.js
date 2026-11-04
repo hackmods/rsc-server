@@ -2,7 +2,13 @@
 
 // using items on other items to create new ones (knife on pineapple, pizzas,
 // stews, etc.)
+// Ported from Open-RSC Core-Framework authentic/skills/cooking/InvCooking.java (AGPL-3.0) handleCombineCooking: the
+// rows come from rsc-data skills/cooking.json combinations, corrected and extended by src/data-fixes.json (the Oomlie
+// meat parcel, the tasty Ugthanki kebab, which knives are needed). A row's experience is in quarter points; a row
+// with several messages sends them all; a row with dodgy gives that item instead 1 time in 32, with no experience
+// (DataConversions.random(0, 31) < 1: the tasty kebab comes out a dodgy Ugthanki kebab).
 
+require('../../../data-fixes');
 const items = require('@2003scape/rsc-data/config/items');
 const { combinations } = require('@2003scape/rsc-data/skills/cooking');
 
@@ -49,7 +55,7 @@ async function onUseWithInventory(player, item, target) {
 
     const { world } = player;
     const cookingLevel = player.skills.cooking.current;
-    const { level, knife, result: resultID, message } = combination;
+    const { level, knife, result: resultID, message, experience, dodgy } = combination;
 
     if (!world.members && items[resultID].members) {
         return false;
@@ -67,8 +73,22 @@ async function onUseWithInventory(player, item, target) {
 
     player.inventory.remove(item.id);
     player.inventory.remove(target.id);
+
+    if (dodgy && Math.floor(Math.random() * 32) < 1) {
+        player.inventory.add(dodgy);
+        player.message('@que@You make a dodgy looking ugthanki kebab');
+        return true;
+    }
+
     player.inventory.add(resultID);
-    player.message(`@que@${message}`);
+
+    for (const line of Array.isArray(message) ? message : [message]) {
+        player.message(`@que@${line}`);
+    }
+
+    if (experience) {
+        player.addExperience('cooking', experience);
+    }
 
     return true;
 }

@@ -63,6 +63,7 @@ function makePlayer(choices, { questStages = {}, cache = {} } = {}, decline = 'l
         opened: [],
         questStages,
         cache,
+        world: { addPlayerDrop() {} }, // Shantay drops the kebab recipe 1 time in 26
         engage() {},
         disengage() {},
         message() {},

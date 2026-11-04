@@ -30,21 +30,30 @@ test('withinRegion checks x against maxX', () => {
     assert.equal(entity.withinRegion('lumbridge'), true);
 });
 
-test('dwarven stout lowers combat stats by 2, not to 0', async () => {
+// Drinkables.java handleDwarvenStout: substat 5% of the current level from attack, defense and strength (not to 0),
+// +1 mining and smithing
+test('dwarven stout lowers combat stats by 5%, not to 0', async () => {
     const skills = {};
     for (const name of ['attack', 'strength', 'defense', 'mining', 'smithing', 'hits']) {
-        skills[name] = { current: 30, base: 30 };
+        skills[name] = { current: 40, base: 40 };
     }
+    const added = [];
     const player = {
         world: { async sleepTicks() {} },
         skills,
-        inventory: { add() {}, remove() {} },
+        inventory: { add: (id) => added.push(id), remove() {}, has: () => true },
+        changeStat(skill, delta) {
+            skills[skill].current = Math.max(0, skills[skill].current + delta);
+        },
+        damage() {},
         sendBubble() {},
-        sendStats() {},
         message() {}
     };
 
-    assert.equal(await quaffable.onInventoryCommand(player, { id: 269 }), true);
-    assert.equal(skills.attack.current, 28);
-    assert.equal(skills.defense.current, 28);
+    assert.equal(await quaffable.onInventoryCommand(player, { id: 269, definition: { command: 'drink', name: 'Dwarven Stout' } }), true);
+    assert.equal(skills.attack.current, 38);
+    assert.equal(skills.defense.current, 38);
+    assert.equal(skills.mining.current, 41);
+    assert.equal(skills.smithing.current, 41);
+    assert.deepEqual(added, [620]); // the beer glass
 });
