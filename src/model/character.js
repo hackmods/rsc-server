@@ -26,6 +26,11 @@ for (let deltaX = -1; deltaX < 2; deltaX += 1) {
     }
 }
 
+// Open-RSC npc_blocking 2 (authentic): only aggressive NPCs block a step. rsc-data gives the Sea Slug platform fishermen
+// (462, 463, 464) hostility "retreats", which canWalk below reads as blocking, and one of them stands in the one-tile
+// corridor to Kennith (490,1564): the quest could not be finished. They never fight (SeaSlug.java), so they never block.
+const NEVER_BLOCKING_NPC_IDS = new Set([462, 463, 464]);
+
 function getDirectionNumber(deltaX, deltaY) {
     if (deltaX === 0 && deltaY === 0) {
         return 0;
@@ -524,7 +529,7 @@ class Character extends Entity {
         const npcs = this.world.npcs.getAtPoint(destX, destY);
 
         for (const npc of npcs) {
-            if (npc.definition.hostility && !npc.opponent) {
+            if (npc.definition.hostility && !npc.opponent && !NEVER_BLOCKING_NPC_IDS.has(npc.id)) {
                 return false;
             }
         }
