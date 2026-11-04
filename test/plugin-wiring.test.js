@@ -44,9 +44,7 @@ const EMPTY_OK = new Set([
     'npcs/tree-gnome-stronghold/gnome-child.js',
     'npcs/tree-gnome-stronghold/gnome-local.js',
     'npcs/yanille/sidney-smith.js',
-    'quests/members/fishing-contest.js',
-    'quests/members/legends-quest.js',
-    'quests/members/witchs-house.js'
+    'quests/members/legends-quest.js'
 ]);
 
 // files under src/plugins that index.js does not load: tutorial/core.js is a library that other files require directly
