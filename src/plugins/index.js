@@ -318,6 +318,7 @@ module.exports = {
     "quests.members.druidic-ritual.sanfew": require('./quests/members/druidic-ritual/sanfew.js'),
     "quests.members.monks-friend.brother-cedric": require('./quests/members/monks-friend/brother-cedric.js'),
     "quests.members.monks-friend.brother-omad": require('./quests/members/monks-friend/brother-omad.js'),
+    "quests.members.scorpion-catcher": require('./quests/members/scorpion-catcher.js'),
     "npcs.ardougne.captain-barnaby": require('./npcs/ardougne/captain-barnaby.js'),
     "npcs.brimhaven.customs-official": require('./npcs/brimhaven/customs-official.js'),
     "npcs.port-sarim.monks-of-entrana": require('./npcs/port-sarim/monks-of-entrana.js'),
