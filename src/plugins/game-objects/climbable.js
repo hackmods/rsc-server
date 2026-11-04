@@ -1,5 +1,6 @@
-// 199: the black hole ladder (miniquests/black-hole.js)
-const EXCLUDE_IDS = new Set([130, 198, 199, 223, 227]);
+// 199: the black hole ladder (miniquests/black-hole.js); 635: the Grand Tree watch tower (agility 25,
+// quests/members/grand-tree/roots.js); 295: the Port Sarim jeweller's ladder (quests/members/merlins-crystal/excalibur.js)
+const EXCLUDE_IDS = new Set([130, 198, 199, 223, 227, 295, 635]);
 // ladders, stairs and levers that move the player to a fixed tile (object-tele-points.js) are not plane shifts
 const { findTelePoint } = require('./object-tele-points');
 
