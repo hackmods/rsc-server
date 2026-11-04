@@ -300,7 +300,9 @@ class NPC extends Character {
         for (const player of this.knownPlayers) {
             player.localEntities.characterUpdates.npcChat.push({
                 npcIndex: this.index,
-                playerIndex: this.interlocutor.index,
+                // an NPC that speaks unengaged (a guard or trainer shouting at whoever is near) addresses each viewer;
+                // reading this.interlocutor.index threw, and the plugin that made it speak stopped half way
+                playerIndex: (this.interlocutor || player).index,
                 message
             });
         }
