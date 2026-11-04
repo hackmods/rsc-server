@@ -68,7 +68,7 @@ async function buyCannon(player, npc) {
     await npc.say('ok then, but keep it quiet..');
     await npc.say("this thing's top secret");
 
-    if (CANNON_PART_IDS.some((id) => player.inventory.has(id)) || player.cache.has_cannon !== undefined) {
+    if (CANNON_PART_IDS.some((id) => player.inventory.has(id)) || player.cache.has_cannon != null) {
         await npc.say(
             'wait a moment, our records show you already own some cannon equipment',
             "i'm afraid you can only have one set at a time"
@@ -100,7 +100,7 @@ async function buyCannon(player, npc) {
 async function lostCannon(player, npc) {
     const { cache } = player;
 
-    if (cache.cannon_stage !== undefined && cache.cannon_x !== undefined && cache.cannon_y !== undefined) {
+    if (cache.cannon_stage != null && cache.cannon_x != null && cache.cannon_y != null) {
         await npc.say("that's unfortunate...but don't worry, i can sort you out");
 
         const standing = player.world.gameObjects

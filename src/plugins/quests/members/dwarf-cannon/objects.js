@@ -82,7 +82,7 @@ async function onWallObject(player, wallObject) {
     if (RAILS[id]) {
         // other stages fall through to the Java's empty branch
         if (stageOf(player) === 1) {
-            if (player.cache[RAILS[id]] !== undefined) {
+            if (player.cache[RAILS[id]] != null) {
                 player.message('you have already fixed this railing');
             } else {
                 await rail(player, wallObject);
@@ -135,7 +135,7 @@ async function rescueLollk(player, crate) {
 }
 
 async function fixPart(player, part) {
-    if (player.cache[part] !== undefined) {
+    if (player.cache[part] != null) {
         player.message("you've already fixed this part of the cannon");
         return;
     }
@@ -154,14 +154,14 @@ async function fixPart(player, part) {
 }
 
 async function inspectCannon(player) {
-    if (player.cache.cannon_complete !== undefined) {
+    if (player.cache.cannon_complete != null) {
         player.message("It's a strange dwarf contraption");
         return;
     }
 
     player.message('you inspect the multi cannon');
 
-    if (CANNON_PARTS.every((part) => player.cache[part] !== undefined)) {
+    if (CANNON_PARTS.every((part) => player.cache[part] != null)) {
         player.message('the cannon seems to be in complete working order');
         await mes(player, 'lawgof will be pleased');
         player.cache.cannon_complete = true;
@@ -212,7 +212,7 @@ async function onGameObjectCommandOne(player, gameObject) {
             return true;
         case LOLLK_CRATE_ID:
             // only at the quest stage and before being rescued
-            if (stageOf(player) === 3 && player.cache.savedlollk === undefined) {
+            if (stageOf(player) === 3 && player.cache.savedlollk == null) {
                 await rescueLollk(player, gameObject);
             } else {
                 await mes(player, 'you search the crate');
@@ -238,7 +238,7 @@ async function onGroundItemTake(player, groundItem) {
         return true;
     }
 
-    if (stageOf(player) === 2 && player.cache.grabed_dwarf_remains === undefined) {
+    if (stageOf(player) === 2 && player.cache.grabed_dwarf_remains == null) {
         player.cache.grabed_dwarf_remains = true;
     }
 

@@ -401,7 +401,7 @@ async function roguesPurse(player, npc) {
 
 async function completed(player, npc) {
     // the first talk after the quest only
-    if (player.cache.jungle_completed !== undefined) {
+    if (player.cache.jungle_completed != null) {
         await npc.say(
             'My greatest respects Bwana',
             'I have communed with the gods',

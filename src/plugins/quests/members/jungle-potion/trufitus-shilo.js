@@ -15,7 +15,7 @@ function shiloStage(player) {
 }
 
 function hasKey(player, key) {
-    return player.cache[key] !== undefined;
+    return player.cache[key] != null;
 }
 
 async function trufitusAfterQuest(player, npc) {

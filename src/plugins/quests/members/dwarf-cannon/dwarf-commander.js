@@ -32,7 +32,7 @@ function stageOf(player) {
 }
 
 function has(player, key) {
-    return player.cache[key] !== undefined;
+    return player.cache[key] != null;
 }
 
 async function mes(player, line) {

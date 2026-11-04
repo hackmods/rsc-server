@@ -87,7 +87,7 @@ async function setDownBase(player) {
         return;
     }
 
-    if (player.cache.has_cannon !== undefined) {
+    if (player.cache.has_cannon != null) {
         player.message('you cannot construct more than one cannon at a time...');
         await world.sleepTicks(3);
         player.message('if you have lost your cannon ...');
@@ -192,12 +192,12 @@ function pickUp(player, gameObject) {
 
     player.world.removeEntity('gameObjects', gameObject);
 
-    if (player.cache.has_cannon !== undefined) {
+    if (player.cache.has_cannon != null) {
         const stage = player.cache.cannon_stage;
         clearCannonCache(player);
 
         // sic: picking up the finished cannon leaves cannon_stage behind
-        if (gameObject.id === CANNON_OBJECT_ID && stage !== undefined) {
+        if (gameObject.id === CANNON_OBJECT_ID && stage != null) {
             player.cache.cannon_stage = stage;
         }
     }
