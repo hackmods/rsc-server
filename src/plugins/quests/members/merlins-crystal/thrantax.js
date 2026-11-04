@@ -61,7 +61,12 @@ async function onUseWithInventory(player, item, target) {
 
     player.inventory.remove(candle);
     player.message('You light the candle');
-    player.inventory.add(LIGHTS[candle]);
+
+    if (candle === UNLIT_BLACK_CANDLE_ID) {
+        player.inventory.add(LIT_BLACK_CANDLE_ID);
+    } else {
+        player.inventory.add(LIT_CANDLE_ID);
+    }
 
     return true;
 }

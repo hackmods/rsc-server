@@ -2,7 +2,7 @@
 // (AGPL-3.0): Excalibur. Stages: camelot.js.
 //   The Lady of the Lake (283, by the lake south of Taverley): from stage 3 (or done) without Excalibur, "I seek the
 //   sword Excalibur" sets her test (cache ladyTest): the upstairs room of the Port Sarim jeweller's.
-//   The jeweller's door (wall 85 at 277,632): with the test set and stage >= 3 (or done), a beggar (286) asks for bread
+//   The jeweller's door (wall 85 at 277,632, otherwise Grum's: npcs/port-sarim/grum.js): with the test set and stage >= 3 (or done), a beggar (286) asks for bread
 //   (138). Giving it turns him into the Lady (284), who hands over Excalibur (606) and clears the test.
 //   The jeweller's ladder (295 at 280,634): upstairs the Lady (285) says you are not worthy yet (the wrong way round).
 
@@ -129,14 +129,14 @@ async function beggarAtTheDoor(player, door) {
     }
 }
 
-async function onWallObjectCommandOne(player, wallObject) {
-    if (wallObject.x !== JEWELLER_DOOR.x || wallObject.y !== JEWELLER_DOOR.y) {
-        return false;
-    }
+// the jeweller's door is Grum's (npcs/port-sarim/grum.js opens it); only the Lady's test makes it ours
+function beggarWaits(player, wallObject) {
+    return wallObject.x === JEWELLER_DOOR.x && wallObject.y === JEWELLER_DOOR.y && !testNotSet(player);
+}
 
-    if (testNotSet(player)) {
-        await player.enterDoor(wallObject);
-        return true;
+async function onWallObjectCommandOne(player, wallObject) {
+    if (!beggarWaits(player, wallObject)) {
+        return false;
     }
 
     await beggarAtTheDoor(player, wallObject);
@@ -175,4 +175,4 @@ async function onGameObjectCommandOne(player, gameObject) {
     return true;
 }
 
-module.exports = { onTalkToNPC, onWallObjectCommandOne, onGameObjectCommandOne };
+module.exports = { onTalkToNPC, onWallObjectCommandOne, onGameObjectCommandOne, beggarWaits };

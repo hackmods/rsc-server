@@ -71,11 +71,18 @@ const CATCH = {
 const SECRET_DOOR_ID = 87;
 const SECRET_DOOR_Y = 3353;
 
+const ENCHANTED = {
+    fire: 682,
+    water: 683,
+    air: 684,
+    earth: 685
+};
+
 const BATTLESTAFFS = [
-    { name: 'fire', staff: 615, enchanted: 682 },
-    { name: 'water', staff: 616, enchanted: 683 },
-    { name: 'air', staff: 617, enchanted: 684 },
-    { name: 'earth', staff: 618, enchanted: 685 }
+    { name: 'fire', staff: 615, enchanted: ENCHANTED.fire },
+    { name: 'water', staff: 616, enchanted: ENCHANTED.water },
+    { name: 'air', staff: 617, enchanted: ENCHANTED.air },
+    { name: 'earth', staff: 618, enchanted: ENCHANTED.earth }
 ];
 const ENCHANT_COST = 40000;
 
@@ -307,6 +314,51 @@ async function thormacAssistance(player, npc) {
     }
 }
 
+// the cages spelled out, so the item audit (scripts/audit/item-sources.js) sees each one
+function addCage(player, cage) {
+    switch (cage) {
+        case CAGE.one:
+            player.inventory.add(CAGE.one);
+            break;
+        case CAGE.two:
+            player.inventory.add(CAGE.two);
+            break;
+        case CAGE.three:
+            player.inventory.add(CAGE.three);
+            break;
+        case CAGE.oneTwo:
+            player.inventory.add(CAGE.oneTwo);
+            break;
+        case CAGE.oneThree:
+            player.inventory.add(CAGE.oneThree);
+            break;
+        case CAGE.twoThree:
+            player.inventory.add(CAGE.twoThree);
+            break;
+        case CAGE.oneTwoThree:
+            player.inventory.add(CAGE.oneTwoThree);
+            break;
+    }
+}
+
+// the enchanted staves spelled out, for the same audit
+function addEnchanted(player, enchanted) {
+    switch (enchanted) {
+        case ENCHANTED.fire:
+            player.inventory.add(ENCHANTED.fire);
+            break;
+        case ENCHANTED.water:
+            player.inventory.add(ENCHANTED.water);
+            break;
+        case ENCHANTED.air:
+            player.inventory.add(ENCHANTED.air);
+            break;
+        case ENCHANTED.earth:
+            player.inventory.add(ENCHANTED.earth);
+            break;
+    }
+}
+
 // ScorpionCatcher.handleReward: 1 quest point, strength 1500 + 500 per strength level (quarter points)
 function completeQuest(player) {
     player.completeQuest('scorpionCatcher', {
@@ -358,7 +410,7 @@ async function thormacEnchant(player, npc) {
 
     player.inventory.remove(COINS_ID, ENCHANT_COST);
     player.inventory.remove(staff.staff);
-    player.inventory.add(staff.enchanted);
+    addEnchanted(player, staff.enchanted);
     player.message('Thormac enchants your staff');
 }
 
@@ -456,7 +508,7 @@ async function onUseWithNPC(player, npc, item) {
 
     if (next) {
         player.inventory.remove(item.id);
-        player.inventory.add(next);
+        addCage(player, next);
     }
 
     // delnpc(n, true): it respawns like any npc

@@ -10,6 +10,7 @@ const excalibur = require('../src/plugins/quests/members/merlins-crystal/excalib
 const thrantax = require('../src/plugins/quests/members/merlins-crystal/thrantax');
 const candleMaker = require('../src/plugins/npcs/catherby/candle-maker-shop');
 const arhein = require('../src/plugins/npcs/catherby/arhein-general-shop');
+const grum = require('../src/plugins/npcs/port-sarim/grum');
 const { fakeNpc, fakeWorld, fakePlayer, gameObject, wallObject } = require('./quest-fakes-2a');
 
 const KING_ARTHUR = 275;
@@ -174,9 +175,13 @@ test('Excalibur: the Lady sets her test, the beggar takes bread at the jeweller 
     assert.equal(before.asked[0].length, 3);
 
     const door = wallObject(85, 277, 632);
+    // without the test the door is Grum's
     const plain = player({ stage: 2 });
-    await excalibur.onWallObjectCommandOne(plain, door);
-    assert.deepEqual(plain.doors, [[85, undefined]]);
+    assert.equal(await excalibur.onWallObjectCommandOne(plain, door), false);
+    assert.equal(await grum.onWallObjectCommandOne(plain, door), true);
+    assert.deepEqual(plain.doors, [[85, 11]]);
+    const tested = player({ stage: 3, cache: { ladyTest: true } });
+    assert.equal(await grum.onWallObjectCommandOne(tested, door), false);
 
     const p = player({ stage: 3, cache: { ladyTest: true }, items: [138], answers: [0] });
     assert.equal(await excalibur.onWallObjectCommandOne(p, door), true);

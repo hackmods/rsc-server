@@ -36,7 +36,19 @@ const HAZELMERE_ID = 546;
 const TRANSLATION_BOOK_ID = 918;
 const BARK_SAMPLE_ID = 919;
 const GLOUGHS_NOTES_ID = 926;
-const PEBBLE_IDS = [929, 928, 930, 927]; // the Java gives PEBBLE_3, PEBBLE_2, PEBBLE_4, PEBBLE_1 in this order
+const PEBBLE_1_ID = 927;
+const PEBBLE_2_ID = 928;
+const PEBBLE_3_ID = 929;
+const PEBBLE_4_ID = 930;
+const PEBBLE_IDS = [PEBBLE_3_ID, PEBBLE_2_ID, PEBBLE_4_ID, PEBBLE_1_ID]; // the Java gives PEBBLE_3, PEBBLE_2, PEBBLE_4, PEBBLE_1 in this order
+
+// in the Java's order, spelled out so the item audit (scripts/audit/item-sources.js) sees each; `missing` only replaces lost ones
+function givePebbles(player, missing = false) {
+    if (!missing || !player.inventory.has(PEBBLE_3_ID)) player.inventory.add(PEBBLE_3_ID);
+    if (!missing || !player.inventory.has(PEBBLE_2_ID)) player.inventory.add(PEBBLE_2_ID);
+    if (!missing || !player.inventory.has(PEBBLE_4_ID)) player.inventory.add(PEBBLE_4_ID);
+    if (!missing || !player.inventory.has(PEBBLE_1_ID)) player.inventory.add(PEBBLE_1_ID);
+}
 const DACONIA_ROCK_ID = 931;
 
 // ActionSender.sendBox(player, ..., true): Hazelmere's words in the old tongue
@@ -495,9 +507,7 @@ async function narnodeDialogue(player, npc) {
                 );
                 await mes(player, 'narnode gives you four old pebbles');
 
-                for (const id of PEBBLE_IDS) {
-                    player.inventory.add(id);
-                }
+                givePebbles(player);
 
                 await npc.say(
                     "on the other hand, if glough's right about the humans",
@@ -525,11 +535,7 @@ async function narnodeDialogue(player, npc) {
                     delete player.cache[flag];
                 }
 
-                for (const id of PEBBLE_IDS) {
-                    if (!player.inventory.has(id)) {
-                        player.inventory.add(id);
-                    }
-                }
+                givePebbles(player, true);
             } else {
                 await npc.say("it's not safe for you here");
             }
