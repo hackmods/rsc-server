@@ -20,6 +20,8 @@ function isAssistBag(command, args) {
 function markMinted(player) {
     if (player && !player.cache.minted) {
         player.cache.minted = Date.now();
+        // tell its client (and a bot's planner) at once: the barred bit
+        require('../exchange').onMinted(player);
     }
 }
 
