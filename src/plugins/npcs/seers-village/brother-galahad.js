@@ -1,6 +1,6 @@
 // Ported from Open-RSC Core-Framework authentic/npcs/seers/BrotherGalahad.java (AGPL-3.0)
 // Brother Galahad, the hermit west of McGrubor's Wood: every talk ends with a cup of tea (739). During The Holy Grail
-// (questStages.theHolyGrail, not on this server yet: unset reads as not started) he talks about the grail castle and,
+// (questStages.theHolyGrail, quests/members/holy-grail.js; unset reads as not started) he talks about the grail castle and,
 // from stage 3 on, lends the holy table napkin (742).
 
 const BROTHER_GALAHAD_ID = 403;

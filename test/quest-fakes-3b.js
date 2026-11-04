@@ -77,7 +77,10 @@ function fakeWorld({ npcs = [], members = true } = {}) {
         },
         npcs: {
             getByIndex: (index) => world.npcList.find((n) => n.index === index),
-            getByID: (id) => world.npcList.find((n) => n.id === id)
+            getByID: (id) => world.npcList.find((n) => n.id === id),
+            getAllByID: function* (id) {
+                yield* world.npcList.filter((n) => n.id === id);
+            }
         },
         groundItems: [],
         addTimedGroundItem(opts) {

@@ -372,4 +372,10 @@ module.exports = {
     "minigames.kitten-care": require('./minigames/kitten-care.js'),
     "npcs.wilderness.gundai": require('./npcs/wilderness/gundai.js'),
     "npcs.ardougne.civilians": require('./npcs/ardougne/civilians.js'),
+    "quests.members.clock-tower": require('./quests/members/clock-tower.js'),
+    "quests.members.hazeel-cult": require('./quests/members/hazeel-cult.js'),
+    "quests.members.sea-slug": require('./quests/members/sea-slug.js'),
+    "quests.members.holy-grail": require('./quests/members/holy-grail.js'),
+    "npcs.entrana.high-priest-of-entrana": require('./npcs/entrana/high-priest-of-entrana.js'),
+    "quests.members.waterfall-quest": require('./quests/members/waterfall-quest.js'),
 };
