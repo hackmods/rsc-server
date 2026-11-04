@@ -787,6 +787,78 @@
             ],
             "note": "rsc-data sells Flour (23) where the authentic shop sells POT_OF_FLOUR (136) x8. The value is the whole authentic list in its order",
             "source": "Open-RSC server/plugins/com/openrsc/server/plugins/authentic/npcs/yanille/Frenita.java (Frenita), new Shop(...)"
+        },
+        {
+            "id": "npc-713-hostility",
+            "file": "config/npcs",
+            "path": "713.hostility",
+            "op": "set",
+            "value": "combative",
+            "note": "rsc-data makes kolodion (human form) aggressive; Open-RSC has it attackable but not aggressive (it only strikes with god spells: MageArena.java events, and SpellHandler sets no chase in the arena)",
+            "source": "Open-RSC server/conf/server/defs/NpcDefs.json, npc 713 (aggressive 0, attackable 1)"
+        },
+        {
+            "id": "npc-757-hostility",
+            "file": "config/npcs",
+            "path": "757.hostility",
+            "op": "set",
+            "value": "combative",
+            "note": "rsc-data makes kolodion (ogre form) aggressive; Open-RSC has it attackable but not aggressive (it only strikes with god spells: MageArena.java events, and SpellHandler sets no chase in the arena)",
+            "source": "Open-RSC server/conf/server/defs/NpcDefs.json, npc 757 (aggressive 0, attackable 1)"
+        },
+        {
+            "id": "npc-758-hostility",
+            "file": "config/npcs",
+            "path": "758.hostility",
+            "op": "set",
+            "value": "combative",
+            "note": "rsc-data makes kolodion (spider form) aggressive; Open-RSC has it attackable but not aggressive (it only strikes with god spells: MageArena.java events, and SpellHandler sets no chase in the arena)",
+            "source": "Open-RSC server/conf/server/defs/NpcDefs.json, npc 758 (aggressive 0, attackable 1)"
+        },
+        {
+            "id": "npc-759-hostility",
+            "file": "config/npcs",
+            "path": "759.hostility",
+            "op": "set",
+            "value": "combative",
+            "note": "rsc-data makes kolodion (souless form) aggressive; Open-RSC has it attackable but not aggressive (it only strikes with god spells: MageArena.java events, and SpellHandler sets no chase in the arena)",
+            "source": "Open-RSC server/conf/server/defs/NpcDefs.json, npc 759 (aggressive 0, attackable 1)"
+        },
+        {
+            "id": "npc-760-hostility",
+            "file": "config/npcs",
+            "path": "760.hostility",
+            "op": "set",
+            "value": "combative",
+            "note": "rsc-data makes kolodion (demon form) aggressive; Open-RSC has it attackable but not aggressive (it only strikes with god spells: MageArena.java events, and SpellHandler sets no chase in the arena)",
+            "source": "Open-RSC server/conf/server/defs/NpcDefs.json, npc 760 (aggressive 0, attackable 1)"
+        },
+        {
+            "id": "npc-789-hostility",
+            "file": "config/npcs",
+            "path": "789.hostility",
+            "op": "set",
+            "value": "combative",
+            "note": "rsc-data makes Battle mage (guthix) aggressive; Open-RSC has it attackable but not aggressive (it only strikes with god spells: MageArena.java events, and SpellHandler sets no chase in the arena)",
+            "source": "Open-RSC server/conf/server/defs/NpcDefs.json, npc 789 (aggressive 0, attackable 1)"
+        },
+        {
+            "id": "npc-790-hostility",
+            "file": "config/npcs",
+            "path": "790.hostility",
+            "op": "set",
+            "value": "combative",
+            "note": "rsc-data makes Battle mage (zamorak) aggressive; Open-RSC has it attackable but not aggressive (it only strikes with god spells: MageArena.java events, and SpellHandler sets no chase in the arena)",
+            "source": "Open-RSC server/conf/server/defs/NpcDefs.json, npc 790 (aggressive 0, attackable 1)"
+        },
+        {
+            "id": "npc-791-hostility",
+            "file": "config/npcs",
+            "path": "791.hostility",
+            "op": "set",
+            "value": "combative",
+            "note": "rsc-data makes Battle mage (saradomin) aggressive; Open-RSC has it attackable but not aggressive (it only strikes with god spells: MageArena.java events, and SpellHandler sets no chase in the arena)",
+            "source": "Open-RSC server/conf/server/defs/NpcDefs.json, npc 791 (aggressive 0, attackable 1)"
         }
     ]
 }

@@ -135,6 +135,12 @@ test('listed in plugins/index.js; Kolodion, the battle mages, the stones, gates 
     assert.equal(arena.KOLODION_TICKS, 806);
 });
 
+test('data fix: Kolodion\'s forms and the battle mages are attackable but not aggressive (Open-RSC NpcDefs)', () => {
+    require('../src/data-fixes');
+    const npcs = require('@2003scape/rsc-data/config/npcs');
+    for (const id of [HUMAN, OGRE, SPIDER, SOULESS, DEMON, 789, 790, 791]) assert.equal(npcs[id].hostility, 'combative', `npc ${id}`);
+});
+
 test('Kolodion turns away a wizard below magic 60', async () => {
     const player = makePlayer({ magic: 59 });
     const kolodion = makeNPC(KOLODION, player.world);
@@ -270,6 +276,7 @@ test('a spell at Kolodion in the arena sets the flag his next strike answers', a
 
     await arena.onCastOnNPC(player, form, { name: 'Fire blast' }, 32);
     assert.equal(player.magedKolodion, true);
+    assert.equal(form.magicNoChase, true, 'he does not chase the caster');
 
     // the flag forces a strike or a taunt this tick; run until it struck
     for (let i = 0; i < 50 && !player.damageTaken.length; i += 1) {

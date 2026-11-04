@@ -21,8 +21,11 @@
 //     packet-handlers/magic.js);
 //   - Kolodion's forms belong to the player they were spawned for ("that mage is busy."), and the battle mages
 //     (789-791) refuse you until Kolodion is beaten;
-//   - Kolodion strikes with god spells between melee rounds (1 in 100 a tick, or right after you cast at him); inside
-//     the arena at stage 4 the battle mages answer a spell with their god's spell.
+//   - Kolodion never melees: his forms and the battle mages are attackable but not aggressive (src/data-fixes.json, as
+//     Open-RSC's NpcDefs), and a spell at them in the arena sets npc.magicNoChase (SpellHandler's setChasing = false,
+//     read by packet-handlers/magic.js retaliate). He strikes with god spells instead (1 in 100 a tick when you are
+//     out of combat, or right after you cast at him); inside the arena at stage 4 the battle mages answer a spell with
+//     their god's spell.
 // Not ported: the god spells' stat drain and visual object on the victim when the player casts them (spell effects are
 // packet-handlers/magic.js's), and the minigame-complete broadcast (no minigame log here).
 
@@ -839,8 +842,11 @@ async function onCastOnNPC(player, npc, spell, id) {
         }
     }
 
+    // SpellHandler: in the arena these mages do not chase the caster (setChasing = false); they answer with god
+    // spells instead (kolodionStep, battleMageStep)
     if ((isKolodionForm(npc) || BATTLE_MAGES.includes(npc.id)) && inMageArena(player)) {
         player.magedKolodion = true;
+        npc.magicNoChase = true;
     }
 
     return false;

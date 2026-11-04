@@ -496,6 +496,12 @@ function retaliate(player, npc) {
         return;
     }
 
+    // a plugin's onCastOnNPC may forbid the chase (Open-RSC setChasing = false:
+    // Kolodion and the battle mages in the Mage Arena, minigames/mage-arena.js)
+    if (npc.magicNoChase) {
+        return;
+    }
+
     npc.attack(player)
         .then(() => {
             npc.retreatTicks = 4;
