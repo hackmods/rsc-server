@@ -137,6 +137,20 @@ class Shop {
             return;
         }
 
+        // ARSC Iron Man (src/ironman.js, Open-RSC InterfaceShopHandler):
+        // nothing other players sold past the normal stock
+        const baseStock = this.getShopInventory(shopItem);
+        const ironman = require('../ironman').shopRefusal(
+            player,
+            shopItem,
+            baseStock ? baseStock.amount : 0
+        );
+
+        if (ironman) {
+            player.message(ironman);
+            return;
+        }
+
         if (shopItem.amount <= 0) {
             player.message('The shop has ran out of stock');
             return;

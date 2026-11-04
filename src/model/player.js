@@ -50,7 +50,9 @@ const SAVE_PROPERTIES = [
     'cache',
     'inventory',
     'bank',
-    'muteEndDate'
+    'muteEndDate',
+    'ironMan', // ARSC Iron Man mode (src/ironman.js)
+    'hcIronmanDeath'
 ];
 
 // amounts fatigue goes down by with sleeping bags or beds
@@ -113,6 +115,10 @@ class Player extends Character {
 
         // ticks remaining until unskulled
         this.skulled = Math.max(0, Number(playerData.skulled) || 0);
+
+        // ARSC Iron Man mode, 0-3 (src/ironman.js), and 1 once a Hardcore Ironman has died
+        this.ironMan = Number(playerData.ironMan) || 0;
+        this.hcIronmanDeath = Number(playerData.hcIronmanDeath) || 0;
 
         this.friends = playerData.friends;
         this.ignores = playerData.ignores;
@@ -1027,10 +1033,15 @@ class Player extends Character {
 
         // Inventory.dropOnDeath: 3 kept (none when skulled), +1 with Protect
         // Item, stackables always lost
+        // ARSC Iron Man (src/ironman.js, Open-RSC Inventory.dropOnDeath): an
+        // Ultimate Ironman keeps no three items (and cannot pray Protect Item)
+        const ironman = require('../ironman');
+        const ultimate = ironman.isUltimate(this);
+
         const kept = new Set(
             wilderness.keptOnDeath(this.inventory.items, {
-                skulled,
-                protectItem: !!this.prayers[8]
+                skulled: skulled || ultimate,
+                protectItem: !!this.prayers[8] && !ultimate
             })
         );
         const itemsKept = [];
@@ -1041,12 +1052,22 @@ class Player extends Character {
                 continue;
             }
 
-            // a player killer owns the drop (the victim keeps an untradeable)
+            // a player killer owns the drop (the victim keeps an untradeable);
+            // an Iron Man killer does not loot players, so the victim keeps it
             const owner =
-                killer && !item.definition.untradeable ? killer : this;
+                killer && !item.definition.untradeable && !ironman.isIronMan(killer)
+                    ? killer
+                    : this;
 
-            world.addPlayerDrop(owner, item, this.x, this.y);
+            const dropped = world.addPlayerDrop(owner, item, this.x, this.y);
+
+            if (dropped && killer) {
+                dropped.playerKill = true;
+            }
         }
+
+        // a Hardcore Ironman's death downgrades them (Player.killedBy)
+        ironman.onDeath(this);
 
         this.inventory.clear(); // ARSC: the equipment slots too
 

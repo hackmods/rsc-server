@@ -21,6 +21,13 @@ async function prayerOn({ player }, { index }) {
         throw new Error(`${player} activating prayer above their level`);
     }
 
+    // ARSC Iron Man (src/ironman.js, Open-RSC PrayerHandler): Protect Item is 8
+    if (index === 8 && require('../ironman').isUltimate(player)) {
+        player.message(require('../ironman').MESSAGES.protectItem);
+        player.sendPrayerStatus(); // the client lit it already
+        return;
+    }
+
     if (player.skills.prayer.current <= 0) {
         player.message(
             'You have run out of prayer points. Return to a church to recharge'

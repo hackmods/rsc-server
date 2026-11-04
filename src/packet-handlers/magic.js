@@ -973,6 +973,14 @@ async function castGroundItem({ player }, { x, y, id, itemID }) {
                 item.id === itemID && (!item.owner || item.owner === player.id)
         );
 
+    // ARSC Iron Man (src/ironman.js, Open-RSC SpellHandler telekinetic grab)
+    const ironman = groundItem && require('../ironman').takeRefusal(player, groundItem);
+
+    if (ironman) {
+        player.message(ironman);
+        return;
+    }
+
     if (
         groundItem &&
         (await player.world.callPlugin(
