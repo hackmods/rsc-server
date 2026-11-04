@@ -35,6 +35,14 @@ async function groundItemTake({ player }, { x, y, id }) {
             return;
         }
 
+        // ARSC Iron Man (src/ironman.js, Open-RSC GroundItemTake)
+        const ironman = require('../ironman').takeRefusal(player, groundItem);
+
+        if (ironman) {
+            player.message(ironman);
+            return;
+        }
+
         if (
             player.inventory.isFull() &&
             (!groundItem.definition.stackable ||

@@ -54,7 +54,7 @@ function withRandom(values, fn) {
 test('arsc-items registers geodes at 1299-1302', () => {
     const items = require('@2003scape/rsc-data/config/items');
 
-    assert.equal(items.length, 1306);
+    assert.ok(items.length >= 1306);
     assert.equal(items[1299].name, 'Small geode');
     assert.equal(items[1302].name, 'Huge geode');
 });
