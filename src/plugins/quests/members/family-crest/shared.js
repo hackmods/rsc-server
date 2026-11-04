@@ -79,13 +79,7 @@ function wearsGauntlets(player, enchantment) {
     );
 }
 
-// SpellHandler: gauntlets of chaos add 1 to the max hit of the bolt spells
-function boltBonus(player, spellName) {
-    return /bolt/.test(String(spellName).toLowerCase()) &&
-        wearsGauntlets(player, GAUNTLETS.CHAOS)
-        ? 1
-        : 0;
-}
+// (the gauntlets of chaos bolt bonus is packet-handlers/magic.js getSpellPower, which reads famcrest_gauntlets itself)
 
 // Smelting: gauntlets of goldsmithing add 45 (quarter points) to a gold bar
 function goldsmithingBonus(player, barID) {
@@ -179,7 +173,6 @@ module.exports = {
     stage,
     getGauntletEnchantment,
     wearsGauntlets,
-    boltBonus,
     goldsmithingBonus,
     cookingGauntlets,
     canMinePerfectGold,

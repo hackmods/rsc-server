@@ -429,12 +429,6 @@ test('each son enchants the steel gauntlets once', async () => {
 });
 
 test('gauntlet bonuses need the worn pair and the matching famcrest_gauntlets', () => {
-    const chaos = player(-1, { items: [701], equipped: [701], cache: { famcrest_gauntlets: 3 } });
-    assert.strictEqual(shared.boltBonus(chaos, 'Fire bolt'), 1);
-    assert.strictEqual(shared.boltBonus(chaos, 'Wind blast'), 0);
-    assert.strictEqual(shared.boltBonus(player(-1, { items: [701], cache: { famcrest_gauntlets: 3 } }), 'Fire bolt'), 0);
-    assert.strictEqual(shared.boltBonus(player(-1, { items: [701], equipped: [701] }), 'Fire bolt'), 0);
-
     const cook = player(-1, { items: [700], equipped: [700], cache: { famcrest_gauntlets: 2 } });
     assert.strictEqual(shared.cookingGauntlets(cook), true);
     assert.strictEqual(shared.cookingGauntlets(player(-1, { items: [700], equipped: [700] })), false);
