@@ -947,7 +947,22 @@ async function onNPCDeath(player, npc) {
         player.cache.killed_grip = true;
     }
 
-    clearGripReturn(player.world);
+    // Java registers the bunch of keys as a public ground item (owner null) for the Black Arm partner; the drop table's copy is the
+    // killer's alone (untradeable items keep their owner), so release it
+    const { world } = player;
+    const { x, y } = npc;
+
+    if (world.groundItems && typeof world.groundItems.getAtPoint === 'function') {
+        world.setTickTimeout(() => {
+            for (const item of world.groundItems.getAtPoint(x, y) || []) {
+                if (item.id === BUNCH_OF_KEYS_ID) {
+                    delete item.owner;
+                }
+            }
+        }, 2);
+    }
+
+    clearGripReturn(world);
     return false;
 }
 
