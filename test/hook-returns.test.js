@@ -35,8 +35,11 @@ const INERT = /^(examine|walkto)$/i;
 // stub accesses per call; dialogue that loops on the stub's answers (osman.js re-asks forever) stops here
 const STEP_BUDGET = 20000;
 
-// handlers allowed to act and still pass the click on (none today); key: "<plugin key> <candidate>"
-const ALLOWED = new Set();
+// handlers allowed to act and still pass the click on; key: "<plugin key> <candidate>"
+const ALLOWED = new Set([
+    // a clue step at the Taverley door mat, then the mat's own search (the Witch's House key, quests/members/witchs-house.js)
+    'items.treasure-trails.onGameObjectCommandOne object 255 "search" at 363,494'
+]);
 
 const worldSource = fs.readFileSync(path.join(__dirname, '../src/model/world.js'), 'utf8');
 const PLUGIN_TYPES = [.../const PLUGIN_TYPES = \[([\s\S]*?)\]/.exec(worldSource)[1].matchAll(/'(\w+)'/g)].map((m) => m[1]);
