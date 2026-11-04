@@ -113,6 +113,7 @@ const TELEPORTS = {
     31: { x: 637, y: 2628 } // top of the Watchtower
 };
 
+const ARDOUGNE_TELEPORT = 26;
 const BONES_TO_BANANAS = 7;
 const LOW_ALCHEMY = 10;
 const HIGH_ALCHEMY = 28;
@@ -300,6 +301,13 @@ async function teleport(player, id, spell) {
             "You can't use teleport after level 20 wilderness"
         );
 
+        return;
+    }
+
+    // Open-RSC SpellHandler.canTeleport: the Ardougne teleport is learnt from Plague City's magic scroll
+    // (quests/members/plague-city/items.js sets cache.ardougneScroll)
+    if (id === ARDOUGNE_TELEPORT && !player.cache.ardougneScroll) {
+        player.message("You don't know how to cast this spell yet", 'You need to do the plague city quest');
         return;
     }
 
