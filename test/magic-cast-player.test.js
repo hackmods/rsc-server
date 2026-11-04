@@ -103,7 +103,8 @@ test('castPlayer is refused when combat levels differ by more than the wildernes
 });
 
 test('castPlayer in the wilderness takes runes, damages as magic, skulls and gives xp', async (t) => {
-    t.mock.method(Math, 'random', () => 0);
+    // Open-RSC calculateMagicDamage: uniform 0..floor(power), wind strike's power is 1
+    t.mock.method(Math, 'random', () => 0.99);
     const { caster, victim } = setup();
 
     await cast(caster, victim);
@@ -112,7 +113,7 @@ test('castPlayer in the wilderness takes runes, damages as magic, skulls and giv
     assert.equal(victim.log.damage.length, 1);
 
     const [amount, attacker, kind] = victim.log.damage[0];
-    assert.ok(amount >= 1);
+    assert.equal(amount, 1);
     assert.equal(attacker, caster.player);
     assert.equal(kind, 'magic');
 

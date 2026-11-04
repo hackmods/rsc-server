@@ -129,7 +129,15 @@ function attackSoon(world, npc, player) {
 
 // ---- pickpocketing -------------------------------------------------------------------------------------------
 
+// Thieving.java blockOpNpc: the West Ardougne "civillian" (732) offers Pickpocket but has nothing to steal
+const CIVILLIAN_PICKPOCKET_ID = 732;
+
 async function onNPCCommand(player, npc) {
+    if (npc.id === CIVILLIAN_PICKPOCKET_ID) {
+        player.message('Nothing interesting happens');
+        return true;
+    }
+
     const pocket = pickpocketNPCs.get(npc.id);
 
     if (!pocket) {
@@ -517,4 +525,11 @@ async function onWallObjectCommandTwo(player, wallObject) {
     return pickLock(player, wallObject);
 }
 
-module.exports = { onNPCCommand, onGameObjectCommandOne, onGameObjectCommandTwo, onWallObjectCommandOne, onWallObjectCommandTwo };
+module.exports = {
+    onNPCCommand,
+    onGameObjectCommandOne,
+    onGameObjectCommandTwo,
+    onWallObjectCommandOne,
+    onWallObjectCommandTwo,
+    gatheringSuccessLegacy
+};

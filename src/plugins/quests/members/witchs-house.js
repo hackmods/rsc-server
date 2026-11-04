@@ -573,12 +573,24 @@ async function onNPCDeath(player, npc) {
 
     player.message(`The shapeshifer turns into a ${SHAPE_NAMES[nextShape.id]}!`); // sic
 
-    // after the kill frees the player (Npc#die ends the fight once the hooks are done)
-    world.setTickTimeout(() => {
-        if (world.npcs.getByIndex(nextShape.index) === nextShape) {
-            nextShape.attack(player).catch(() => {});
+    // after the kill frees the player (Npc#die ends the fight once the hooks are done). The form has no Attack option, so
+    // it must start the fight itself: attack refuses while the player is still busy (another fight, a retreat, a teleport
+    // lock), so it tries again every 2 ticks for up to a minute (live: one try lost the race and the form stood idle)
+    const engage = (tries) => {
+        if (world.npcs.getByIndex(nextShape.index) !== nextShape || nextShape.opponent) {
+            return;
         }
-    }, 2);
+
+        Promise.resolve(nextShape.attack(player))
+            .then((started) => {
+                if (!started && tries > 0) {
+                    world.setTickTimeout(() => engage(tries - 1), 2);
+                }
+            })
+            .catch(() => {});
+    };
+
+    world.setTickTimeout(() => engage(45), 2);
 
     return false;
 }

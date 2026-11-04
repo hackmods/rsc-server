@@ -39,7 +39,6 @@ const INTERNAL_ON = new Set([
 
 // files in index.js that export no function on purpose. casket.js, dummy.js and the other filled files are not here.
 const EMPTY_OK = new Set([
-    'items/scrumpled-piece-of-paper.js',
     'items/war-ship.js',
     'npcs/tree-gnome-stronghold/gnome-child.js',
     'npcs/tree-gnome-stronghold/gnome-local.js',

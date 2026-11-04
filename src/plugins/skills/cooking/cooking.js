@@ -15,6 +15,7 @@ const RANGE_IDS = new Set([11, 435, 491]);
 
 const GAUNTLETS_OF_COOKING_ID = 700;
 const RAW_OOMLIE_MEAT_ID = 1268;
+const RAW_OOMLIE_MEAT_PARCEL_ID = 1280;
 const BURNT_MEAT_ID = 134;
 const UNCOOKED_SWAMP_PASTE_ID = 784;
 const SWAMP_PASTE_ID = 785;
@@ -163,7 +164,10 @@ async function onUseWithGameObject(player, gameObject, item) {
         cookedName = 'meat';
     }
 
-    if (needsRange) {
+    if (item.id === RAW_OOMLIE_MEAT_PARCEL_ID) {
+        // ObjectCooking.java line 154
+        player.message('You prepare to cook the Oomlie meat parcel.');
+    } else if (needsRange) {
         player.message(`You cook the ${cookedName} in the oven...`);
     } else {
         // ( QUEST) You cook the stew on the range...
