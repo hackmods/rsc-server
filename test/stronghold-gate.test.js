@@ -17,7 +17,7 @@ const gates = require('../src/plugins/game-objects/members-gates');
 
 const GATE = { id: 626, x: 703, y: 531, direction: 2, definition: { description: 'The gate is closed' } };
 
-function fakePlayer({ x = 703, y = 532, stage = 0, guard = null } = {}) {
+function fakePlayer({ x = 703, y = 532, stage = 0, guard = null, cache = { helpedFemi: false }, answers = [] } = {}) {
     const said = [];
     const world = {
         members: true,
@@ -36,6 +36,12 @@ function fakePlayer({ x = 703, y = 532, stage = 0, guard = null } = {}) {
         messages: [],
         entered: 0,
         questStages: { grandTree: stage },
+        cache,
+        ask: async (options) => {
+            const choice = answers.shift();
+            said.push(options[choice]);
+            return choice;
+        },
         getNearbyEntitiesByID: () => (guard ? [guard] : []),
         say: async (...m) => said.push(...m),
         message(m) {
@@ -69,6 +75,27 @@ test('Grand Tree stage 10 keeps the player outside', async () => {
     assert.equal(await gates.onGameObjectCommandOne(player, GATE), true);
     assert.equal(player.entered, 0);
     assert.ok(player.said.includes('glough!'));
+});
+
+test('Grand Tree stage 0: Femi asks for a hand with her barrel the first time in from the south', async () => {
+    const femi = { said: [], say: async (...m) => femi.said.push(...m) };
+    const player = fakePlayer({ cache: {}, guard: femi, answers: [1] });
+    assert.equal(await gates.onGameObjectCommandOne(player, GATE), true);
+    assert.equal(player.entered, 0);
+    assert.equal(player.cache.helpedFemi, true);
+    assert.ok(player.messages.includes('you help the gnome lift the barrel'));
+
+    // either answer is remembered and the gate opens from then on
+    const busy = fakePlayer({ cache: {}, guard: femi, answers: [0] });
+    await gates.onGameObjectCommandOne(busy, GATE);
+    assert.equal(busy.cache.helpedFemi, false);
+    await gates.onGameObjectCommandOne(busy, GATE);
+    assert.equal(busy.entered, 1);
+
+    // from inside, or once the quest is started, no barrel
+    const inside = fakePlayer({ cache: {}, y: 530 });
+    await gates.onGameObjectCommandOne(inside, GATE);
+    assert.equal(inside.entered, 1);
 });
 
 test('another object is not a members gate', async () => {
