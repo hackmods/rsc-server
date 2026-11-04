@@ -4,6 +4,8 @@ const DOOR_ID = 19;
 const SCROLL_ID = 49;
 const STRAVEN_ID = 24;
 const WEAPONS_STORE_KEY_ID = 48;
+const CANDLESTICK_ID = 585;
+const MASTER_THIEF_ARMBAND_ID = 586;
 
 async function blackArmDog(player, npc) {
     await npc.say('hey get away from there', 'Black arm dog');
@@ -109,6 +111,44 @@ async function cantGoThere(player, npc) {
     }
 }
 
+// Hero's Quest, ported from Open-RSC authentic/npcs/varrock/ManPhoenix.java (AGPL-3.0): the Phoenix way to the master
+// thief armband (quests/members/heros-quest.js has the Brimhaven half)
+async function herosQuest(player, npc) {
+    if (!player.inventory.has(MASTER_THIEF_ARMBAND_ID) && player.cache.armband) {
+        await player.say('I have lost my master thief armband');
+        await npc.say('You need to be more careful', 'Ah well', 'Have this spare');
+        player.inventory.add(MASTER_THIEF_ARMBAND_ID);
+        return;
+    }
+
+    if (player.inventory.has(CANDLESTICK_ID) && player.cache.killed_grip && !player.cache.armband) {
+        await player.say('I have retrieved a candlestick');
+        await npc.say('Hmm not a bad job', "Let's see it, make sure it's genuine");
+        player.message('You hand Straven the candlestick');
+        player.inventory.remove(CANDLESTICK_ID);
+        await player.say('So is this enough to get me a master thieves armband?');
+        await npc.say('Hmm I dunno', "I suppose I'm in a generous mood today");
+        player.message('Straven hands you a master thief armband');
+        player.inventory.add(MASTER_THIEF_ARMBAND_ID);
+        player.cache.armband = true;
+        return;
+    }
+
+    await player.say('How would I go about getting a master thieves armband?');
+    await npc.say(
+        'Ooh tricky stuff, took me years to get that rank',
+        'Well what some of aspiring thieves in our gang are working on right now',
+        'Is to steal some very valuable rare candlesticks',
+        'From scarface Pete - the pirate leader on Karamja',
+        'His security is good enough and the target valuable enough',
+        'That might be enough to get you the rank',
+        'Go talk to our man Alfonse the waiter in the shrimp and parrot',
+        "Use the secret word gherkin to show you're one of us"
+    );
+    player.cache.pheonix_mission = true;
+    player.cache.pheonix_alf = true;
+}
+
 async function onTalkToNPC(player, npc) {
     if (npc.id !== STRAVEN_ID) {
         return false;
@@ -171,6 +211,8 @@ async function onTalkToNPC(player, npc) {
                 'Who should be in the blue moon inn'
             );
         }
+    } else if (phoenixStage === -1 && (player.questStages.herosQuest || 0) >= 1) {
+        await herosQuest(player, npc);
     } else if (phoenixStage === -1) {
         await npc.say('Greetings fellow gang member');
 

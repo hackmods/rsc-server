@@ -101,7 +101,7 @@ function fakeWorld({ npcs = [], members = true } = {}) {
     return world;
 }
 
-const SKILLS = ['attack', 'defense', 'strength', 'hits', 'prayer', 'fishing', 'crafting', 'woodcutting', 'thieving'];
+const SKILLS = ['attack', 'defense', 'strength', 'hits', 'prayer', 'fishing', 'crafting', 'woodcutting', 'thieving', 'ranged', 'herblaw', 'cooking', 'firemaking', 'mining', 'smithing'];
 
 function fakePlayer({
     world = fakeWorld(),
@@ -159,7 +159,8 @@ function fakePlayer({
                 if (inventory[i].amount > amount) inventory[i].amount -= amount;
                 else inventory.splice(i, 1);
             },
-            isEquipped: (id) => equipped.includes(id) && player.inventory.has(id)
+            isEquipped: (id) => equipped.includes(id) && player.inventory.has(id),
+            isFull: () => inventory.length >= 30
         },
         bank: { has: (id) => banked.includes(id) },
         ask: async (options, repeat) => {
@@ -219,7 +220,13 @@ function fakePlayer({
         openShop: (name) => {
             player.shops.push(name);
         },
-        isMale: () => true
+        isMale: () => true,
+        username: 'tester',
+        questPoints: 0,
+        bubbles: [],
+        sendBubble: (id) => {
+            player.bubbles.push(id);
+        }
     };
 
     return player;
