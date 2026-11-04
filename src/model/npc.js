@@ -13,6 +13,20 @@ const { inWilderness } = require('../wilderness');
 const HERB_IDS = new Set(dropDefinitions.herb.map((entry) => entry.id));
 const PARALYZE_MONSTER_ID = 12;
 
+// Open-RSC NpcBehavior: the tiles (each axis) an aggressive NPC notices a
+// player from: aggro_range (1 in every shipped .conf), the aggressive bandit
+// 2, the black knight 10, the undead one 3
+const AGGRO_RADIUS = 1;
+const AGGRO_RADIUS_BY_ID = new Map([
+    [232, 2],
+    [66, 10],
+    [542, 3]
+]);
+
+// NpcBehavior.canAggro: the player must stand within the NPC's wander box
+// grown by this many tiles
+const AGGRO_BOX_PAD = 4;
+
 const RESTORE_TICKS = 100;
 
 class NPC extends Character {
@@ -373,7 +387,9 @@ class NPC extends Character {
             this.fight();
         }
 
-        if (!this.stationary && !this.locked && this.knownPlayers.size) {
+        // Open-RSC NpcBehavior.handleRoam: a stationary NPC (a one-tile wander
+        // box) still aggroes, it only never takes a random step
+        if (!this.locked && this.knownPlayers.size) {
             this.updateKnownPlayers();
 
             if (!this.chasing) {
@@ -383,8 +399,7 @@ class NPC extends Character {
                     for (const player of this.knownPlayers) {
                         if (
                             !player.opponent &&
-                            this.isAggressive(player) &&
-                            player.withinRange(this, 8) &&
+                            this.canAggro(player) &&
                             player.withinLineOfSight(this)
                         ) {
                             foundPlayer = true;
@@ -394,7 +409,11 @@ class NPC extends Character {
                     }
                 }
 
-                if (!foundPlayer && this.retreatTicks === 0) {
+                if (
+                    !foundPlayer &&
+                    !this.stationary &&
+                    this.retreatTicks === 0
+                ) {
                     this.walkNextRandomStep();
                 }
             }
@@ -405,6 +424,30 @@ class NPC extends Character {
         }
 
         this.isWalking = false;
+    }
+
+    // NpcBehavior.handleRoam + canAggro: in aggro range (Chebyshev, like
+    // Entity.withinRange), inside the wander box + 4, and the level rule
+    canAggro(player) {
+        const radius = AGGRO_RADIUS_BY_ID.get(this.id) || AGGRO_RADIUS;
+
+        if (
+            Math.abs(player.x - this.x) > radius ||
+            Math.abs(player.y - this.y) > radius
+        ) {
+            return false;
+        }
+
+        if (
+            player.x < this.minX - AGGRO_BOX_PAD ||
+            player.x > this.maxX + AGGRO_BOX_PAD ||
+            player.y < this.minY - AGGRO_BOX_PAD ||
+            player.y > this.maxY + AGGRO_BOX_PAD
+        ) {
+            return false;
+        }
+
+        return this.isAggressive(player);
     }
 
     isAggressive(player) {

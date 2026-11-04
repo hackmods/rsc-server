@@ -1,193 +1,270 @@
-const random = require('random');
+// Melee and ranged hit rolls, ported line by line from Open-RSC's authentic
+// formula (server/src/com/openrsc/server/event/rsc/impl/combat/CombatFormula.java;
+// line numbers below are that file's). Replaces 2003scape's approximation (hit
+// chance capped at 212/256, normal-shaped damage from 1, no +8, /600).
+//
+//  - accuracy and defence are "rolls": (floor(level * prayer) + 8 + style) *
+//    (equipment points + 64); an NPC has no +8, no style, no prayer and 0
+//    equipment points (Npc.getArmourPoints etc. return 0)
+//  - the hit chance is uncapped: 1 - (def + 2) / (2 * (acc + 1)) when the
+//    attacker is ahead, acc / (2 * (def + 1)) otherwise (calculateAccuracy)
+//  - damage is (random(0..maxRoll-1) + 320) / 640: 0..max, near uniform; a
+//    miss is 0
+//  - ranged: (ranged level + 8) * (aim or power + 1 + 64), against the
+//    victim's melee defence; aim and power from ./ranged-data (no prayer, no
+//    style)
+//
+// A player's equipment points are equipmentBonuses (1 + the wielded items'
+// bonuses, like Open-RSC Equipment.getArmour/getWeaponAim/getWeaponPower).
 
-const {
-    ammunition,
-    weapons: rangedWeapons
-} = require('@2003scape/rsc-data/ranged');
+const { rangedAim, rangedPower } = require('./ranged-data');
 
-// { prayerIndex: { skill: 'skill', multiplier: 1.05 }, ... }
-const PRAYER_BONUSES = {
-    // thick skin
-    0: { skill: 'defense', multiplier: 1.05 },
-    // burst of strength
-    1: { skill: 'strength', multiplier: 1.05 },
-    // clarity of thought
-    2: { skill: 'attack', multiplier: 1.05 },
-    // rock skin
-    3: { skill: 'defense', multiplier: 1.1 },
-    // superhuman strength
-    4: { skill: 'strength', multiplier: 1.1 },
-    // improved reflexes
-    5: { skill: 'attack', multiplier: 1.1 },
-    // steel skin
-    9: { skill: 'defense', multiplier: 1.15 },
-    // ultimate strength
-    10: { skill: 'strength', multiplier: 1.15 },
-    // incredible reflexes
-    11: { skill: 'attack', multiplier: 1.15 }
+// Prayers.java ids, the three tiers of each stat prayer (addPrayers)
+const STAT_PRAYERS = {
+    defense: [0, 3, 9], // thick skin, rock skin, steel skin
+    strength: [1, 4, 10], // burst of strength, superhuman, ultimate strength
+    attack: [2, 5, 11] // clarity of thought, improved/incredible reflexes
 };
 
-const STYLE_BONUSES = { strength: 1, attack: 2, defense: 3 };
+const PROTECT_FROM_MISSILES = 13;
 
-function getStyleBonus(player, skill) {
-    const style = player.combatStyle;
+// Skills.java combat modes, as the client sends them (combat-style.js)
+const CONTROLLED_MODE = 0;
+const AGGRESSIVE_MODE = 1;
+const ACCURATE_MODE = 2;
+const DEFENSIVE_MODE = 3;
 
-    if (style === 0) {
+// an NPC ranges with a level of 1 (EntityHandler: def.ranged = 0 or 1)
+const NPC_RANGED_LEVEL = 1;
+
+function isPlayer(mob) {
+    return !!mob.username;
+}
+
+// CombatFormula.addPrayers (317-331): the highest active tier wins
+function addPrayers(mob, skill) {
+    if (!isPlayer(mob) || !mob.prayers) {
         return 1;
     }
 
-    return STYLE_BONUSES[skill] === style ? 3 : 0;
-}
+    const [prayer1, prayer2, prayer3] = STAT_PRAYERS[skill];
 
-function getPrayerBonuses(player) {
-    const bonuses = { defense: 1, strength: 1, attack: 1 };
-
-    for (const [index, enabled] of player.prayers.entries()) {
-        if (enabled) {
-            const prayer = PRAYER_BONUSES[index];
-
-            if (!prayer) {
-                continue;
-            }
-
-            bonuses[prayer.skill] = prayer.multiplier;
-        }
+    if (mob.prayers[prayer3]) {
+        return 1.15;
     }
 
-    return bonuses;
+    if (mob.prayers[prayer2]) {
+        return 1.1;
+    }
+
+    if (mob.prayers[prayer1]) {
+        return 1.05;
+    }
+
+    return 1;
 }
 
-function getAccuracy(player) {
-    const styleBonus = getStyleBonus(player, 'attack');
-    const prayerBonus = getPrayerBonuses(player).attack;
-    const attackLevel = player.skills.attack.current * prayerBonus + styleBonus;
-    const bonusMultiplier = player.equipmentBonuses.weaponAim * (1 / 600) + 0.1;
+// { defense, strength, attack } multipliers (kept for callers and tests)
+function getPrayerBonuses(mob) {
+    const player = { username: true, prayers: mob.prayers };
 
-    return attackLevel * bonusMultiplier;
+    return {
+        defense: addPrayers(player, 'defense'),
+        strength: addPrayers(player, 'strength'),
+        attack: addPrayers(player, 'attack')
+    };
 }
 
-function getProtection(player) {
-    const styleBonus = getStyleBonus(player, 'defense');
-    const prayerBonus = getPrayerBonuses(player).defense;
-
-    const defenseLevel =
-        player.skills.defense.current * prayerBonus + styleBonus;
-
-    const bonusMultiplier = player.equipmentBonuses.armour * (1 / 600) + 0.1;
-
-    return defenseLevel * bonusMultiplier;
-}
-
-function getMaxHit(player) {
-    const styleBonus = getStyleBonus(player, 'strength');
-    const prayerBonus = getPrayerBonuses(player).strength;
-
-    const strengthLevel =
-        player.skills.strength.current * prayerBonus + styleBonus;
-
-    const bonusMultiplier =
-        player.equipmentBonuses.weaponPower * (1 / 600) + 0.1;
-
-    return Math.ceil(strengthLevel * bonusMultiplier);
-}
-
-function rollDamage(accuracy, maxHit, protection) {
-    const odds = Math.floor(Math.min(212, (255 * accuracy) / (protection * 4)));
-    const roll = Math.random() * 256;
-
-    if (roll > odds) {
+// CombatFormula.styleBonus (299-309)
+function styleBonus(mob, skill) {
+    if (!isPlayer(mob)) {
         return 0;
     }
 
-    if (maxHit === 0 || maxHit === 1) {
-        return maxHit;
-    }
+    const style = mob.combatStyle || CONTROLLED_MODE;
 
-    const mean = maxHit / 2;
-    const deviation = maxHit / 3;
-    const normal = random.normal(mean, deviation);
-
-    let i = 0;
-    let value;
-
-    do {
-        value = Math.floor(mean + normal() * deviation);
-        i += 1;
-
-        if (i >= 25) {
-            break;
-        }
-    } while (value < 1 || value > maxHit);
-
-    if (value > maxHit) {
-        return maxHit;
-    }
-
-    if (value < 1) {
+    if (style === CONTROLLED_MODE) {
         return 1;
     }
 
-    return Math.floor(value);
-}
-
-function getRangedAccuracy(player) {
-    const rangedLevel = player.skills.ranged.current;
-    const rangedWeapon = player.inventory.getRangedWeapon();
-
-    const bonusMultiplier = rangedWeapon
-        ? rangedWeapons[rangedWeapon.id].accuracy * (1 / 600) + 0.1
+    return (skill === 'attack' && style === ACCURATE_MODE) ||
+        (skill === 'defense' && style === DEFENSIVE_MODE) ||
+        (skill === 'strength' && style === AGGRESSIVE_MODE)
+        ? 3
         : 0;
-
-    return rangedLevel * bonusMultiplier;
 }
 
-function getRangedMaxHit(player) {
-    const rangedLevel = player.skills.ranged.current;
+// Player.getWeaponAimPoints & co (max(points, 1)); an NPC has 0
+function equipmentPoints(mob, bonus) {
+    if (!isPlayer(mob)) {
+        return 0;
+    }
 
-    const bonusMultiplier =
-        ammunition[player.inventory.getAmmunitionID()] * (1 / 600) + 0.1;
+    const bonuses = mob.equipmentBonuses || {};
+    return Math.max(bonuses[bonus] || 0, 1);
+}
 
-    return Math.ceil(rangedLevel * bonusMultiplier);
+function bonusConstant(mob) {
+    return isPlayer(mob) ? 8 : 0;
+}
+
+function level(mob, skill) {
+    const entry = mob.skills[skill];
+    return entry ? entry.current : 0;
+}
+
+// getMeleeAccuracy (281-291)
+function getMeleeAccuracy(attacker) {
+    return (
+        (Math.floor(level(attacker, 'attack') * addPrayers(attacker, 'attack')) +
+            bonusConstant(attacker) +
+            styleBonus(attacker, 'attack')) *
+        (equipmentPoints(attacker, 'weaponAim') + 64)
+    );
+}
+
+// getMeleeDefence (252-260)
+function getMeleeDefence(defender) {
+    return (
+        (Math.floor(
+            level(defender, 'defense') * addPrayers(defender, 'defense')
+        ) +
+            bonusConstant(defender) +
+            styleBonus(defender, 'defense')) *
+        (equipmentPoints(defender, 'armour') + 64)
+    );
+}
+
+// getMeleeDamage (222-231): the max roll, not the max hit
+function getMeleeMaxRoll(source) {
+    return Math.floor(
+        (Math.floor(
+            level(source, 'strength') * addPrayers(source, 'strength')
+        ) +
+            bonusConstant(source) +
+            styleBonus(source, 'strength')) *
+            (equipmentPoints(source, 'weaponPower') + 64)
+    );
+}
+
+function rangedLevel(source) {
+    return isPlayer(source) ? level(source, 'ranged') : NPC_RANGED_LEVEL;
+}
+
+// getRangedAccuracy (270-273)
+function getRangedAccuracy(attacker, bowId) {
+    return (
+        (rangedLevel(attacker) + bonusConstant(attacker)) *
+        (rangedAim(bowId) + 1 + 64)
+    );
+}
+
+// getRangedDamage (239-244), the post-Fletching powers
+function getRangedMaxRoll(source, arrowId) {
+    return Math.floor(
+        (rangedLevel(source) + bonusConstant(source)) *
+            (rangedPower(arrowId) + 1 + 64)
+    );
+}
+
+// calculateAccuracy (109-121): the chance, without the roll
+function hitChance(accuracy, defence) {
+    if (accuracy > defence) {
+        return 1 - (defence + 2) / (2 * (accuracy + 1));
+    }
+
+    return accuracy / (2 * (defence + 1));
+}
+
+function rollAccuracy(accuracy, defence) {
+    return Math.random() <= hitChance(accuracy, defence);
+}
+
+// calculateMeleeDamage/calculateRangedDamage (32-51): nextInt(maxRoll) is
+// 0..maxRoll-1
+function rollDamageFromMaxRoll(maxRoll) {
+    if (maxRoll <= 0) {
+        return 0;
+    }
+
+    return Math.floor((Math.floor(Math.random() * maxRoll) + 320) / 640);
+}
+
+// the highest value rollDamageFromMaxRoll can give
+function maxHitFromMaxRoll(maxRoll) {
+    return maxRoll <= 0 ? 0 : Math.floor((maxRoll - 1 + 320) / 640);
+}
+
+// doMeleeDamage (154-191) without the skill capes (custom content)
+function rollMeleeDamage(source, victim) {
+    const isHit = rollAccuracy(getMeleeAccuracy(source), getMeleeDefence(victim));
+    const damage = rollDamageFromMaxRoll(getMeleeMaxRoll(source));
+
+    return isHit ? damage : 0;
+}
+
+// doRangedDamage (202-215) without the ranged cape
+function rollRangedDamage(source, bowId, arrowId, victim) {
+    if (!rollAccuracy(getRangedAccuracy(source, bowId), getMeleeDefence(victim))) {
+        return 0;
+    }
+
+    return rollDamageFromMaxRoll(getRangedMaxRoll(source, arrowId));
+}
+
+function getMeleeMaxHit(source) {
+    return maxHitFromMaxRoll(getMeleeMaxRoll(source));
+}
+
+function getRangedMaxHit(source, arrowId) {
+    return maxHitFromMaxRoll(getRangedMaxRoll(source, arrowId));
+}
+
+// the bow (or thrown weapon) and the ammunition (or the thrown weapon itself)
+function rangedIDs(player, bowId, arrowId) {
+    if (typeof bowId !== 'number') {
+        const weapon = player.inventory.getRangedWeapon();
+        bowId = weapon ? weapon.id : -1;
+    }
+
+    if (typeof arrowId !== 'number') {
+        arrowId = player.inventory.getAmmunitionID(false);
+    }
+
+    return { bowId, arrowId };
+}
+
+// Prayers.PROTECT_FROM_MISSILES (RangeEvent.java:114, ThrowingEvent.java:114,
+// RangeEventNpc.java:82): a player praying it cannot be shot or thrown at
+function protectedFromMissiles(mob) {
+    return isPlayer(mob) && !!mob.prayers && !!mob.prayers[PROTECT_FROM_MISSILES];
 }
 
 function rollPlayerNPCDamage(player, npc) {
-    const accuracy = getAccuracy(player);
-    const maxHit = getMaxHit(player);
-    const protection = npc.skills.defense.current * (1 / 600 + 0.1);
-
-    return rollDamage(accuracy, maxHit, protection);
+    return rollMeleeDamage(player, npc);
 }
 
 function rollPlayerPlayerDamage(player, targetPlayer) {
-    const accuracy = getAccuracy(player);
-    const maxHit = getMaxHit(player);
-    const protection = getProtection(targetPlayer);
-
-    return rollDamage(accuracy, maxHit, protection);
+    return rollMeleeDamage(player, targetPlayer);
 }
 
 function rollNPCDamage(npc, player) {
-    const accuracy = npc.skills.attack.current * (1 / 600 + 0.1);
-    const maxHit = Math.ceil(npc.skills.strength.current * (1 / 600 + 0.1));
-    const protection = getProtection(player);
-
-    return rollDamage(accuracy, maxHit, protection);
+    return rollMeleeDamage(npc, player);
 }
 
-function rollPlayerNPCRangedDamage(player, npc) {
-    const accuracy = getRangedAccuracy(player);
-    const maxHit = getRangedMaxHit(player);
-    const protection = npc.skills.defense.current * (1 / 600 + 0.1);
-
-    return rollDamage(accuracy, maxHit, protection);
+function rollPlayerNPCRangedDamage(player, npc, bowId, arrowId) {
+    const ids = rangedIDs(player, bowId, arrowId);
+    return rollRangedDamage(player, ids.bowId, ids.arrowId, npc);
 }
 
-function rollPlayerPlayerRangedDamage(player, targetPlayer) {
-    const accuracy = getRangedAccuracy(player);
-    const maxHit = getRangedMaxHit(player);
-    const protection = getProtection(targetPlayer);
+function rollPlayerPlayerRangedDamage(player, targetPlayer, bowId, arrowId) {
+    const ids = rangedIDs(player, bowId, arrowId);
+    return rollRangedDamage(player, ids.bowId, ids.arrowId, targetPlayer);
+}
 
-    return rollDamage(accuracy, maxHit, protection);
+// RangeEventNpc.java:88: an NPC archer shoots a longbow with bronze arrows
+function rollNPCRangedDamage(npc, player) {
+    return rollRangedDamage(npc, 188, 11, player);
 }
 
 module.exports = {
@@ -196,5 +273,20 @@ module.exports = {
     rollNPCDamage,
     rollPlayerNPCRangedDamage,
     rollPlayerPlayerRangedDamage,
-    getPrayerBonuses
+    rollNPCRangedDamage,
+    rollMeleeDamage,
+    rollRangedDamage,
+    getPrayerBonuses,
+    getMeleeAccuracy,
+    getMeleeDefence,
+    getMeleeMaxRoll,
+    getMeleeMaxHit,
+    getRangedAccuracy,
+    getRangedMaxRoll,
+    getRangedMaxHit,
+    hitChance,
+    maxHitFromMaxRoll,
+    rollDamageFromMaxRoll,
+    protectedFromMissiles,
+    PROTECT_FROM_MISSILES
 };

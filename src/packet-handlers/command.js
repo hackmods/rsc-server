@@ -277,6 +277,33 @@ async function command({ player }, { command, args }) {
 
             break;
         }
+        case 'npcrangeevent2': {
+            // Open-RSC Admins.npcRangedPlayer: the NPC of that id within 7
+            // tiles across and 10 up/down shoots the caller (RangeEventNpc)
+            const npcID = +args[0];
+
+            if (!args[0] || Number.isNaN(npcID)) {
+                player.message('Invalid args. Syntax: NPCRANGEEVENT2 [npc_id]');
+                break;
+            }
+
+            const shooter = world.npcs
+                .getInArea(player.x, player.y, 21)
+                .find(
+                    (npc) =>
+                        npc.id === npcID &&
+                        Math.abs(npc.x - player.x) <= 7 &&
+                        Math.abs(npc.y - player.y) <= 10
+                );
+
+            if (!shooter) {
+                player.message('Unable to find the specified NPC');
+                break;
+            }
+
+            require('../npc-ranged').startNpcRanged(shooter, player);
+            break;
+        }
         case 'npccoords':
             player.message(world.npcs.getAtPoint(+args[0], +args[1]).length);
             break;
