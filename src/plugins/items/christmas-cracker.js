@@ -45,6 +45,15 @@ async function onUseWithPlayer(player, otherPlayer, item) {
         return false;
     }
 
+    // ARSC Iron Man (Open-RSC ChristmasCracker.onUsePlayer)
+    if (require('../../ironman').isIronMan(otherPlayer)) {
+        player.message(
+            `${otherPlayer.getFormattedUsername()} is an Ironman. ` +
+                `${otherPlayer.isMale() ? 'He' : 'She'} stands alone.`
+        );
+        return true;
+    }
+
     player.inventory.remove(CHRISTMAS_CRACKER_ID);
     player.sendBubble(CHRISTMAS_CRACKER_ID);
     player.message('You pull a christmas cracker');

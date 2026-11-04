@@ -265,6 +265,16 @@ async function payFine(player, shantay) {
 
     if (choice === 0) {
         await player.say("I'll pay the fine.");
+
+        // ARSC Iron Man (Open-RSC ShantayPassNpcs / DoorAction): no bank to pay from
+        const ironman = require('../../ironman').bankRefusal(player);
+
+        if (ironman) {
+            player.message(ironman);
+            player.disengage();
+            return;
+        }
+
         await shantay.say("Ok then..., you'll need access to your bank.");
         delete player.cache.shantayJail;
         player.disengage();

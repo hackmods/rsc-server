@@ -279,6 +279,31 @@ async function command({ player }, { command, args }) {
 
             break;
         }
+        case 'ironman': { // ARSC: ::ironman <user> <none|ironman|ultimate|hardcore> (src/ironman.js)
+            const ironman = require('../ironman');
+            const target = args[0] ? world.getPlayerByUsername(args[0].replace(/_/g, ' ')) : null;
+            const mode = ironman.parseMode(args.slice(1).join(' '));
+
+            if (!target || mode === undefined) {
+                player.message(
+                    target
+                        ? 'usage: ::ironman <user> <none|ironman|ultimate|hardcore>'
+                        : `unable to find player ${args[0] || ''}`
+                );
+                break;
+            }
+
+            ironman.setMode(target, mode);
+            await target.save();
+
+            target.message(`You are now ${ironman.describe(mode)}.`);
+
+            if (target !== player) {
+                player.message(`${target.getFormattedUsername()} is now ${ironman.describe(mode)}.`);
+            }
+
+            break;
+        }
         case 'npccoords':
             player.message(world.npcs.getAtPoint(+args[0], +args[1]).length);
             break;

@@ -23,6 +23,11 @@ function equipmentRefusal(player, item) {
         throw new RangeError('equipping unequipable item');
     }
     const definition = item.definition.wieldable;
+    // ARSC Iron Man armour (src/ironman.js, Open-RSC Equipment.java)
+    const ironman = require('./ironman').wearRefusal(player, item.id);
+    if (ironman) {
+        return [ironman];
+    }
     for (const [skillName, level] of Object.entries(definition.requirements || {})) {
         if (player.skills[skillName].base < level) {
             return [

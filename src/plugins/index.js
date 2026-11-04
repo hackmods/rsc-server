@@ -118,6 +118,7 @@ module.exports = {
     "npcs.karamja.zambo": require('./npcs/karamja/zambo.js'),
     "npcs.lumbridge.bob": require('./npcs/lumbridge/bob.js'),
     "npcs.lumbridge.hans": require('./npcs/lumbridge/hans.js'),
+    "npcs.lumbridge.iron-men": require('./npcs/lumbridge/iron-men.js'),
     "npcs.lumbridge.shopkeeper": require('./npcs/lumbridge/shopkeeper.js'),
     "npcs.port-sarim.bartender": require('./npcs/port-sarim/bartender.js'),
     "npcs.port-sarim.betty": require('./npcs/port-sarim/betty.js'),

@@ -31,6 +31,8 @@ const DEFAULT_PLAYER = {
     questStages: {},
     cache: {},
     muteEndDate: 0,
+    ironMan: 0,
+    hcIronmanDeath: 0,
     id: 0,
     loginDate: 0,
     skills: {
