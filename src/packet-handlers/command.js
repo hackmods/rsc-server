@@ -287,14 +287,19 @@ async function command({ player }, { command, args }) {
                 break;
             }
 
-            const shooter = world.npcs
+            // the nearest one (Open-RSC takes the first the region lists)
+            const distance = (npc) =>
+                Math.max(Math.abs(npc.x - player.x), Math.abs(npc.y - player.y));
+
+            const [shooter] = world.npcs
                 .getInArea(player.x, player.y, 21)
-                .find(
+                .filter(
                     (npc) =>
                         npc.id === npcID &&
                         Math.abs(npc.x - player.x) <= 7 &&
                         Math.abs(npc.y - player.y) <= 10
-                );
+                )
+                .sort((a, b) => distance(a) - distance(b));
 
             if (!shooter) {
                 player.message('Unable to find the specified NPC');
