@@ -322,4 +322,13 @@ module.exports = {
     "npcs.brimhaven.customs-official": require('./npcs/brimhaven/customs-official.js'),
     "npcs.port-sarim.monks-of-entrana": require('./npcs/port-sarim/monks-of-entrana.js'),
     "npcs.peter-panelist": require('./npcs/peter-panelist.js'),
+    "quests.members.jungle-potion.trufitus": require('./quests/members/jungle-potion/trufitus.js'),
+    "quests.members.jungle-potion.trufitus-shilo": require('./quests/members/jungle-potion/trufitus-shilo.js'),
+    "quests.members.jungle-potion.herbs": require('./quests/members/jungle-potion/herbs.js'),
+    "quests.members.murder-mystery": require('./quests/members/murder-mystery.js'),
+    "quests.members.dwarf-cannon.dwarf-commander": require('./quests/members/dwarf-cannon/dwarf-commander.js'),
+    "quests.members.dwarf-cannon.cannon-engineer": require('./quests/members/dwarf-cannon/cannon-engineer.js'),
+    "quests.members.dwarf-cannon.objects": require('./quests/members/dwarf-cannon/objects.js'),
+    "items.multi-cannon": require('./items/multi-cannon.js'),
+    "skills.smithing.cannon-balls": require('./skills/smithing/cannon-balls.js'),
 };

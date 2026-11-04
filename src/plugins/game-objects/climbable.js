@@ -1,5 +1,6 @@
 // 199: the black hole ladder (miniquests/black-hole.js)
-const EXCLUDE_IDS = new Set([130, 198, 199, 223, 227]);
+// 981, 985: the Dwarf Cannon watch tower ladders (quests/members/dwarf-cannon/objects.js; the trap door is shut at stage 0)
+const EXCLUDE_IDS = new Set([130, 198, 199, 223, 227, 981, 985]);
 // ladders, stairs and levers that move the player to a fixed tile (object-tele-points.js) are not plane shifts
 const { findTelePoint } = require('./object-tele-points');
 
