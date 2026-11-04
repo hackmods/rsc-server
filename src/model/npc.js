@@ -388,9 +388,13 @@ class NPC extends Character {
         }
 
         // Open-RSC NpcBehavior.handleRoam: a stationary NPC (a one-tile wander
-        // box) still aggroes, it only never takes a random step
+        // box) still aggroes, it only never takes a random step. It never
+        // moves, so the players' own view updates keep its knownPlayers (the
+        // per-tick refresh stays for the ones that walk, as before)
         if (!this.locked && this.knownPlayers.size) {
-            this.updateKnownPlayers();
+            if (!this.stationary) {
+                this.updateKnownPlayers();
+            }
 
             if (!this.chasing) {
                 let foundPlayer = false;
@@ -398,6 +402,7 @@ class NPC extends Character {
                 if (this.aggressive && this.retreatTicks <= 0) {
                     for (const player of this.knownPlayers) {
                         if (
+                            player.loggedIn !== false &&
                             !player.opponent &&
                             this.canAggro(player) &&
                             player.withinLineOfSight(this)
