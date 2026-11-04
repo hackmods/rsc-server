@@ -1,5 +1,6 @@
 // 199: the black hole ladder (miniquests/black-hole.js)
-const EXCLUDE_IDS = new Set([130, 198, 199, 223, 227]);
+// 331: the trapped Handelmort mansion stairs (quests/members/tribal-totem.js)
+const EXCLUDE_IDS = new Set([130, 198, 199, 223, 227, 331]);
 // ladders, stairs and levers that move the player to a fixed tile (object-tele-points.js) are not plane shifts
 const { findTelePoint } = require('./object-tele-points');
 
