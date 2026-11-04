@@ -260,6 +260,12 @@ function refuse(player, code, extra) {
 
 // null when the player may act now, else a refusal code
 function blocked(player) {
+    // ARSC Iron Man (src/ironman.js; Open-RSC Auctioneers refuses the auction
+    // house): no offers, collections, quotes or house listings, every way in
+    if (require('../ironman').isIronMan(player)) {
+        return 'IRONMAN';
+    }
+
     if (player.exchangeBusy) {
         return 'BUSY';
     }

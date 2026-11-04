@@ -120,5 +120,7 @@ test('sweep: the committed Open-RSC shop snapshot is fresh', { skip: !HAVE_AUDIT
         t.skip(`full OpenRSC-Core-Framework clone not available (${e.message.split(':')[0]})`);
         return;
     }
-    assert.strictEqual(fs.readFileSync(audit.SNAPSHOT, 'utf8'), audit.renderSnapshot(parsed), 'run node scripts/audit/shops-vs-openrsc.js --write-snapshot');
+    // line endings follow the checkout (core.autocrlf on Windows), the content must not
+    const eol = (text) => text.replace(/\r\n/g, '\n');
+    assert.strictEqual(eol(fs.readFileSync(audit.SNAPSHOT, 'utf8')), eol(audit.renderSnapshot(parsed)), 'run node scripts/audit/shops-vs-openrsc.js --write-snapshot');
 });
