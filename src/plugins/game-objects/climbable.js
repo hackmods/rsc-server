@@ -1,5 +1,6 @@
 // 199: the black hole ladder (miniquests/black-hole.js)
-const EXCLUDE_IDS = new Set([130, 198, 199, 223, 227]);
+// 458: the Sea Slug fishing platform ladder (quests/members/sea-slug.js)
+const EXCLUDE_IDS = new Set([130, 198, 199, 223, 227, 458]);
 // ladders, stairs and levers that move the player to a fixed tile (object-tele-points.js) are not plane shifts
 const { findTelePoint } = require('./object-tele-points');
 
