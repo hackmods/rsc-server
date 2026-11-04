@@ -322,4 +322,9 @@ module.exports = {
     "npcs.brimhaven.customs-official": require('./npcs/brimhaven/customs-official.js'),
     "npcs.port-sarim.monks-of-entrana": require('./npcs/port-sarim/monks-of-entrana.js'),
     "npcs.peter-panelist": require('./npcs/peter-panelist.js'),
+    "minigames.mage-arena": require('./minigames/mage-arena.js'),
+    "minigames.kitten-care": require('./minigames/kitten-care.js'),
+    "npcs.wilderness.gundai": require('./npcs/wilderness/gundai.js'),
+    "game-objects.crystal-chest": require('./game-objects/crystal-chest.js'),
+    "npcs.ardougne.civilians": require('./npcs/ardougne/civilians.js'),
 };
