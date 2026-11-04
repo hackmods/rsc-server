@@ -26,7 +26,7 @@
                 null
             ],
             "hairColour": "rgb(103, 5, 102)",
-            "topColour": "rgb(0, 0, 0)",
+            "topColour": null,
             "bottomColour": "rgb(0, 0, 14)",
             "skinColour": "rgb(204, 179, 102)",
             "width": 145,
