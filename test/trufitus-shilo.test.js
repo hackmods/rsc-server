@@ -13,6 +13,8 @@ function setup(options = {}) {
     const world = options.world || fakeWorld();
     const player = fakePlayer({ world, ...options, quests: { junglePotion: -1, ...(options.quests || {}) } });
     const npc = fakeNpc(TRUFITUS_ID);
+    // trufitus.js engages him before calling trufitusAfterQuest
+    player.engage(npc);
     return { world, player, npc };
 }
 

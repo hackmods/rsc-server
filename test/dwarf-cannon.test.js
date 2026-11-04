@@ -241,3 +241,22 @@ test('Nulodion says nothing before stage 5 but still claims the talk', async () 
     assert.equal(await engineer.onTalkToNPC(p, n), true);
     assert.deepEqual(n.said, []);
 });
+
+test('every talk engages the NPC and lets go of it afterwards (the packet handler leaves both locked otherwise)', async () => {
+    const murder = require('../src/plugins/quests/members/murder-mystery');
+    const trufitus = require('../src/plugins/quests/members/jungle-potion/trufitus');
+    const cases = [
+        [commander, COMMANDER, { dwarfCannon: -1 }],
+        [engineer, ENGINEER, { dwarfCannon: 2 }],
+        [murder, 747, { murderMystery: -1 }],
+        [trufitus, 517, { junglePotion: -1, shiloVillage: 0 }]
+    ];
+    for (const [plugin, id, quests] of cases) {
+        const p = fakePlayer({ quests, cache: {} });
+        const npc = fakeNpc(id);
+        assert.equal(await plugin.onTalkToNPC(p, npc), true, `npc ${id}`);
+        assert.deepEqual(p.engaged, [id]);
+        assert.equal(p.interlocutor, null, `npc ${id} still engaged`);
+        assert.equal(npc.interlocutor, null);
+    }
+});

@@ -358,17 +358,23 @@ async function nearCommander(player, npc) {
 }
 
 async function onTalkToNPC(player, npc) {
-    if (npc.id === DWARF_COMMANDER_ID) {
-        await commander(player, npc);
-        return true;
+    if (npc.id !== DWARF_COMMANDER_ID && npc.id !== DWARF_NEAR_COMMANDER_ID) {
+        return false;
     }
 
-    if (npc.id === DWARF_NEAR_COMMANDER_ID) {
-        await nearCommander(player, npc);
-        return true;
+    player.engage(npc);
+
+    try {
+        if (npc.id === DWARF_COMMANDER_ID) {
+            await commander(player, npc);
+        } else {
+            await nearCommander(player, npc);
+        }
+    } finally {
+        player.disengage();
     }
 
-    return false;
+    return true;
 }
 
 module.exports = { onTalkToNPC };

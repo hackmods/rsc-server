@@ -180,11 +180,13 @@ async function afterQuest(player, npc) {
             await buyCannon(player, npc);
         } else if (cannon === 1) {
             await npc.say('of course!');
+            player.disengage();
             player.openShop('nulodions-cannon-parts');
         } else if (cannon === 2) {
             await npc.say("fair enough, it's too much for most of us");
         } else if (cannon === 3) {
             await npc.say('yes, of course');
+            player.disengage();
             player.openShop('nulodions-cannon-parts');
         }
     } else if (choice === 2) {
@@ -208,6 +210,22 @@ async function onTalkToNPC(player, npc) {
         return false;
     }
 
+    player.engage(npc);
+
+    try {
+        await talk(player, npc);
+    } finally {
+        // the shop branches disengage before opening the shop (the shop keeps the player locked)
+        if (player.interlocutor) {
+            player.disengage();
+        }
+    }
+
+    // the Java has no line for the other stages
+    return true;
+}
+
+async function talk(player, npc) {
     switch (player.questStages.dwarfCannon || 0) {
         case 5:
             await giveNotesAndMould(player, npc);
@@ -219,9 +237,6 @@ async function onTalkToNPC(player, npc) {
             await afterQuest(player, npc);
             break;
     }
-
-    // the Java has no line for the other stages
-    return true;
 }
 
 module.exports = { onTalkToNPC };

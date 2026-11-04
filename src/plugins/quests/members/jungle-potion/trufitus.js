@@ -421,6 +421,18 @@ async function onTalkToNPC(player, npc) {
         return false;
     }
 
+    player.engage(npc);
+
+    try {
+        await talk(player, npc);
+    } finally {
+        player.disengage();
+    }
+
+    return true;
+}
+
+async function talk(player, npc) {
     switch (stageOf(player)) {
         case 0:
             await notStarted(player, npc);
@@ -444,8 +456,6 @@ async function onTalkToNPC(player, npc) {
             await completed(player, npc);
             break;
     }
-
-    return true;
 }
 
 module.exports = { onTalkToNPC };

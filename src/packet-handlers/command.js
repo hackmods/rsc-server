@@ -222,6 +222,8 @@ async function command({ player }, { command, args }) {
 
             if (questID > -1) {
                 player.questStages[quests[questID]] = +args[1];
+                // ARSC: the client's (and a bot's) quest list follows the stage at once
+                player.sendQuestList();
             }
 
             break;

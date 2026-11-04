@@ -1592,7 +1592,13 @@ async function onTalkToNPC(player, npc) {
         return false;
     }
 
-    await dialogue(player, npc);
+    player.engage(npc);
+
+    try {
+        await dialogue(player, npc);
+    } finally {
+        player.disengage();
+    }
 
     return true;
 }

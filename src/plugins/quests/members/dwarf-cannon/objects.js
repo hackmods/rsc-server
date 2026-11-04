@@ -123,6 +123,8 @@ async function rescueLollk(player, crate) {
 
     const { world } = player;
     const lollk = world.spawnTimedNPC({ id: LOLLK_ID, x: 619, y: 3314, ticks: LOLLK_TICKS });
+    // npc.say needs someone to talk to
+    lollk.interlocutor = player;
 
     await lollk.say("thank the heavens, you saved me", "i thought i'd be goblin lunch for sure");
     await player.say('are you ok?');

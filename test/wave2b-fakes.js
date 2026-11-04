@@ -14,7 +14,10 @@ function fakeNpc(id, { x = 0, y = 0, hits = 10, hostility = 'aggressive' } = {})
         removed: false,
         definition: { hostility },
         skills: { hits: { base: hits, current: hits } },
+        interlocutor: null,
         say: async (...lines) => {
+            // NPC#broadcastChat reads interlocutor.index: a plugin that did not engage crashes in the game
+            if (!npc.interlocutor) throw new TypeError(`npc ${id} says ${JSON.stringify(lines[0])} with no interlocutor`);
             npc.said.push(...lines);
         },
         damage(amount, player, kind) {
@@ -175,6 +178,17 @@ function fakePlayer({
         },
         message: (...lines) => {
             player.messages.push(...lines);
+        },
+        engaged: [],
+        // Character#engage / disengage: npc.say needs npc.interlocutor
+        engage: (npc) => {
+            player.engaged.push(npc.id);
+            player.interlocutor = npc;
+            npc.interlocutor = player;
+        },
+        disengage: () => {
+            if (player.interlocutor) player.interlocutor.interlocutor = null;
+            player.interlocutor = null;
         },
         sendBubble: (id) => player.bubbles.push(id),
         sendSound: (name) => player.sounds.push(name),

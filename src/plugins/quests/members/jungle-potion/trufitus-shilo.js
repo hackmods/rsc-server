@@ -407,6 +407,8 @@ async function dropedRashiliyia(player, npc) {
 
     if (!zadimus) {
         zadimus = player.world.spawnTimedNPC({ id: ZADIMUS_ID, x: player.x, y: player.y, ticks: 100 });
+        // npc.say needs someone to talk to (the player is engaged with Trufitus)
+        zadimus.interlocutor = player;
         await zadimus.say(
             'Rashiliyia has returned to her tomb and her power grows',
             'you must gain entry to her resting place and',
