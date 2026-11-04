@@ -13,7 +13,7 @@ async function sleepWord({ player }, { sleepWord }) {
 
         player.openSleep(false);
     } else {
-        // ARSC sandbox: bots cannot read the captcha image (sandbox flags below; docs/ENGINE.md in Autonomous-RSC).
+        // ARSC sandbox: bots cannot read the captcha image (sandbox flags below; docs/archive/ENGINE.md in Autonomous-RSC).
         const arscAnyWord =
             sleepWord.trim().length > 0 &&
             require('../world-admin').canSkipSleepWord(player);
