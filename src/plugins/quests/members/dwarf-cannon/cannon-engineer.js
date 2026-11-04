@@ -16,7 +16,6 @@ const NULODIONS_NOTES_ID = 1056;
 const CANNON_AMMO_MOULD_ID = 1057;
 const INSTRUCTION_MANUAL_ID = 1073;
 
-const SHOP_NAME = 'nulodions-cannon-parts';
 const CANNON_PRICE = 750000;
 
 async function mes(player, line) {
@@ -181,12 +180,12 @@ async function afterQuest(player, npc) {
             await buyCannon(player, npc);
         } else if (cannon === 1) {
             await npc.say('of course!');
-            player.openShop(SHOP_NAME);
+            player.openShop('nulodions-cannon-parts');
         } else if (cannon === 2) {
             await npc.say("fair enough, it's too much for most of us");
         } else if (cannon === 3) {
             await npc.say('yes, of course');
-            player.openShop(SHOP_NAME);
+            player.openShop('nulodions-cannon-parts');
         }
     } else if (choice === 2) {
         await npc.say(
