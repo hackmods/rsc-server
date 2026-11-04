@@ -69,7 +69,8 @@ const PLUGIN_TYPES = [
     'onPlayerDeath',
     'onWearItem',
     'onRemoveItem',
-    'onNPCRangedAttack'
+    'onNPCRangedAttack',
+    'onCatGrowth'
 ];
 
 // prevent spawning entities outside of the f2p boundaries

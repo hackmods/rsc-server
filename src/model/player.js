@@ -21,10 +21,14 @@ const {
 
 const { weapons: rangedWeapons } = require('@2003scape/rsc-data/ranged');
 const poisonRules = require('../poison');
+const kittenCare = require('../plugins/minigames/kitten-care');
 const wilderness = require('../wilderness');
 
 // dropped for the killer when a player dies to a player
 const BONES_ID = 20;
+
+// ARSC Kitten Care (Open-RSC Player.timeIncrementActivity): 5 activity points per 30 s logged in
+const KITTEN_ACTIVITY_TICKS = 47;
 
 // properties to save in the database
 const SAVE_PROPERTIES = [
@@ -1753,6 +1757,14 @@ class Player extends Character {
         this.tickPoison();
         this.tickSkull();
 
+        // ARSC Kitten Care: a carried kitten grows with time (plugins/minigames/kitten-care.js)
+        this.kittenActivityTicks = (this.kittenActivityTicks || 0) + 1;
+
+        if (this.kittenActivityTicks >= KITTEN_ACTIVITY_TICKS) {
+            this.kittenActivityTicks = 0;
+            kittenCare.addActivity(this, 5);
+        }
+
         if (this.interfaceOpen.sleep) {
             this.refreshDisplayFatigue();
         }
@@ -1863,6 +1875,9 @@ class Player extends Character {
         }
 
         super.walkTo(deltaX, deltaY);
+
+        // ARSC Kitten Care (Open-RSC Player.stepIncrementActivity): 2 activity points per step
+        kittenCare.addActivity(this, 2);
 
         this.localEntities.updateNearby('npcs');
 
