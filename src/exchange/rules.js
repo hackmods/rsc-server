@@ -192,6 +192,7 @@ function slotsFrom(offers) {
 const REFUSALS = {
     FAR: 'You need to be near a general store clerk to use the Exchange.',
     BARRED: 'The Exchange does not deal with conjured goods.',
+    IRONMAN: 'As an Ironman, you cannot use the Exchange.',
     SLOTS: 'All 8 of your Exchange slots are in use.',
     NO_ITEM: "You don't have that to sell.",
     NO_COINS: "You don't have enough coins.",
