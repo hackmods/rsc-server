@@ -79,10 +79,10 @@ const ENCHANTED = {
 };
 
 const BATTLESTAFFS = [
-    { name: 'fire', staff: 615, enchanted: ENCHANTED.fire },
-    { name: 'water', staff: 616, enchanted: ENCHANTED.water },
-    { name: 'air', staff: 617, enchanted: ENCHANTED.air },
-    { name: 'earth', staff: 618, enchanted: ENCHANTED.earth }
+    { staff: 615, enchanted: ENCHANTED.fire, ask: 'battlestaff of fire please', lacking: "I don't have a battlestaff of fire yet though" },
+    { staff: 616, enchanted: ENCHANTED.water, ask: 'battlestaff of water please', lacking: "I don't have a battlestaff of water yet though" },
+    { staff: 617, enchanted: ENCHANTED.air, ask: 'battlestaff of air please', lacking: "I don't have a battlestaff of air yet though" },
+    { staff: 618, enchanted: ENCHANTED.earth, ask: 'battlestaff of earth please', lacking: "I don't have a battlestaff of earth yet though" }
 ];
 const ENCHANT_COST = 40000;
 
@@ -396,10 +396,10 @@ async function thormacEnchant(player, npc) {
         return;
     }
 
-    await player.say(`battlestaff of ${staff.name} please`);
+    await player.say(staff.ask);
 
     if (!player.inventory.has(staff.staff)) {
-        await player.say(`I don't have a battlestaff of ${staff.name} yet though`);
+        await player.say(staff.lacking);
         return;
     }
 

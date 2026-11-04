@@ -486,8 +486,9 @@ const TELE_POINTS = [
     { id: 159, x: 416, y: 2053, command: 'walk through', to: [703, 2340], wall: true },
     { id: 160, x: 415, y: 2051, command: 'walk through', to: [701, 2338], wall: true },
     { id: 158, x: 418, y: 2051, command: 'walk through', to: [705, 2338], wall: true },
-    { id: 585, x: 416, y: 2051, command: 'climb-up', to: [417, 2994] },
-    { id: 586, x: 417, y: 2993, command: 'Climb-down', to: [415, 2051] },
+    // GrandTree.java TREE_LADDER_UP / TREE_LADDER_DOWN: the message comes first
+    { id: 585, x: 416, y: 2051, command: 'climb-up', to: [417, 2994], before: ['you climb up the ladder'] },
+    { id: 586, x: 417, y: 2993, command: 'Climb-down', to: [415, 2051], before: ['you climb down the ladder'] },
     { id: 616, x: 703, y: 3283, command: 'climb-up', to: [416, 162] },
     // Ladders.java fixed-tile branches
     { id: 629, x: 576, y: 3529, command: 'Go up', to: [576, 3580], after: [STAIRS_UP] },
