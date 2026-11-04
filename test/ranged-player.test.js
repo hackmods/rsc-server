@@ -1,6 +1,7 @@
 // Player#shootRanged at a player target: wilderness re-check before each shot, player damage roll, skull and combat
 // marks; the NPC path keeps using rollPlayerNPCRangedDamage.
 
+const Module = require('module');
 const test = require('node:test');
 const assert = require('node:assert/strict');
 
@@ -10,7 +11,13 @@ const calls = { npc: 0, player: 0 };
 combat.rollPlayerNPCRangedDamage = () => (calls.npc++, 3);
 combat.rollPlayerPlayerRangedDamage = () => (calls.player++, 4);
 
+// player.js loads the captcha, which needs the native canvas module; none of this needs a captcha
+const realLoad = Module._load;
+Module._load = function load(request, ...rest) {
+    return request === '@2003scape/rsc-captcha' ? class {} : realLoad.call(this, request, ...rest);
+};
 const Player = require('../src/model/player');
+Module._load = realLoad;
 
 const BOW = 188;
 const ARROWS = 11;
