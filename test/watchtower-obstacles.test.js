@@ -14,7 +14,10 @@ function fakeNPC(id) {
         said: [],
         attacked: null,
         skills: { hits: { current: 10 } },
+        interlocutor: null,
+        // the real NPC.broadcastChat reads its interlocutor: an NPC that talks unengaged threw live
         async say(...lines) {
+            assert.ok(this.interlocutor, `npc ${id} talks without being engaged`);
             this.said.push(...lines);
         },
         unlock() {},
@@ -49,6 +52,14 @@ function fakePlayer({ agility = 99, mining = 99, coins = 0, answers = [], stage,
             remove: (id, n = 1) => inv.set(id, inv.get(id) - n),
             add: (id) => inv.set(id, (inv.get(id) || 0) + 1),
             count: (id) => inv.get(id) || 0
+        },
+        engage(npc) {
+            npc.interlocutor = this;
+            this.interlocutor = npc;
+        },
+        disengage() {
+            if (this.interlocutor) this.interlocutor.interlocutor = null;
+            this.interlocutor = null;
         },
         getNearbyEntitiesByID(type, id) {
             return this.nearby.filter((n) => n.id === id);

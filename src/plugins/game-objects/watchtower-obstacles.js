@@ -84,6 +84,17 @@ async function jumpOver(player, gameObject) {
         return;
     }
 
+    // an NPC only talks to the player it is engaged with (npc.broadcastChat targets its interlocutor)
+    player.engage(guard);
+
+    try {
+        await payTheOgre(player, guard);
+    } finally {
+        player.disengage();
+    }
+}
+
+async function payTheOgre(player, guard) {
     await guard.say('Oi! Little thing, if you want to cross here', 'You can pay me first - 20 gold pieces!');
     await player.say('20 gold pieces to jump off a bridge!!?');
     await guard.say("That's what I said, like it or lump it");
@@ -119,7 +130,9 @@ async function enterOgreEnclave(player) {
     const guard = nearbyNPC(player, OGRE_GUARD_CAVE_ENTRANCE_ID, 5);
 
     if (guard) {
+        player.engage(guard);
         await guard.say("No you don't!");
+        player.disengage();
         attackSoon(player, guard);
     } else {
         // the quest way in: use nightshade on the ogre guard
