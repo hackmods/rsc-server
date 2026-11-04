@@ -1,4 +1,11 @@
 // https://classic.runescape.wiki/w/Transcript:Ranael
+// Family Crest branch ported from Open-RSC Core-Framework authentic/npcs/alkharid/RanaelSkirt.java (AGPL-3.0)
+
+const {
+    ASK_FOR_AVAN,
+    canAskForAvan,
+    kebabSellerAdamFitzharmon
+} = require('../../quests/members/family-crest/shared');
 
 const RANAEL_ID = 103;
 
@@ -14,15 +21,22 @@ async function onTalkToNPC(player, npc) {
         'Designed especially for ladies who like to fight'
     );
 
-    const choice = await player.ask(
-        ['Yes please', "No thank you that's not my scene"],
-        true
-    );
+    const choices = ['Yes please', "No thank you that's not my scene"];
+
+    if (canAskForAvan(player)) {
+        choices.push(ASK_FOR_AVAN);
+    }
+
+    const choice = await player.ask(choices, true);
 
     if (choice === 0) {
         player.disengage();
         player.openShop('ranaels-plateskirt');
         return true;
+    }
+
+    if (choice === 2) {
+        await kebabSellerAdamFitzharmon(npc);
     }
 
     player.disengage();

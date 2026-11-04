@@ -1086,6 +1086,8 @@ class Player extends Character {
             this.inventory.add(item);
         }
 
+        require('../plugins/quests/members/family-crest/shared').returnGauntletsOnDeath(this); // Open-RSC Inventory.dropOnDeath
+
         this.sendDeath();
 
         if (victor) {

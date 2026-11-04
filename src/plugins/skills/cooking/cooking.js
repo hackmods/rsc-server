@@ -5,6 +5,7 @@
 const { rollSkillSuccess } = require('../../../rolls');
 require('../../../data-fixes');
 const { uncooked } = require('@2003scape/rsc-data/skills/cooking');
+const { cookingGauntlets } = require('../../quests/members/family-crest/shared');
 
 // Ported from Open-RSC Core-Framework authentic/skills/cooking/ObjectCooking.java and Formulae.burnFood (AGPL-3.0)
 
@@ -13,7 +14,6 @@ const COOKS_RANGE_ID = 119;
 const FIRE_IDS = new Set([97, 274]);
 const RANGE_IDS = new Set([11, 435, 491]);
 
-const GAUNTLETS_OF_COOKING_ID = 700;
 const RAW_OOMLIE_MEAT_ID = 1268;
 const BURNT_MEAT_ID = 134;
 const UNCOOKED_SWAMP_PASTE_ID = 784;
@@ -21,7 +21,8 @@ const SWAMP_PASTE_ID = 785;
 const SEAWEED_ID = 622;
 const SODA_ASH_ID = 624;
 
-// Formulae.burnFood: gauntlets of cooking add effective levels on these raw foods (swordfish, lobster, shark)
+// Formulae.burnFood: gauntlets of cooking (700, worn, famcrest_gauntlets == COOKING) add effective levels on these raw
+// foods (swordfish, lobster, shark)
 const GAUNTLET_LEVELS = { 369: 6, 372: 11, 545: 11 };
 
 const COOKS_RANGE_BONUS = 1.05;
@@ -208,8 +209,7 @@ async function onUseWithGameObject(player, gameObject, item) {
     // Formulae.burnFood: gauntlets add effective levels, and at the perfect level food stops burning
     const effectiveLevel =
         cookingLevel +
-        (GAUNTLET_LEVELS[item.id] &&
-        player.inventory.isEquipped(GAUNTLETS_OF_COOKING_ID)
+        (GAUNTLET_LEVELS[item.id] && cookingGauntlets(player)
             ? GAUNTLET_LEVELS[item.id]
             : 0);
 

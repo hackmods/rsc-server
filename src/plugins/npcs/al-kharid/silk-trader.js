@@ -1,4 +1,11 @@
 // https://classic.runescape.wiki/w/Transcript:Silk_trader
+// Family Crest branch ported from Open-RSC Core-Framework authentic/npcs/alkharid/SilkTrader.java (AGPL-3.0)
+
+const {
+    ASK_FOR_AVAN,
+    canAskForAvan,
+    kebabSellerAdamFitzharmon
+} = require('../../quests/members/family-crest/shared');
 
 const SILK_ID = 200;
 const SILK_TRADER_ID = 71;
@@ -12,12 +19,17 @@ async function onTalkToNPC(player, npc) {
 
     await npc.say('Do you want to buy any fine silks?');
 
-    const choice = await player.ask(
-        ['How much are they?', "No. Silk doesn't suit me"],
-        true
-    );
+    const choices = ['How much are they?', "No. Silk doesn't suit me"];
 
-    if (choice === 0) {
+    if (canAskForAvan(player)) {
+        choices.push(ASK_FOR_AVAN);
+    }
+
+    const choice = await player.ask(choices, true);
+
+    if (choice === 2) {
+        await kebabSellerAdamFitzharmon(npc);
+    } else if (choice === 0) {
         await npc.say('3 coins');
 
         const choice = await player.ask(

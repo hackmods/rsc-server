@@ -276,7 +276,7 @@ function getMaxHit(player, id) {
         return GOD_SPELL_CHARGED_MAX_HIT;
     }
 
-    return MISSILES[id];
+    return MISSILES[id] + require('../plugins/quests/members/family-crest/shared').boltBonus(player, spells[id].name); // Family Crest gauntlets of chaos
 }
 
 function inMageArena({ x, y }) {

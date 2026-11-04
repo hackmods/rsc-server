@@ -8,6 +8,7 @@ const objects = require('@2003scape/rsc-data/config/objects');
 const { pickaxes, gem, rocks } = require('@2003scape/rsc-data/skills/mining');
 const { rollSkillSuccess } = require('../../rolls');
 const { GEODE_CHANCE, rollMiningGeode } = require('../items/mining-geode');
+const { canMinePerfectGold } = require('../quests/members/family-crest/shared');
 
 // rocks without a roll in rsc-data (copper, tin, clay)
 const DEFAULT_ROLL = [100, 350];
@@ -200,6 +201,15 @@ async function mine(player, gameObject, rockID, rock) {
                 ' to use this pickaxe'
         );
 
+        return true;
+    }
+
+    // Open-RSC Mining.java: the perfect gold rocks (315, Family Crest) have no ore before stage 6
+    if (!canMinePerfectGold(player, rockID)) {
+        player.message('@que@You swing your pick at the rock...');
+        player.sendBubble(pickaxe.id);
+        await player.world.sleepTicks(3);
+        player.message('@que@There is currently no ore available in this rock');
         return true;
     }
 
