@@ -853,6 +853,42 @@
             ],
             "note": "rsc-data sells Flour (23) where the authentic shop sells POT_OF_FLOUR (136) x8. The value is the whole authentic list in its order",
             "source": "Open-RSC server/plugins/com/openrsc/server/plugins/authentic/npcs/yanille/Frenita.java (Frenita), new Shop(...)"
+        },
+        {
+            "id": "respawn-plague-sheep-430",
+            "file": "npc-respawn",
+            "path": "430",
+            "op": "set",
+            "value": 43000,
+            "note": "rsc-data gives the 1st plague sheep (430) no respawn, so after one player killed it Sheep Herder could never be done again on the world",
+            "source": "Open-RSC server/conf/server/defs/NpcDefs.json, id 430 respawnTime 43 (seconds)"
+        },
+        {
+            "id": "respawn-plague-sheep-431",
+            "file": "npc-respawn",
+            "path": "431",
+            "op": "set",
+            "value": 43000,
+            "note": "rsc-data gives the 2nd plague sheep (431) no respawn, so after one player killed it Sheep Herder could never be done again on the world",
+            "source": "Open-RSC server/conf/server/defs/NpcDefs.json, id 431 respawnTime 43 (seconds)"
+        },
+        {
+            "id": "respawn-plague-sheep-432",
+            "file": "npc-respawn",
+            "path": "432",
+            "op": "set",
+            "value": 43000,
+            "note": "rsc-data gives the 3rd plague sheep (432) no respawn, so after one player killed it Sheep Herder could never be done again on the world",
+            "source": "Open-RSC server/conf/server/defs/NpcDefs.json, id 432 respawnTime 43 (seconds)"
+        },
+        {
+            "id": "respawn-plague-sheep-433",
+            "file": "npc-respawn",
+            "path": "433",
+            "op": "set",
+            "value": 43000,
+            "note": "rsc-data gives the 4th plague sheep (433) no respawn, so after one player killed it Sheep Herder could never be done again on the world",
+            "source": "Open-RSC server/conf/server/defs/NpcDefs.json, id 433 respawnTime 43 (seconds)"
         }
     ]
 }

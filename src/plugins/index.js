@@ -334,6 +334,10 @@ module.exports = {
     "quests.members.druidic-ritual.sanfew": require('./quests/members/druidic-ritual/sanfew.js'),
     "quests.members.monks-friend.brother-cedric": require('./quests/members/monks-friend/brother-cedric.js'),
     "quests.members.monks-friend.brother-omad": require('./quests/members/monks-friend/brother-omad.js'),
+    "quests.members.tree-gnome-village": require('./quests/members/tree-gnome-village.js'),
+    "quests.members.sheep-herder": require('./quests/members/sheep-herder.js'),
+    "npcs.ardougne.doctor-orbon": require('./npcs/ardougne/doctor-orbon.js'),
+    "quests.members.gertrudes-cat": require('./quests/members/gertrudes-cat.js'),
     "npcs.ardougne.captain-barnaby": require('./npcs/ardougne/captain-barnaby.js'),
     "npcs.brimhaven.customs-official": require('./npcs/brimhaven/customs-official.js'),
     "npcs.port-sarim.monks-of-entrana": require('./npcs/port-sarim/monks-of-entrana.js'),
@@ -347,4 +351,6 @@ module.exports = {
     "quests.members.dwarf-cannon.objects": require('./quests/members/dwarf-cannon/objects.js'),
     "items.multi-cannon": require('./items/multi-cannon.js'),
     "skills.smithing.cannon-balls": require('./skills/smithing/cannon-balls.js'),
+    "quests.members.lost-city": require('./quests/members/lost-city.js'),
+    "wall-objects.loose-fence": require('./wall-objects/loose-fence.js'),
 };

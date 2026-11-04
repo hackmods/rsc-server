@@ -1,6 +1,8 @@
 // 199: the black hole ladder (miniquests/black-hole.js)
+// 244: the Entrana dungeon ladder (the monk warns first, quests/members/lost-city.js)
+// 359: the White Wolf Mountain stairs (the dwarf guards them, quests/members/fishing-contest.js)
 // 981, 985: the Dwarf Cannon watch tower ladders (quests/members/dwarf-cannon/objects.js; the trap door is shut at stage 0)
-const EXCLUDE_IDS = new Set([130, 198, 199, 223, 227, 981, 985]);
+const EXCLUDE_IDS = new Set([130, 198, 199, 223, 227, 244, 359, 981, 985]);
 // ladders, stairs and levers that move the player to a fixed tile (object-tele-points.js) are not plane shifts
 const { findTelePoint } = require('./object-tele-points');
 

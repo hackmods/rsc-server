@@ -1452,6 +1452,10 @@ class Player extends Character {
         this.world.setTickTimeout(() => {
             this.x = x;
             this.y = y;
+            // ARSC: re-file in the quadtree (model/entity-list.js relocate)
+            if (world.players && typeof world.players.relocate === 'function') {
+                world.players.relocate(this);
+            }
 
             this.sendWorldInfo();
             this.localEntities.updateNearby('npcs');
