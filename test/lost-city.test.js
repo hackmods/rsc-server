@@ -156,3 +156,12 @@ test('the leprechaun after stage 2 repeats the way, and the adventurers ask what
     await lostCity.onTalkToNPC(q, fakeNpc(ADVENTURER));
     assert.ok(q.said.includes('I think I will keep that to myself'));
 });
+
+test('an npc speaking outside a conversation (the tree spirit appearing) reaches each onlooker instead of throwing', () => {
+    const NPC = require('../src/model/npc');
+    const npc = Object.create(NPC.prototype);
+    const onlooker = { index: 7, localEntities: { characterUpdates: { npcChat: [] } } };
+    Object.assign(npc, { index: 3, interlocutor: null, knownPlayers: new Set([onlooker]) });
+    npc.broadcastChat('Stop');
+    assert.deepEqual(onlooker.localEntities.characterUpdates.npcChat, [{ npcIndex: 3, playerIndex: 7, message: 'Stop' }]);
+});

@@ -286,7 +286,9 @@ class NPC extends Character {
         for (const player of this.knownPlayers) {
             player.localEntities.characterUpdates.npcChat.push({
                 npcIndex: this.index,
-                playerIndex: this.interlocutor.index,
+                // ARSC: an npc speaking outside a conversation (the Dramen tree spirit as it appears) used to throw here
+                // and cut the plugin short; each onlooker sees it addressed to them
+                playerIndex: (this.interlocutor || player).index,
                 message
             });
         }
