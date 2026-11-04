@@ -77,6 +77,12 @@ test('stage 2: Arhein mentions the fort; stowing away needs stage 2 and Arhein o
     assert.deepEqual(shouting.said, ['Oi get away from there!']);
     assert.deepEqual(watched.teleports, []);
 
+    // a busy Arhein (in a conversation) does not see you (Functions.ifnearvisnpc: !isBusy)
+    shouting.locked = true;
+    await keep.onGameObjectCommandOne(watched, ship);
+    assert.deepEqual(watched.teleports.at(-1), [456, 520]);
+    assert.deepEqual(shouting.said, ['Oi get away from there!']);
+
     const p = player({ stage: 2 });
     assert.equal(await keep.onGameObjectCommandOne(p, ship), true);
     assert.deepEqual(p.teleports, [

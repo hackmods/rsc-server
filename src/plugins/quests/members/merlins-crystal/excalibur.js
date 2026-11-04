@@ -31,8 +31,12 @@ function testNotSet(player) {
     return (stage >= 0 && stage < 3) || !player.cache.ladyTest;
 }
 
-function nearby(player, id, range) {
-    return player.getNearbyEntitiesByID('npcs', id, range).find((npc) => player.getDistance(npc) <= range);
+
+// Open-RSC Functions.ifnearvisnpc: an npc of that id that is not busy (talking), within radius - 1 tiles on both axes
+function nearVisible(player, id, radius) {
+    return player
+        .getNearbyEntitiesByID('npcs', id, radius)
+        .find((npc) => !npc.locked && Math.max(Math.abs(npc.x - player.x), Math.abs(npc.y - player.y)) < radius);
 }
 
 async function ladyOfTheLake(player, npc) {
@@ -81,7 +85,7 @@ async function onTalkToNPC(player, npc) {
 async function beggarAtTheDoor(player, door) {
     const { world } = player;
 
-    let beggar = nearby(player, BEGGAR_ID, 5);
+    let beggar = nearVisible(player, BEGGAR_ID, 5);
 
     if (!beggar) {
         beggar = world.spawnTimedNPC({ id: BEGGAR_ID, x: 276, y: 631, ticks: SPAWN_TICKS });
@@ -159,7 +163,7 @@ async function onGameObjectCommandOne(player, gameObject) {
 
     await world.sleepTicks(3);
 
-    let lady = nearby(player, LADY_UPSTAIRS_ID, 5);
+    let lady = nearVisible(player, LADY_UPSTAIRS_ID, 5);
 
     if (!lady) {
         lady = world.spawnTimedNPC({ id: LADY_UPSTAIRS_ID, x: 279, y: 1576, ticks: SPAWN_TICKS });

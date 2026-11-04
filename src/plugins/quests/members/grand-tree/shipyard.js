@@ -231,7 +231,7 @@ async function foremanDialogue(player, npc) {
 
     player.disengage();
     player.teleport(408, 753);
-    await world.sleepTicks(2);
+    await world.sleepTicks(3); // the teleport lands after 2 ticks
 
     const hutForeman = player.getNearbyEntitiesByID('npcs', SHIPYARD_FOREMAN_HUT_ID, 4)[0];
 

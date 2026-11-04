@@ -24,6 +24,13 @@ function stageOf(player) {
     return player.questStages.merlinsCrystal || 0;
 }
 
+// Open-RSC Functions.ifnearvisnpc: an npc of that id that is not busy (talking), within radius - 1 tiles on both axes
+function nearVisible(player, id, radius) {
+    return player
+        .getNearbyEntitiesByID('npcs', id, radius)
+        .find((npc) => !npc.locked && Math.max(Math.abs(npc.x - player.x), Math.abs(npc.y - player.y)) < radius);
+}
+
 async function stowAway(player) {
     const { world } = player;
     const stage = stageOf(player);
@@ -33,9 +40,7 @@ async function stowAway(player) {
         return true;
     }
 
-    const arhein = player
-        .getNearbyEntitiesByID('npcs', ARHEIN_ID, 10)
-        .find((npc) => player.getDistance(npc) <= 10);
+    const arhein = nearVisible(player, ARHEIN_ID, 10);
 
     if (arhein) {
         await arhein.say('Oi get away from there!');
@@ -93,9 +98,7 @@ async function spareMordred(player, mordred) {
     mordred.abandonFight();
     mordred.skills.hits.current = mordred.skills.hits.base;
 
-    let leFaye = player
-        .getNearbyEntitiesByID('npcs', MORGAN_LE_FAYE_ID, 8)
-        .find((npc) => player.getDistance(npc) <= 8);
+    let leFaye = nearVisible(player, MORGAN_LE_FAYE_ID, 8);
 
     if (!leFaye) {
         leFaye = world.spawnTimedNPC({ id: MORGAN_LE_FAYE_ID, x: 461, y: 2407, ticks: LE_FAYE_TICKS });

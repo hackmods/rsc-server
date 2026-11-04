@@ -79,7 +79,7 @@ async function femiDialogue(player, npc) {
 
     player.disengage();
     player.teleport(708, 510);
-    await world.sleepTicks(2);
+    await world.sleepTicks(3); // the teleport lands after 2 ticks
 
     const femi = player.getNearbyEntitiesByID('npcs', FEMI_STRONGHOLD_ID, 2)[0];
 

@@ -431,6 +431,13 @@ async function beehive(player, item) {
     return true;
 }
 
+// Open-RSC Functions.ifnearvisnpc: an npc of that id that is not busy (talking), within radius - 1 tiles on both axes
+function nearVisible(player, id, radius) {
+    return player
+        .getNearbyEntitiesByID('npcs', id, radius)
+        .find((npc) => !npc.locked && Math.max(Math.abs(npc.x - player.x), Math.abs(npc.y - player.y)) < radius);
+}
+
 async function shatterCrystal(player, crystal) {
     const { world } = player;
 
@@ -445,9 +452,7 @@ async function shatterCrystal(player, crystal) {
     world.removeEntity('gameObjects', crystal);
     world.setTickTimeout(() => world.addEntity('gameObjects', crystal), CRYSTAL_RESPAWN_TICKS);
 
-    const merlin = player
-        .getNearbyEntitiesByID('npcs', MERLIN_ID, 10)
-        .find((npc) => player.getDistance(npc) <= 10);
+    const merlin = nearVisible(player, MERLIN_ID, 10);
 
     if (merlin) {
         await merlin.say(

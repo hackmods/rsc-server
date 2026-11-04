@@ -276,7 +276,7 @@ async function narnodeStart(player, npc) {
 
     player.disengage();
     player.teleport(703, 3284);
-    await world.sleepTicks(2);
+    await world.sleepTicks(3); // the teleport lands after 2 ticks
 
     const king = findNpc(player, NARNODE_UNDERGROUND_ID, 15);
 
