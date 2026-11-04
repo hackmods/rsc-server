@@ -96,11 +96,10 @@ test('no cat: the player agrees there are not many around; other npcs are not cl
     assert.equal(await civilians.onTalkToNPC(player, makeNPC(730)), false);
 });
 
-test('pickpocketing civilian 732 is claimed with "Nothing interesting happens" and the thieving table skips him', async () => {
+test('pickpocketing civilian 732 is the thieving plugin\'s: "Nothing interesting happens"', async () => {
     const player = makePlayer();
 
-    assert.equal(await thieving.onNPCCommand(player, { id: 732, definition: { name: 'civillian' } }), false);
-    assert.equal(await civilians.onNPCCommand(player, { id: 732 }), true);
+    assert.equal(civilians.onNPCCommand, undefined);
+    assert.equal(await thieving.onNPCCommand(player, { id: 732, definition: { name: 'civillian' } }), true);
     assert.deepEqual(player.messages, ['Nothing interesting happens']);
-    assert.equal(await civilians.onNPCCommand(player, { id: 11 }), false);
 });

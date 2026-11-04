@@ -32,7 +32,7 @@ const KEY_DOORS = [
         consume: false,
         bubble: false,
         async before(player) {
-            if (player.questStages.witchsHouse === 0) {
+            if (!player.questStages.witchsHouse) {
                 await player.say("It'd be rude to break into this house");
                 return true;
             }

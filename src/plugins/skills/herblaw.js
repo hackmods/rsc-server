@@ -10,6 +10,8 @@
 // Ported from Open-RSC Core-Framework authentic/skills/herblaw/Herblaw.java (AGPL-3.0): the Jungle Potion herbs
 // (ItemUnIdentHerbDef.xml 815-823, rsc-data has no entry for them: level 3, no XP, same Druidic Ritual gate as every herb)
 // and InvUseOnItem.java blamish oil on a fishing rod -> oily fishing rod (no level, no quest, no XP).
+// Herblaw.java doHerblaw's non-herb vial mixes (jangerberries -> unfinished potion 1074, ardrigal and snake weed ->
+// their solutions 1252/1251, ground bat bones fizz away) and the Gujuo potion (Legends' Quest gated) are ported too.
 
 require('../../data-fixes'); // corrects the potion and Jungle Potion herb rows
 const items = require('@2003scape/rsc-data/config/items');
@@ -22,6 +24,30 @@ const CHARCOAL_ID = 983;
 const BLAMISH_OIL_ID = 588;
 const FISHING_ROD_ID = 377;
 const OILY_FISHING_ROD_ID = 589;
+const EMPTY_VIAL_ID = 465;
+const GROUND_BAT_BONES_ID = 1051;
+const JANGERBERRIES_ID = 936;
+const SNAKE_WEED_ID = 816;
+const ARDRIGAL_ID = 818;
+const UNFINISHED_POTION_ID = 1074;
+const SNAKES_WEED_SOLUTION_ID = 1251;
+const ARDRIGAL_SOLUTION_ID = 1252;
+const GUJUO_POTION_ID = 1253;
+
+// Herblaw.java doHerblaw: things put in a vial of water that are not herblaw herbs. No level, no quest, no experience.
+// The ground bat bones fizz away and leave an empty vial.
+const VIAL_MIXES = new Map([
+    [JANGERBERRIES_ID, { id: UNFINISHED_POTION_ID, messages: ['You mix the berries into the water'] }],
+    [ARDRIGAL_ID, { id: ARDRIGAL_SOLUTION_ID, messages: ['You put the ardrigal herb into the watervial.', 'You make a solution of Ardrigal.'] }],
+    [SNAKE_WEED_ID, { id: SNAKES_WEED_SOLUTION_ID, messages: ['You put the Snake Weed herb into the watervial.', 'You make a solution of Snake Weed.'] }]
+]);
+
+// Herblaw.java onUseInv: the Gujuo potion (Legends' Quest) from either solution and the other herb: herblaw 45, the
+// Druidic Ritual, and the secret Gujuo tells at Legends' Quest stage 7 (not started counts as stage 0)
+const GUJUO_MIXES = [
+    { solution: SNAKES_WEED_SOLUTION_ID, herb: ARDRIGAL_ID, message: 'You add the Ardrigal to the Snakesweed Solution.' },
+    { solution: ARDRIGAL_SOLUTION_ID, herb: SNAKE_WEED_ID, message: 'You add the Snake Weed to the Ardrigal solution.' }
+];
 
 // item ground on a pestle and mortar -> ground item
 const GRINDABLE = new Map([
@@ -188,6 +214,65 @@ function grind(player, item, product) {
     return true;
 }
 
+async function mixInVial(player, id) {
+    if (!player.inventory.has(id) || !player.inventory.has(VIAL_OF_WATER_ID)) {
+        return true;
+    }
+
+    player.inventory.remove(VIAL_OF_WATER_ID);
+    player.inventory.remove(id);
+
+    if (id === GROUND_BAT_BONES_ID) {
+        player.message('You mix the ground bones into the water');
+        player.message('Fizz!!!');
+        await player.say('Oh dear, the mixture has evaporated!', "It's useless...");
+        player.inventory.add(EMPTY_VIAL_ID);
+        return true;
+    }
+
+    const mix = VIAL_MIXES.get(id);
+
+    for (const message of mix.messages) {
+        player.message(message);
+    }
+
+    player.inventory.add(mix.id);
+
+    return true;
+}
+
+async function mixGujuo(player, { solution, herb, message }) {
+    if (herblawLevel(player) < 45) {
+        player.message('@que@You need to have a herblaw level of 45 or over to mix this potion');
+        return true;
+    }
+
+    if (!druidicRitualDone(player)) {
+        player.message('You need to complete Druidic ritual quest first');
+        return true;
+    }
+
+    const legends = player.questStages.legendsQuest || 0;
+
+    if (legends >= 0 && legends < 7) {
+        player.message("You're not quite sure what effect this will have.");
+        player.message('You decide against experimenting.');
+        return true;
+    }
+
+    if (!player.inventory.has(solution) || !player.inventory.has(herb)) {
+        return true;
+    }
+
+    player.message(message);
+    player.message('The mixture seems to bubble slightly with a strange effervescence...');
+    player.inventory.remove(herb);
+    player.inventory.remove(solution);
+    player.inventory.add(GUJUO_POTION_ID);
+
+    return true;
+}
+
 async function onInventoryCommand(player, item) {
     const herb = herbsByID.get(item.id);
 
@@ -214,6 +299,16 @@ async function onUseWithInventory(player, item, target) {
     }
 
     for (const [first, second] of [[item, target], [target, item]]) {
+        const gujuo = GUJUO_MIXES.find((m) => m.solution === first.id && m.herb === second.id);
+
+        if (gujuo) {
+            return mixGujuo(player, gujuo);
+        }
+
+        if (second.id === VIAL_OF_WATER_ID && (VIAL_MIXES.has(first.id) || first.id === GROUND_BAT_BONES_ID)) {
+            return mixInVial(player, first.id);
+        }
+
         if (first.id === PESTLE_AND_MORTAR_ID && GRINDABLE.has(second.id)) {
             return grind(player, second, GRINDABLE.get(second.id));
         }

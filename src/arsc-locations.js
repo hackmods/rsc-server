@@ -8,7 +8,13 @@ module.exports = {
         // of Edgeville bank, 19 tiles below the Wilderness border (y 427); the tile and its wander box are walkable
         { id: 720, x: 214, y: 446, minX: 212, maxX: 216, minY: 445, maxY: 447 },
         // Monster Slayer guild master (plugins/npcs/varrock/slayer-master.js), south-east Varrock
-        { id: 749, x: 118, y: 504, minX: 116, maxX: 120, minY: 502, maxY: 506 }
+        { id: 749, x: 118, y: 504, minX: 116, maxX: 120, minY: 502, maxY: 506 },
+        // the Iron Man tutors (plugins/npcs/lumbridge/iron-men.js, src/arsc-npcs), Open-RSC NpcLocsIronman.json:
+        // Ultimate, Hardcore and standard Ironman by the Lumbridge spawn, and an Ironman on Tutorial Island
+        { id: 795, x: 121, y: 649, minX: 121, maxX: 121, minY: 649, maxY: 649 },
+        { id: 796, x: 123, y: 649, minX: 123, maxX: 123, minY: 649, maxY: 649 },
+        { id: 794, x: 119, y: 650, minX: 119, maxX: 119, minY: 650, maxY: 650 },
+        { id: 794, x: 218, y: 744, minX: 217, maxX: 219, minY: 743, maxY: 745 }
     ],
     gameObjects: [
         // ladder down to the black hole, by the torch alcove north of Thordur (311,3343 holds the torch)

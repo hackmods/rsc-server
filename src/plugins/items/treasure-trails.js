@@ -8,6 +8,10 @@ const clues = require('../../clues');
 
 const SPADE_ID = 211;
 
+// searched objects that have their own owner too: after the clue step the search goes on to it (the Door mat 255 at
+// Taverley hides the Witch's House front door key, quests/members/witchs-house.js)
+const SHARED_SEARCH_OBJECTS = new Set([255]);
+
 async function dig(player) {
     const { world } = player;
 
@@ -83,7 +87,7 @@ async function searchObject(player, gameObject, commandIndex) {
     await player.world.sleepTicks(1);
     player.message('@que@Tucked away inside, you find the next clue!');
     clues.advance(player, solved.tier);
-    return true;
+    return !SHARED_SEARCH_OBJECTS.has(gameObject.id);
 }
 
 // world.loadPlugins registers a hook by its function name

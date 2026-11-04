@@ -7,9 +7,12 @@
 //    god spells (with their staffs), and the stat curses
 //  - castInventoryItem: low and high level alchemy, superheat item, enchant
 //    lvl-1 to lvl-5 amulet
-//  - castPlayer: strike/bolt/blast/wave spells and the stat curses on other
-//    players, in the Wilderness only (rules in ../wilderness.js); god spells
-//    and Mage Arena duels are refused
+//  - castPlayer: strike/bolt/blast/wave, Iban and god spells and the stat
+//    curses on other players, in the Wilderness only (rules in
+//    ../wilderness.js)
+//  - damage is Open-RSC's (SpellDamages.java, CombatFormula
+//    calculateMagicDamage): uniform 0..floor(spell power), no accuracy roll;
+//    god spells need 100 casts in the Mage Arena before they work outside it
 //  - castSelf also casts Charge (Open-RSC SpellHandler handleGroundCast): a
 //    timed flag that lifts the god spells from 18 to 25 for a god cape wearer
 //  - castGroundItem, castObject: offered to onCastOnGroundItem and
@@ -113,53 +116,103 @@ const TELEPORTS = {
     31: { x: 637, y: 2628 } // top of the Watchtower
 };
 
+const ARDOUGNE_TELEPORT = 26;
 const BONES_TO_BANANAS = 7;
 const LOW_ALCHEMY = 10;
 const HIGH_ALCHEMY = 28;
 const SUPERHEAT = 21;
 const CRUMBLE_UNDEAD = 19;
 
-// spell index: max hit ("A strength N missile attack")
+// spell index: spell power { player, npc } against a player and an NPC.
+// Open-RSC constants/SpellDamages.java modernMagicProjectiles (the table its
+// SpellHandler uses for every elemental missile; on this members world it is
+// the same for both targets), Constants.CRUMBLE_UNDEAD_MAX (8),
+// CombatFormula.calculateIbanSpellDamage (15) and calculateGodSpellDamage (18,
+// 25 charged). The hit is uniform 0..floor(power) with no accuracy roll
+// (CombatFormula.calculateMagicDamage).
 const MISSILES = {
-    0: 1, // wind strike
-    2: 2, // water strike
-    4: 3, // earth strike
-    6: 4, // fire strike
-    8: 5, // wind bolt
-    11: 6, // water bolt
-    14: 7, // earth bolt
-    17: 8, // fire bolt
-    19: 7, // crumble undead (undead only)
-    20: 9, // wind blast
-    23: 10, // water blast
-    25: 25, // iban blast
-    27: 11, // earth blast
-    32: 12, // fire blast
-    33: 18, // claws of guthix
-    34: 18, // saradomin strike
-    35: 18, // flames of zamorak
-    37: 13, // wind wave
-    39: 14, // water wave
-    43: 15, // earth wave
-    45: 16 // fire wave
+    0: { player: 1, npc: 1 }, // wind strike
+    2: { player: 2, npc: 2 }, // water strike
+    4: { player: 3, npc: 3 }, // earth strike
+    6: { player: 4, npc: 4 }, // fire strike
+    8: { player: 4.5, npc: 4.5 }, // wind bolt
+    11: { player: 5, npc: 5 }, // water bolt
+    14: { player: 5.5, npc: 5.5 }, // earth bolt
+    17: { player: 6, npc: 6 }, // fire bolt
+    19: { player: 8, npc: 8 }, // crumble undead (undead only)
+    20: { player: 6.5, npc: 6.5 }, // wind blast
+    23: { player: 7, npc: 7 }, // water blast
+    25: { player: 15, npc: 15 }, // iban blast
+    27: { player: 7.5, npc: 7.5 }, // earth blast
+    32: { player: 8, npc: 8 }, // fire blast
+    33: { player: 18, npc: 18 }, // claws of guthix
+    34: { player: 18, npc: 18 }, // saradomin strike
+    35: { player: 18, npc: 18 }, // flames of zamorak
+    37: { player: 8.5, npc: 8.5 }, // wind wave
+    39: { player: 9, npc: 9 }, // water wave
+    43: { player: 9.5, npc: 9.5 }, // earth wave
+    45: { player: 10, npc: 10 } // fire wave
 };
 
-// spell index: staff ids that must be wielded, and its name for the message
+// SpellHandler: the gauntlets of chaos add 1 to a bolt spell
+const GAUNTLETS_OF_CHAOS_ID = 701;
+const BOLT_SPELLS = new Set([8, 11, 14, 17]);
+// Family Crest's cache value for the chaos gauntlets (Gauntlets.CHAOS)
+const FAMCREST_CHAOS = 3;
+
+// spell index: staff ids that must be wielded, and the SpellHandler message
 const REQUIRED_STAFFS = {
-    25: { ids: [1000, 1031], name: 'staff of Iban' },
-    33: { ids: [1217], name: 'staff of guthix' },
-    34: { ids: [1218], name: 'staff of Saradomin' },
-    35: { ids: [1216], name: 'staff of zamorak' }
+    25: {
+        ids: [1000, 1031],
+        message: 'you need the staff of iban to cast this spell'
+    },
+    33: {
+        ids: [1217],
+        message: 'you must weild the staff of guthix to cast this spell'
+    },
+    34: {
+        ids: [1218],
+        message: 'you must weild the staff of saradomin to cast this spell'
+    },
+    35: {
+        ids: [1216],
+        message: 'you must weild the staff of zamorak to cast this spell'
+    }
 };
 
-// spell index: the stat it drains and by how much
+// spell index: the stat it drains, by how much, and what a player victim is
+// told (SpellHandler)
 const CURSES = {
-    1: { skill: 'attack', fraction: 0.05 }, // confuse
-    5: { skill: 'strength', fraction: 0.05 }, // weaken
-    9: { skill: 'defense', fraction: 0.05 }, // curse
-    41: { skill: 'defense', fraction: 0.1 }, // vulnerability
-    44: { skill: 'strength', fraction: 0.1 }, // enfeeble
-    46: { skill: 'attack', fraction: 0.1 } // stun
+    1: {
+        skill: 'attack',
+        fraction: 0.05,
+        message: 'Your attack has been reduced by a confuse spell!'
+    },
+    5: {
+        skill: 'strength',
+        fraction: 0.05,
+        message: 'Your strength has been reduced by a weaken spell!'
+    },
+    9: {
+        skill: 'defense',
+        fraction: 0.05,
+        message: 'Your defense has been reduced by a curse spell!'
+    },
+    41: {
+        skill: 'defense',
+        fraction: 0.1,
+        message: 'Your defense has been reduced by a vulnerability spell!'
+    },
+    44: {
+        skill: 'strength',
+        fraction: 0.1,
+        message: 'Your strength has been reduced by an enfeeble spell!'
+    },
+    46: {
+        skill: 'attack',
+        fraction: 0.1,
+        message: 'Your attack has been reduced by a stun spell!'
+    }
 };
 
 // spell index: { strung amulet id: enchanted id }, gem name
@@ -265,18 +318,41 @@ function isCharged(player) {
     );
 }
 
-// the max hit of a missile spell; Charge lifts the god spells for a god cape
-// wearer (Open-RSC CombatFormula.calculateGodSpellDamage)
-function getMaxHit(player, id) {
-    if (
-        GOD_SPELLS.has(id) &&
-        isCharged(player) &&
-        GOD_CAPE_IDS.some((capeID) => player.inventory.isEquipped(capeID))
-    ) {
-        return GOD_SPELL_CHARGED_MAX_HIT;
+// SpellHandler: wielded chaos gauntlets (and, when Family Crest has recorded
+// them, the chaos enchantment)
+function hasChaosGauntlets(player) {
+    if (!player.inventory.isEquipped(GAUNTLETS_OF_CHAOS_ID)) {
+        return false;
     }
 
-    return MISSILES[id];
+    const recorded = player.cache && player.cache.famcrest_gauntlets;
+    return recorded === undefined || recorded === FAMCREST_CHAOS;
+}
+
+// the power of a missile spell against a player or an NPC; Charge lifts the
+// god spells for a god cape wearer (Open-RSC
+// CombatFormula.calculateGodSpellDamage), the chaos gauntlets lift the bolts
+function getSpellPower(player, id, target) {
+    if (GOD_SPELLS.has(id)) {
+        return isCharged(player) &&
+            GOD_CAPE_IDS.some((capeID) => player.inventory.isEquipped(capeID))
+            ? GOD_SPELL_CHARGED_MAX_HIT
+            : MISSILES[id].player;
+    }
+
+    const powers = MISSILES[id];
+    let power = target && target.username ? powers.player : powers.npc;
+
+    if (BOLT_SPELLS.has(id) && hasChaosGauntlets(player)) {
+        power += 1;
+    }
+
+    return power;
+}
+
+// the highest hit a spell can give (calculateMagicDamage floors the power)
+function getMaxHit(player, id, target) {
+    return Math.floor(getSpellPower(player, id, target));
 }
 
 function inMageArena({ x, y }) {
@@ -300,6 +376,13 @@ async function teleport(player, id, spell) {
             "You can't use teleport after level 20 wilderness"
         );
 
+        return;
+    }
+
+    // Open-RSC SpellHandler.canTeleport: the Ardougne teleport is learnt from Plague City's magic scroll
+    // (quests/members/plague-city/items.js sets cache.ardougneScroll)
+    if (id === ARDOUGNE_TELEPORT && !player.cache.ardougneScroll) {
+        player.message("You don't know how to cast this spell yet", 'You need to do the plague city quest');
         return;
     }
 
@@ -472,22 +555,65 @@ async function approach(
     return withinSpellRange(player, npc);
 }
 
-// accuracy roll in the same shape as combat.js rollDamage, magic level and
-// magic bonus against the npc's defence; a hit is uniform 1..maxHit
-function rollSpellDamage(player, npc, maxHit) {
-    const magicBonus = player.equipmentBonuses.magic || 1;
-    const accuracy =
-        (player.skills.magic.current + 8) * (magicBonus * (1 / 600) + 0.1);
-    const protection = npc.skills.defense.current * (1 / 600 + 0.1);
-    const odds = Math.floor(
-        Math.min(212, (255 * accuracy) / Math.max(protection * 4, 0.01))
-    );
+// Open-RSC CombatFormula.calculateMagicDamage (CombatFormula.java:58-62):
+// nextInt(floor(power) + 1), uniform 0..floor(power). There is no accuracy
+// roll against the target's defence and no magic bonus in the damage
+function rollSpellDamage(player, target, id) {
+    const maxHit = getMaxHit(player, id, target);
+    return Math.floor(Math.random() * (maxHit + 1));
+}
 
-    if (Math.random() * 256 > odds) {
-        return 0;
+// Open-RSC SpellHandler god spells: outside the Mage Arena only after 100
+// casts of that spell inside it. Returns true (after telling the player) when
+// the cast is refused
+function godSpellRefused(player, id, spell) {
+    if (!GOD_SPELLS.has(id) || inMageArena(player)) {
+        return false;
     }
 
-    return 1 + Math.floor(Math.random() * maxHit);
+    const casts = player.cache ? player.cache[`${spell.name}_casts`] : undefined;
+
+    if (typeof casts === 'number' && casts >= GOD_CASTS_REQUIRED) {
+        return false;
+    }
+
+    const left =
+        typeof casts === 'number' ? GOD_CASTS_REQUIRED - casts : GOD_CASTS_REQUIRED;
+
+    player.message(
+        'this spell can only be used in the mage arena',
+        `You must learn this spell first, you need ${left} more casts in the ` +
+            'mage arena'
+    );
+
+    return true;
+}
+
+// a god spell cast inside the Mage Arena counts towards the 100
+function countGodCast(player, id, spell) {
+    if (!GOD_SPELLS.has(id) || !inMageArena(player) || !player.cache) {
+        return;
+    }
+
+    const key = `${spell.name}_casts`;
+    const casts = typeof player.cache[key] === 'number' ? player.cache[key] : 0;
+
+    player.cache[key] = casts + 1;
+
+    if (casts === GOD_CASTS_REQUIRED - 1) {
+        player.message(
+            `Well done .. you can now use the ${spell.name} outside the arena`
+        );
+    }
+}
+
+// the curses lower the stat by a share of its current level (SpellHandler:
+// ceil(level * lowersBy))
+function curseStat(skill, fraction) {
+    skill.current = Math.max(
+        0,
+        skill.current - Math.ceil(skill.current * fraction)
+    );
 }
 
 // the npc fights back like it does against ranged
@@ -556,7 +682,11 @@ async function castNPC({ player }, { index, id }) {
         staff &&
         !staff.ids.some((staffID) => player.inventory.isEquipped(staffID))
     ) {
-        player.message(`You need to be wielding the ${staff.name}`);
+        player.message(staff.message);
+        return;
+    }
+
+    if (godSpellRefused(player, id, spell)) {
         return;
     }
 
@@ -618,18 +748,15 @@ async function castNPC({ player }, { index, id }) {
     player.faceEntity(npc);
     player.sendProjectile(npc, PROJECTILE_MAGIC);
     finishCast(player, id, cost, null);
+    countGodCast(player, id, spell);
 
     if (curse) {
-        const skill = npc.skills[curse.skill];
-        skill.current = Math.max(
-            0,
-            skill.current - Math.max(1, Math.ceil(skill.base * curse.fraction))
-        );
+        curseStat(npc.skills[curse.skill], curse.fraction);
         retaliate(player, npc);
         return;
     }
 
-    const damage = rollSpellDamage(player, npc, getMaxHit(player, id));
+    const damage = rollSpellDamage(player, npc, id);
     const died = npc.damage(damage, player, 'magic');
 
     if (!died) {
@@ -642,7 +769,7 @@ function playerGone(target) {
 }
 
 // a spell cast on another player (Open-RSC SpellHandler handleMobCast, player
-// branch): Wilderness only, missiles and stat curses; god spells are refused
+// branch): Wilderness only, missiles (god spells included) and stat curses
 async function castPlayer({ player }, { index, id }) {
     const spell = getSpell(id);
     const { world } = player;
@@ -670,16 +797,11 @@ async function castPlayer({ player }, { index, id }) {
         return;
     }
 
-    if (GOD_SPELLS.has(id) || inMageArena(player) || inMageArena(victim)) {
-        player.message("You can't attack other players here");
-        return;
-    }
-
+    // Open-RSC SpellHandler: crumble undead is refused on players ("You can
+    // not use this spell on a Player"); god spells are allowed like any
+    // missile, under their staff and Mage Arena rules
     if (id === CRUMBLE_UNDEAD) {
-        player.message(
-            'This spell can only be used on skeletons, zombies and ghosts'
-        );
-
+        player.message('You can not use this spell on a Player');
         return;
     }
 
@@ -689,7 +811,11 @@ async function castPlayer({ player }, { index, id }) {
         staff &&
         !staff.ids.some((staffID) => player.inventory.isEquipped(staffID))
     ) {
-        player.message(`You need to be wielding the ${staff.name}`);
+        player.message(staff.message);
+        return;
+    }
+
+    if (godSpellRefused(player, id, spell)) {
         return;
     }
 
@@ -769,25 +895,26 @@ async function castPlayer({ player }, { index, id }) {
     player.faceEntity(victim);
     player.sendProjectile(victim, PROJECTILE_MAGIC);
     finishCast(player, id, cost, null);
+    countGodCast(player, id, spell);
 
     wilderness.skullOnAttack(player, victim);
     wilderness.markCombat(player, victim);
 
     if (curse) {
-        const skill = victim.skills[curse.skill];
-        skill.current = Math.max(
-            0,
-            skill.current - Math.max(1, Math.ceil(skill.base * curse.fraction))
-        );
+        curseStat(victim.skills[curse.skill], curse.fraction);
 
         if (typeof victim.sendStats === 'function') {
             victim.sendStats();
         }
 
+        if (curse.message && typeof victim.message === 'function') {
+            victim.message(curse.message);
+        }
+
         return;
     }
 
-    const damage = rollSpellDamage(player, victim, getMaxHit(player, id));
+    const damage = rollSpellDamage(player, victim, id);
     victim.damage(damage, player, 'magic');
 }
 
@@ -978,6 +1105,14 @@ async function castGroundItem({ player }, { x, y, id, itemID }) {
             (item) =>
                 item.id === itemID && (!item.owner || item.owner === player.id)
         );
+
+    // ARSC Iron Man (src/ironman.js, Open-RSC SpellHandler telekinetic grab)
+    const ironman = groundItem && require('../ironman').takeRefusal(player, groundItem);
+
+    if (ironman) {
+        player.message(ironman);
+        return;
+    }
 
     if (
         groundItem &&

@@ -1,89 +1,111 @@
 {
-    "about": "ARSC custom items after treasure trail caskets (1290-1292) and ironman reserve slots (1293-1298). Geode sprites reuse uncut gem art (73); agility pouches reuse the casket sprite (187) with course tints.",
+    "about": "ARSC custom items after treasure trail caskets (1290-1292): Ultimate and Hardcore Iron Man armour on Open-RSC's ids (1293-1298), geodes and agility pouches (1299-1305), then the rest of the Iron Man armour (1306-1314; Open-RSC's 1290-1292 and 1554-1559). Geode sprites reuse uncut gem art (73); agility pouches reuse the casket sprite (187) with course tints. Wearable rows also need wieldable.json.",
     "items": [
         {
             "id": 1293,
-            "name": "Reserved",
-            "description": "Unused item slot",
+            "name": "Ultimate ironman helm",
+            "description": "For Just A Rather Very Independent Scaper.",
             "command": "",
-            "sprite": 0,
-            "price": 0,
+            "sprite": 6,
+            "price": 154,
             "stackable": false,
             "special": false,
-            "equip": null,
-            "colour": null,
+            "equip": [
+                "head",
+                "replace-head"
+            ],
+            "colour": "rgb(255, 222, 173)",
             "untradeable": true,
-            "members": true
+            "members": false
         },
         {
             "id": 1294,
-            "name": "Reserved",
-            "description": "Unused item slot",
+            "name": "Ultimate ironman platebody",
+            "description": "Take it off and what are you?",
             "command": "",
-            "sprite": 0,
-            "price": 0,
+            "sprite": 8,
+            "price": 560,
             "stackable": false,
             "special": false,
-            "equip": null,
-            "colour": null,
+            "equip": [
+                "hands",
+                "body",
+                "replace-body"
+            ],
+            "colour": "rgb(255, 222, 173)",
             "untradeable": true,
-            "members": true
+            "members": false
         },
         {
             "id": 1295,
-            "name": "Reserved",
-            "description": "Unused item slot",
+            "name": "Ultimate ironman platelegs",
+            "description": "Take it off and what are you?",
             "command": "",
-            "sprite": 0,
-            "price": 0,
+            "sprite": 9,
+            "price": 280,
             "stackable": false,
             "special": false,
-            "equip": null,
-            "colour": null,
+            "equip": [
+                "feet",
+                "legs",
+                "replace-legs"
+            ],
+            "colour": "rgb(255, 222, 173)",
             "untradeable": true,
-            "members": true
+            "members": false
         },
         {
             "id": 1296,
-            "name": "Reserved",
-            "description": "Unused item slot",
+            "name": "Hardcore ironman helm",
+            "description": "For those who stand alone.",
             "command": "",
-            "sprite": 0,
-            "price": 0,
+            "sprite": 6,
+            "price": 154,
             "stackable": false,
             "special": false,
-            "equip": null,
-            "colour": null,
+            "equip": [
+                "head",
+                "replace-head"
+            ],
+            "colour": "rgb(153, 0, 76)",
             "untradeable": true,
-            "members": true
+            "members": false
         },
         {
             "id": 1297,
-            "name": "Reserved",
-            "description": "Unused item slot",
+            "name": "Hardcore ironman platebody",
+            "description": "Take it off and what are you?",
             "command": "",
-            "sprite": 0,
-            "price": 0,
+            "sprite": 8,
+            "price": 560,
             "stackable": false,
             "special": false,
-            "equip": null,
-            "colour": null,
+            "equip": [
+                "hands",
+                "body",
+                "replace-body"
+            ],
+            "colour": "rgb(153, 0, 76)",
             "untradeable": true,
-            "members": true
+            "members": false
         },
         {
             "id": 1298,
-            "name": "Reserved",
-            "description": "Unused item slot",
+            "name": "Hardcore ironman platelegs",
+            "description": "Take it off and what are you?",
             "command": "",
-            "sprite": 0,
-            "price": 0,
+            "sprite": 9,
+            "price": 280,
             "stackable": false,
             "special": false,
-            "equip": null,
-            "colour": null,
+            "equip": [
+                "feet",
+                "legs",
+                "replace-legs"
+            ],
+            "colour": "rgb(153, 0, 76)",
             "untradeable": true,
-            "members": true
+            "members": false
         },
         {
             "id": 1299,
@@ -182,6 +204,164 @@
             "colour": "rgb(255, 80, 80)",
             "untradeable": false,
             "members": true
+        },
+        {
+            "id": 1306,
+            "name": "Ironman helm",
+            "description": "For just a rather very independent scaper.",
+            "command": "",
+            "sprite": 6,
+            "price": 154,
+            "stackable": false,
+            "special": false,
+            "equip": [
+                "head",
+                "replace-head"
+            ],
+            "colour": "rgb(170, 187, 172)",
+            "untradeable": true,
+            "members": false
+        },
+        {
+            "id": 1307,
+            "name": "Ironman platebody",
+            "description": "Take it off and what are you?",
+            "command": "",
+            "sprite": 8,
+            "price": 560,
+            "stackable": false,
+            "special": false,
+            "equip": [
+                "hands",
+                "body",
+                "replace-body"
+            ],
+            "colour": "rgb(170, 187, 172)",
+            "untradeable": true,
+            "members": false
+        },
+        {
+            "id": 1308,
+            "name": "Ironman platelegs",
+            "description": "Take it off and what are you?",
+            "command": "",
+            "sprite": 9,
+            "price": 280,
+            "stackable": false,
+            "special": false,
+            "equip": [
+                "feet",
+                "legs",
+                "replace-legs"
+            ],
+            "colour": "rgb(170, 187, 172)",
+            "untradeable": true,
+            "members": false
+        },
+        {
+            "id": 1309,
+            "name": "Ironman plate top",
+            "description": "Take it off and what are you?",
+            "command": "",
+            "sprite": 130,
+            "price": 560,
+            "stackable": false,
+            "special": false,
+            "equip": [
+                "hands",
+                "body",
+                "replace-body"
+            ],
+            "colour": "rgb(170, 187, 172)",
+            "untradeable": true,
+            "members": false
+        },
+        {
+            "id": 1310,
+            "name": "Ultimate ironman plate top",
+            "description": "Take it off and what are you?",
+            "command": "",
+            "sprite": 130,
+            "price": 560,
+            "stackable": false,
+            "special": false,
+            "equip": [
+                "hands",
+                "body",
+                "replace-body"
+            ],
+            "colour": "rgb(255, 222, 173)",
+            "untradeable": true,
+            "members": false
+        },
+        {
+            "id": 1311,
+            "name": "Hardcore ironman plate top",
+            "description": "Take it off and what are you?",
+            "command": "",
+            "sprite": 130,
+            "price": 560,
+            "stackable": false,
+            "special": false,
+            "equip": [
+                "hands",
+                "body",
+                "replace-body"
+            ],
+            "colour": "rgb(153, 0, 76)",
+            "untradeable": true,
+            "members": false
+        },
+        {
+            "id": 1312,
+            "name": "Ironman plated skirt",
+            "description": "Take it off and what are you?",
+            "command": "",
+            "sprite": 88,
+            "price": 280,
+            "stackable": false,
+            "special": false,
+            "equip": [
+                "feet",
+                "legs"
+            ],
+            "colour": "rgb(111, 122, 112)",
+            "untradeable": true,
+            "members": false
+        },
+        {
+            "id": 1313,
+            "name": "Ultimate ironman plated skirt",
+            "description": "Take it off and what are you?",
+            "command": "",
+            "sprite": 88,
+            "price": 280,
+            "stackable": false,
+            "special": false,
+            "equip": [
+                "feet",
+                "legs"
+            ],
+            "colour": "rgb(166, 144, 112)",
+            "untradeable": true,
+            "members": false
+        },
+        {
+            "id": 1314,
+            "name": "Hardcore ironman plated skirt",
+            "description": "Take it off and what are you?",
+            "command": "",
+            "sprite": 88,
+            "price": 280,
+            "stackable": false,
+            "special": false,
+            "equip": [
+                "feet",
+                "legs"
+            ],
+            "colour": "rgb(100, 0, 49)",
+            "untradeable": true,
+            "members": false
         }
     ]
 }

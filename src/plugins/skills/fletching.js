@@ -22,6 +22,15 @@ const ARROW_SHAFTS_ID = 280;
 const HEADLESS_ARROWS_ID = 637;
 
 const BATCH = 10;
+// Ported from Open-RSC Core-Framework authentic/skills/fletching/Fletching.java (AGPL-3.0): oyster pearl bolt tips
+const CHISEL_ID = 167;
+const OYSTER_PEARLS_ID = 792;
+const QUEST_OYSTER_PEARLS_ID = 779; // Sea Slug's pearls give 25 tips
+const OYSTER_PEARL_BOLT_TIPS_ID = 790;
+const CROSSBOW_BOLTS_ID = 190;
+const OYSTER_PEARL_BOLTS_ID = 786;
+const PEARL_LEVEL = 34;
+const PEARL_TIPS = { [OYSTER_PEARLS_ID]: 2, [QUEST_OYSTER_PEARLS_ID]: 25 };
 const SHAFTS = { level: 1, experience: 20 };
 const HEADLESS_LEVEL = 1;
 const HEADLESS_EXPERIENCE = 4;
@@ -197,6 +206,52 @@ async function combineStacks(player, a, b, product, experience, message) {
     player.message(message);
 }
 
+// Fletching.java doPearlCut/batchPearlCutting: fletching 34, one pearl at a time, 100 experience (quarter points)
+async function cutPearls(player, pearlID) {
+    if (!player.world.members) {
+        return;
+    }
+
+    if (player.skills.fletching.current < PEARL_LEVEL) {
+        player.message(`You need a fletching skill of ${PEARL_LEVEL} to do that`);
+        return;
+    }
+
+    if (player.isTired()) {
+        player.message('You are too tired to fletch');
+        return;
+    }
+
+    player.inventory.remove(pearlID);
+    player.message('you chisel the pearls into small bolt tips');
+    player.inventory.add(OYSTER_PEARL_BOLT_TIPS_ID, PEARL_TIPS[pearlID]);
+    player.addExperience('fletching', 100);
+}
+
+// Fletching.java doBoltMake/batchBolts: up to 10 at a time, 25 experience each, no message
+async function tipBolts(player) {
+    const amount = stackAmount(player, OYSTER_PEARL_BOLT_TIPS_ID, CROSSBOW_BOLTS_ID);
+
+    if (!player.world.members || amount < 1) {
+        return;
+    }
+
+    if (player.skills.fletching.current < PEARL_LEVEL) {
+        player.message(`You need a fletching skill of ${PEARL_LEVEL} to do that`);
+        return;
+    }
+
+    if (player.isTired()) {
+        player.message('You are too tired to fletch');
+        return;
+    }
+
+    player.inventory.remove(OYSTER_PEARL_BOLT_TIPS_ID, amount);
+    player.inventory.remove(CROSSBOW_BOLTS_ID, amount);
+    player.inventory.add(OYSTER_PEARL_BOLTS_ID, amount);
+    player.addExperience('fletching', 25 * amount);
+}
+
 async function onUseWithInventory(player, item, target) {
     const { world } = player;
 
@@ -258,6 +313,19 @@ async function onUseWithInventory(player, item, target) {
             'You attach the arrow heads to some of your headless arrows'
         );
 
+        return true;
+    }
+
+    // chisel on oyster pearls -> bolt tips; bolt tips on crossbow bolts -> oyster pearl bolts
+    const pearlID = other(item, target, CHISEL_ID);
+
+    if (pearlID !== -1 && PEARL_TIPS[pearlID]) {
+        await cutPearls(player, pearlID);
+        return true;
+    }
+
+    if (other(item, target, OYSTER_PEARL_BOLT_TIPS_ID) === CROSSBOW_BOLTS_ID) {
+        await tipBolts(player);
         return true;
     }
 

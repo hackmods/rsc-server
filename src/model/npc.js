@@ -13,6 +13,20 @@ const { inWilderness } = require('../wilderness');
 const HERB_IDS = new Set(dropDefinitions.herb.map((entry) => entry.id));
 const PARALYZE_MONSTER_ID = 12;
 
+// Open-RSC NpcBehavior: the tiles (each axis) an aggressive NPC notices a
+// player from: aggro_range (1 in every shipped .conf), the aggressive bandit
+// 2, the black knight 10, the undead one 3
+const AGGRO_RADIUS = 1;
+const AGGRO_RADIUS_BY_ID = new Map([
+    [232, 2],
+    [66, 10],
+    [542, 3]
+]);
+
+// NpcBehavior.canAggro: the player must stand within the NPC's wander box
+// grown by this many tiles
+const AGGRO_BOX_PAD = 4;
+
 const RESTORE_TICKS = 100;
 
 class NPC extends Character {
@@ -283,10 +297,15 @@ class NPC extends Character {
     }
 
     broadcastChat(message) {
+        // ARSC: an npc that speaks without being engaged (a quest cutscene: the underground Narnode, Morgan Le Faye,
+        // a spawned guard) used to throw here and cut the dialogue short; it speaks to no one in particular instead
+
         for (const player of this.knownPlayers) {
             player.localEntities.characterUpdates.npcChat.push({
                 npcIndex: this.index,
-                playerIndex: this.interlocutor.index,
+                // an NPC that speaks unengaged (a guard or trainer shouting at whoever is near) addresses each viewer;
+                // reading this.interlocutor.index threw, and the plugin that made it speak stopped half way
+                playerIndex: (this.interlocutor || player).index,
                 message
             });
         }
@@ -373,8 +392,14 @@ class NPC extends Character {
             this.fight();
         }
 
-        if (!this.stationary && !this.locked && this.knownPlayers.size) {
-            this.updateKnownPlayers();
+        // Open-RSC NpcBehavior.handleRoam: a stationary NPC (a one-tile wander
+        // box) still aggroes, it only never takes a random step. It never
+        // moves, so the players' own view updates keep its knownPlayers (the
+        // per-tick refresh stays for the ones that walk, as before)
+        if (!this.locked && this.knownPlayers.size) {
+            if (!this.stationary) {
+                this.updateKnownPlayers();
+            }
 
             if (!this.chasing) {
                 let foundPlayer = false;
@@ -382,9 +407,9 @@ class NPC extends Character {
                 if (this.aggressive && this.retreatTicks <= 0) {
                     for (const player of this.knownPlayers) {
                         if (
+                            player.loggedIn !== false &&
                             !player.opponent &&
-                            this.isAggressive(player) &&
-                            player.withinRange(this, 8) &&
+                            this.canAggro(player) &&
                             player.withinLineOfSight(this)
                         ) {
                             foundPlayer = true;
@@ -394,7 +419,11 @@ class NPC extends Character {
                     }
                 }
 
-                if (!foundPlayer && this.retreatTicks === 0) {
+                if (
+                    !foundPlayer &&
+                    !this.stationary &&
+                    this.retreatTicks === 0
+                ) {
                     this.walkNextRandomStep();
                 }
             }
@@ -405,6 +434,30 @@ class NPC extends Character {
         }
 
         this.isWalking = false;
+    }
+
+    // NpcBehavior.handleRoam + canAggro: in aggro range (Chebyshev, like
+    // Entity.withinRange), inside the wander box + 4, and the level rule
+    canAggro(player) {
+        const radius = AGGRO_RADIUS_BY_ID.get(this.id) || AGGRO_RADIUS;
+
+        if (
+            Math.abs(player.x - this.x) > radius ||
+            Math.abs(player.y - this.y) > radius
+        ) {
+            return false;
+        }
+
+        if (
+            player.x < this.minX - AGGRO_BOX_PAD ||
+            player.x > this.maxX + AGGRO_BOX_PAD ||
+            player.y < this.minY - AGGRO_BOX_PAD ||
+            player.y > this.maxY + AGGRO_BOX_PAD
+        ) {
+            return false;
+        }
+
+        return this.isAggressive(player);
     }
 
     isAggressive(player) {

@@ -11,6 +11,72 @@
             "source": "Open-RSC server/plugins/com/openrsc/server/plugins/authentic/skills/cooking/ObjectCooking.java, range-only list at line 319 (cake 330); live evidence: a cake on a range gave a diamond amulet"
         },
         {
+            "id": "cooking-ugthanki-meat",
+            "file": "skills/cooking",
+            "path": "uncooked.1101",
+            "op": "set",
+            "value": { "level": 1, "experience": 160, "cooked": 1103, "burnt": 1103, "roll": [256, 256], "perfect": 1, "range": false },
+            "note": "rsc-data has no row for raw Ugthanki meat (1101), so it could not be cooked and the Ugthanki kebab chain had no start. The Java burnt id is the cooked id: it never burns",
+            "source": "Open-RSC server/conf/server/defs/extras/ItemCookingDef.xml, entry 1101 (exp 160, cookedId 1103, burnedId 1103, requiredLvl 1), cooked by authentic/skills/cooking/ObjectCooking.java"
+        },
+        {
+            "id": "cooking-combine-oomlie-parcel-kebab",
+            "file": "skills/cooking",
+            "path": "combinations",
+            "op": "push",
+            "values": [
+                { "level": 50, "item": 1268, "with": 1279, "result": 1280, "knife": false, "experience": 40, "message": ["You carefully construct a small parcel out of the palm leaf.", "You place the delicate Oomlie meat inside.", "The palm leaf should protect the meat from being burnt."] },
+                { "level": 58, "item": 1109, "with": 1105, "result": 1102, "knife": true, "experience": 480, "dodgy": 923, "message": "You make a delicious ugthanki kebab" }
+            ],
+            "note": "rsc-data has no Oomlie meat parcel (raw oomlie meat 1268 + palm leaf 1279 -> 1280) or tasty Ugthanki kebab (mix 1109 + pitta bread 1105 -> 1102; 1 time in 32 a dodgy Ugthanki kebab 923 instead, no experience) combination. experience is in quarter points",
+            "source": "Open-RSC server/plugins/com/openrsc/server/plugins/authentic/skills/cooking/InvCooking.java, CombineCooking OOMLIE_MEAT_PARCEL and TASTY_UGTHANKI_KEBAB, handleCombineCooking (the knife list and the 1/32 kebab failure)"
+        },
+        {
+            "id": "cooking-combine-ugthanki-mix-no-knife",
+            "file": "skills/cooking",
+            "path": "combinations.4.knife",
+            "op": "set",
+            "value": false,
+            "note": "rsc-data asks for a knife to cut Ugthanki meat into the onion and tomato mixture (1109); the Java asks for one only for the tomato, onion and onion-and-tomato mixtures and the tasty kebab",
+            "source": "Open-RSC server/plugins/com/openrsc/server/plugins/authentic/skills/cooking/InvCooking.java handleCombineCooking, the KNIFE check (results TOMATO_MIXTURE, ONION_MIXTURE, ONION_AND_TOMATO_MIXTURE, TASTY_UGTHANKI_KEBAB)"
+        },
+        {
+            "id": "cooking-combine-stew-no-knife-5",
+            "file": "skills/cooking",
+            "path": "combinations.5.knife",
+            "op": "set",
+            "value": false,
+            "note": "cooked meat into a bowl of water (344) needs no knife",
+            "source": "Open-RSC server/plugins/com/openrsc/server/plugins/authentic/skills/cooking/InvCooking.java handleCombineCooking, the KNIFE check (INCOMPLETE_STEW_MEAT is not in it)"
+        },
+        {
+            "id": "cooking-combine-stew-no-knife-6",
+            "file": "skills/cooking",
+            "path": "combinations.6.knife",
+            "op": "set",
+            "value": false,
+            "note": "a potato into a bowl of water (343) needs no knife",
+            "source": "Open-RSC server/plugins/com/openrsc/server/plugins/authentic/skills/cooking/InvCooking.java handleCombineCooking, the KNIFE check (INCOMPLETE_STEW_POTATO is not in it)"
+        },
+        {
+            "id": "cooking-combine-stew-no-knife-7",
+            "file": "skills/cooking",
+            "path": "combinations.7.knife",
+            "op": "set",
+            "value": false,
+            "note": "a potato into the meat stew (345) needs no knife",
+            "source": "Open-RSC server/plugins/com/openrsc/server/plugins/authentic/skills/cooking/InvCooking.java handleCombineCooking, the KNIFE check (UNCOOKED_STEW is not in it)"
+        },
+        {
+            "id": "cooking-combine-stew-no-knife-8",
+            "file": "skills/cooking",
+            "path": "combinations.8.knife",
+            "op": "set",
+            "value": false,
+            "note": "cooked meat into the potato stew (345) needs no knife",
+            "source": "Open-RSC server/plugins/com/openrsc/server/plugins/authentic/skills/cooking/InvCooking.java handleCombineCooking, the KNIFE check (UNCOOKED_STEW is not in it)"
+        },
+        {
             "id": "fishing-big-net-seaweed-drop",
             "file": "skills/fishing",
             "path": "spots.261.net.fish.662",
@@ -859,6 +925,42 @@
             "value": "combative",
             "note": "rsc-data makes Battle mage (saradomin) aggressive; Open-RSC has it attackable but not aggressive (it only strikes with god spells: MageArena.java events, and SpellHandler sets no chase in the arena)",
             "source": "Open-RSC server/conf/server/defs/NpcDefs.json, npc 791 (aggressive 0, attackable 1)"
+        },
+        {
+            "id": "respawn-plague-sheep-430",
+            "file": "npc-respawn",
+            "path": "430",
+            "op": "set",
+            "value": 43000,
+            "note": "rsc-data gives the 1st plague sheep (430) no respawn, so after one player killed it Sheep Herder could never be done again on the world",
+            "source": "Open-RSC server/conf/server/defs/NpcDefs.json, id 430 respawnTime 43 (seconds)"
+        },
+        {
+            "id": "respawn-plague-sheep-431",
+            "file": "npc-respawn",
+            "path": "431",
+            "op": "set",
+            "value": 43000,
+            "note": "rsc-data gives the 2nd plague sheep (431) no respawn, so after one player killed it Sheep Herder could never be done again on the world",
+            "source": "Open-RSC server/conf/server/defs/NpcDefs.json, id 431 respawnTime 43 (seconds)"
+        },
+        {
+            "id": "respawn-plague-sheep-432",
+            "file": "npc-respawn",
+            "path": "432",
+            "op": "set",
+            "value": 43000,
+            "note": "rsc-data gives the 3rd plague sheep (432) no respawn, so after one player killed it Sheep Herder could never be done again on the world",
+            "source": "Open-RSC server/conf/server/defs/NpcDefs.json, id 432 respawnTime 43 (seconds)"
+        },
+        {
+            "id": "respawn-plague-sheep-433",
+            "file": "npc-respawn",
+            "path": "433",
+            "op": "set",
+            "value": 43000,
+            "note": "rsc-data gives the 4th plague sheep (433) no respawn, so after one player killed it Sheep Herder could never be done again on the world",
+            "source": "Open-RSC server/conf/server/defs/NpcDefs.json, id 433 respawnTime 43 (seconds)"
         }
     ]
 }

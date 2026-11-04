@@ -6,8 +6,7 @@
 // (1003) and Gertrude's cat (1093) are turned down. Fluffs' kittens (1095) count only with WANT_EXTENDED_CATS_BEHAVIOR,
 // which is off in the authentic config, so they are ignored here.
 //
-// Pickpocketing civilian 732: the Java Thieving.blockOpNpc has no Pickpocket row for him and answers "Nothing
-// interesting happens" (authentic: the option is there, nothing can be stolen). Claimed here with that message.
+// Pickpocketing civilian 732 ("Nothing interesting happens", Thieving.blockOpNpc) is skills/thieving.js's.
 
 const CIVILIAN_ATTACKABLE_ID = 729;
 const CIVILIAN_APRON_ID = 731;
@@ -146,13 +145,4 @@ async function onTalkToNPC(player, npc) {
     return true;
 }
 
-async function onNPCCommand(player, npc) {
-    if (npc.id !== CIVILIAN_PICKPOCKET_ID) {
-        return false;
-    }
-
-    player.message('Nothing interesting happens');
-    return true;
-}
-
-module.exports = { onTalkToNPC, onNPCCommand };
+module.exports = { onTalkToNPC };

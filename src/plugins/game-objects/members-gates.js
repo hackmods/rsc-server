@@ -32,6 +32,7 @@ const GATE_IDS = new Set([
 
 const GNOME_STRONGHOLD_GATE_ID = 626;
 const GNOME_GUARD_ID = 562;
+const FEMI_ID = 563;
 
 // GATE_VARROCK_BIOHAZARD_CLOSED / _OPEN: the east Varrock gate at (93, 521)
 const VARROCK_GATE_ID = 513;
@@ -50,6 +51,39 @@ const NOT_A_MEMBER = 'You need to be a member to use this gate';
 async function strongholdRefuses(player, gameObject) {
     const stage = player.questStages.grandTree;
     const { world } = player;
+
+    // GrandTree.java STRONGHOLD_GATE: before the quest, coming in from the south, Femi (563) first asks for a hand with
+    // her barrel; either answer leaves cache helpedFemi (true or false) and the gate opens from then on. Femi
+    // remembers it at stage 10 (quests/members/grand-tree/stronghold.js)
+    if (!stage && player.y > gameObject.y && !('helpedFemi' in player.cache)) {
+        const femi = player.getNearbyEntitiesByID('npcs', FEMI_ID, 10).find((npc) => !npc.locked);
+
+        if (!femi) {
+            player.message('the little gnome is busy at the moment');
+            return true;
+        }
+
+        await femi.say('hello there');
+        await player.say('hi');
+        await femi.say('could you help me lift this barrel', "it's really heavy");
+
+        const menu = await player.ask(["sorry i'm a bit busy", 'ok then'], true);
+
+        if (menu === 0) {
+            await femi.say("oh, ok, i'll do it myself");
+            player.cache.helpedFemi = false;
+        } else if (menu === 1) {
+            await femi.say('thanks traveller');
+            player.message('you help the gnome lift the barrel');
+            await world.sleepTicks(3);
+            player.message("it's very heavy and quite hard work");
+            await world.sleepTicks(3);
+            await femi.say('thanks again friend');
+            player.cache.helpedFemi = true;
+        }
+
+        return true;
+    }
 
     if (player.y <= gameObject.y && stage === 8) {
         let [guard] = player.getNearbyEntitiesByID('npcs', GNOME_GUARD_ID, 15);
