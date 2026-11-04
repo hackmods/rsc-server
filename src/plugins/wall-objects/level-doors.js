@@ -12,7 +12,7 @@
 //   npc          {id, bounds: [x1, x2, y1, y2], say: [...]} the npc that turns you away (Java world.getNpc in bounds)
 //   custom       name of a handler below for doors whose rule is a dialogue
 // Not ported: the Shantay jail Port Sarim prison branch beyond the teleport, the Underground Pass cage-door sealed
-// state side effects, the Legends Quest Ancient Wooden Doors (1160, quest owned by quests/members/legends-quest.js),
+// state side effects, the Legends Quest Ancient Wooden Doors (1160, a game object: game-objects/ancient-wooden-doors.js),
 // the Tourist Trap cave jail door (wall 180) and thieving pick-lock doors 93-100/162 (skills/thieving.js owns them).
 
 const MASTER_FISHER = 368;
@@ -288,6 +288,16 @@ async function payFine(player, shantay) {
 
     if (choice === 0) {
         await player.say("I'll pay the fine.");
+
+        // ARSC Iron Man (Open-RSC ShantayPassNpcs / DoorAction): no bank to pay from
+        const ironman = require('../../ironman').bankRefusal(player);
+
+        if (ironman) {
+            player.message(ironman);
+            player.disengage();
+            return;
+        }
+
         await shantay.say("Ok then..., you'll need access to your bank.");
         delete player.cache.shantayJail;
         player.disengage();

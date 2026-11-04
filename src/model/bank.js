@@ -14,6 +14,14 @@ class Bank {
     }
 
     open() {
+        // ARSC Iron Man (src/ironman.js, Open-RSC BankHandler / Bankers)
+        const ironman = require('../ironman').bankRefusal(this.player);
+
+        if (ironman) {
+            this.player.message(ironman);
+            return false;
+        }
+
         this.player.lock();
         this.player.interfaceOpen.bank = true;
         this.sendOpen();

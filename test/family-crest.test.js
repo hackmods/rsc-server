@@ -196,13 +196,13 @@ test('perfect gold smelts into a perfect gold bar; goldsmithing gauntlets add 45
     assert.ok(!has(p, 690));
     assert.deepStrictEqual(p.xp, [['smithing', 90]]);
 
-    const gloved = player(-1, { items: [152, 699], equipped: [699], cache: { famcrestGauntlets: 1 } });
+    const gloved = player(-1, { items: [152, 699], equipped: [699], cache: { famcrest_gauntlets: 1 } });
     await smelting.onUseWithGameObject(gloved, furnace, item(152));
     assert.ok(has(gloved, 172));
     assert.deepStrictEqual(gloved.xp, [['smithing', 135]]);
 
     // the worn pair without the matching enchantment does nothing
-    const wrong = player(-1, { items: [152, 699], equipped: [699], cache: { famcrestGauntlets: 0 } });
+    const wrong = player(-1, { items: [152, 699], equipped: [699], cache: { famcrest_gauntlets: 0 } });
     await smelting.onUseWithGameObject(wrong, furnace, item(152));
     assert.deepStrictEqual(wrong.xp, [['smithing', 90]]);
 });
@@ -335,7 +335,7 @@ test('stage 8 -> -1: the crest to Dimintheis gives 1 quest point and steel gaunt
     ]);
     assert.ok(!has(p, 694));
     assert.ok(has(p, 698));
-    assert.strictEqual(p.cache.famcrestGauntlets, 0);
+    assert.strictEqual(p.cache.famcrest_gauntlets, 0);
     assert.strictEqual(p.cache.northLeverA, undefined);
     assert.strictEqual(p.cache.northLeverB, undefined);
     assert.strictEqual(p.cache.southLever, undefined);
@@ -405,23 +405,23 @@ test('each son enchants the steel gauntlets once', async () => {
         [avan, 307, 0, 699, 1],
         [johnathon, 314, 0, 701, 3]
     ]) {
-        const p = player(-1, { items: [698], cache: { famcrestGauntlets: 0 }, answers: [answer] });
+        const p = player(-1, { items: [698], cache: { famcrest_gauntlets: 0 }, answers: [answer] });
         assert.strictEqual(await plugin.onTalkToNPC(p, fakeNpc(npcID)), true);
         assert.ok(has(p, enchanted), `npc ${npcID} gives ${enchanted}`);
         assert.ok(!has(p, 698));
-        assert.strictEqual(p.cache.famcrestGauntlets, cacheValue);
+        assert.strictEqual(p.cache.famcrest_gauntlets, cacheValue);
 
         // already enchanted: no second offer
-        const again = player(-1, { items: [enchanted], cache: { famcrestGauntlets: cacheValue } });
+        const again = player(-1, { items: [enchanted], cache: { famcrest_gauntlets: cacheValue } });
         await plugin.onTalkToNPC(again, fakeNpc(npcID));
         assert.deepStrictEqual(again.asked, []);
     }
 
     const calebNpc = fakeNpc(310);
-    await caleb.onTalkToNPC(player(-1, { cache: { famcrestGauntlets: 1 } }), calebNpc);
+    await caleb.onTalkToNPC(player(-1, { cache: { famcrest_gauntlets: 1 } }), calebNpc);
     assert.ok(calebNpc.said.includes('I hear you have bought the completed crest to my father'));
 
-    const declined = player(-1, { items: [698], cache: { famcrestGauntlets: 0 }, answers: [1] });
+    const declined = player(-1, { items: [698], cache: { famcrest_gauntlets: 0 }, answers: [1] });
     const avanNpc = fakeNpc(307);
     await avan.onTalkToNPC(declined, avanNpc);
     assert.ok(has(declined, 698));
@@ -429,31 +429,31 @@ test('each son enchants the steel gauntlets once', async () => {
 });
 
 test('gauntlet bonuses need the worn pair and the matching famcrest_gauntlets', () => {
-    const chaos = player(-1, { items: [701], equipped: [701], cache: { famcrestGauntlets: 3 } });
+    const chaos = player(-1, { items: [701], equipped: [701], cache: { famcrest_gauntlets: 3 } });
     assert.strictEqual(shared.boltBonus(chaos, 'Fire bolt'), 1);
     assert.strictEqual(shared.boltBonus(chaos, 'Wind blast'), 0);
-    assert.strictEqual(shared.boltBonus(player(-1, { items: [701], cache: { famcrestGauntlets: 3 } }), 'Fire bolt'), 0);
+    assert.strictEqual(shared.boltBonus(player(-1, { items: [701], cache: { famcrest_gauntlets: 3 } }), 'Fire bolt'), 0);
     assert.strictEqual(shared.boltBonus(player(-1, { items: [701], equipped: [701] }), 'Fire bolt'), 0);
 
-    const cook = player(-1, { items: [700], equipped: [700], cache: { famcrestGauntlets: 2 } });
+    const cook = player(-1, { items: [700], equipped: [700], cache: { famcrest_gauntlets: 2 } });
     assert.strictEqual(shared.cookingGauntlets(cook), true);
     assert.strictEqual(shared.cookingGauntlets(player(-1, { items: [700], equipped: [700] })), false);
 
-    const smith = player(-1, { items: [699], equipped: [699], cache: { famcrestGauntlets: 1 } });
+    const smith = player(-1, { items: [699], equipped: [699], cache: { famcrest_gauntlets: 1 } });
     assert.strictEqual(shared.goldsmithingBonus(smith, 172), 45);
     assert.strictEqual(shared.goldsmithingBonus(smith, 384), 0);
 });
 
 test('after the quest the gauntlets come back on death unless banked or carried', () => {
-    const lost = player(-1, { cache: { famcrestGauntlets: 2 } });
+    const lost = player(-1, { cache: { famcrest_gauntlets: 2 } });
     assert.strictEqual(shared.returnGauntletsOnDeath(lost), true);
     assert.ok(has(lost, 700));
 
-    const kept = player(-1, { items: [700], cache: { famcrestGauntlets: 2 } });
+    const kept = player(-1, { items: [700], cache: { famcrest_gauntlets: 2 } });
     assert.strictEqual(shared.returnGauntletsOnDeath(kept), false);
     assert.strictEqual(kept.inventory.count(700), 1);
 
-    const banked = player(-1, { banked: [699], cache: { famcrestGauntlets: 1 } });
+    const banked = player(-1, { banked: [699], cache: { famcrest_gauntlets: 1 } });
     assert.strictEqual(shared.returnGauntletsOnDeath(banked), false);
 
     const unfinished = player(8, { cache: {} });

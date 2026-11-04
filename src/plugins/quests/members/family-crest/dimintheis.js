@@ -154,7 +154,7 @@ async function handIn(player, npc) {
     );
     player.message('Dimintheis gives you a pair of gauntlets');
     player.inventory.add(ITEMS.steelGauntlets);
-    player.cache.famcrestGauntlets = GAUNTLETS.STEEL;
+    player.cache.famcrest_gauntlets = GAUNTLETS.STEEL;
     await npc.say(
         'These gautlets can be granted extra powers', // sic
         'Take them to one of my boys, they can each do something to them',

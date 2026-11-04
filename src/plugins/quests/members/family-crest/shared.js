@@ -14,7 +14,7 @@
 //   6 Boot told where the perfect gold is         7 has fragment 696, find Johnathon (Jolly Boar inn)
 //   8 Johnathon cured, kill Chronozon for fragment 697     -1 done (1 quest point, steel gauntlets)
 //
-// player.cache.famcrestGauntlets is Open-RSC's famcrest_gauntlets: 0 steel, 1 goldsmithing, 2 cooking, 3 chaos.
+// player.cache.famcrest_gauntlets (Open-RSC key): 0 steel, 1 goldsmithing, 2 cooking, 3 chaos.
 
 const ITEMS = {
     perfectGold: 690,
@@ -67,7 +67,7 @@ function stage(player) {
 
 // FamilyCrest.getGauntletEnchantment: steel when the key is missing
 function getGauntletEnchantment(player) {
-    const value = player.cache && player.cache.famcrestGauntlets;
+    const value = player.cache && player.cache.famcrest_gauntlets;
     return typeof value === 'number' ? value : GAUNTLETS.STEEL;
 }
 
@@ -147,7 +147,7 @@ function enchantGauntlets(player, enchantment) {
 
     player.inventory.remove(ITEMS.steelGauntlets);
     player.inventory.add(GAUNTLET_ITEMS[enchantment]);
-    player.cache.famcrestGauntlets = enchantment;
+    player.cache.famcrest_gauntlets = enchantment;
 
     return true;
 }

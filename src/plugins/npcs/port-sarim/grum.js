@@ -1,5 +1,7 @@
 // https://classic.runescape.wiki/w/Transcript:Grum
 
+const { beggarWaits } = require('../../quests/members/merlins-crystal/excalibur');
+
 const DOORFRAME_ID = 11;
 const DOOR_ID = 85;
 const GRUM_ID = 157;
@@ -35,7 +37,9 @@ async function onTalkToNPC(player, npc) {
 }
 
 async function onWallObjectCommandOne(player, wallObject) {
-    if (wallObject.id !== DOOR_ID) {
+    // Merlin's Crystal: with the Lady of the Lake's test on, the beggar waits at this door
+    // (quests/members/merlins-crystal/excalibur.js)
+    if (wallObject.id !== DOOR_ID || beggarWaits(player, wallObject)) {
         return false;
     }
 

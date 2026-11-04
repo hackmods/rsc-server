@@ -559,6 +559,13 @@ class Character extends Entity {
         this.x += deltaX;
         this.y += deltaY;
 
+        // ARSC: keep the quadtree filing current (model/entity-list.js relocate)
+        const list = this.world && this.world[this.username !== undefined ? 'players' : 'npcs'];
+
+        if (list && typeof list.relocate === 'function') {
+            list.relocate(this);
+        }
+
         this.direction = getDirectionNumber(oldX - this.x, oldY - this.y);
         this.broadcastMove();
     }

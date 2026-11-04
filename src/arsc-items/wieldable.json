@@ -1,0 +1,140 @@
+{
+    "about": "Wearable stats and worn look (config animation index + 1) for ARSC items, merged into rsc-data's wieldable table by index.js",
+    "wieldable": {
+        "1293": {
+            "female": false,
+            "animation": 20,
+            "armour": 6,
+            "weaponAim": 0,
+            "weaponPower": 0,
+            "magic": 0,
+            "prayer": 0
+        },
+        "1294": {
+            "female": false,
+            "animation": 35,
+            "armour": 20,
+            "weaponAim": 0,
+            "weaponPower": 0,
+            "magic": 0,
+            "prayer": 0
+        },
+        "1295": {
+            "female": false,
+            "animation": 44,
+            "armour": 10,
+            "weaponAim": 0,
+            "weaponPower": 0,
+            "magic": 0,
+            "prayer": 0
+        },
+        "1296": {
+            "female": false,
+            "animation": 19,
+            "armour": 6,
+            "weaponAim": 0,
+            "weaponPower": 0,
+            "magic": 0,
+            "prayer": 0
+        },
+        "1297": {
+            "female": false,
+            "animation": 33,
+            "armour": 20,
+            "weaponAim": 0,
+            "weaponPower": 0,
+            "magic": 0,
+            "prayer": 0
+        },
+        "1298": {
+            "female": false,
+            "animation": 43,
+            "armour": 10,
+            "weaponAim": 0,
+            "weaponPower": 0,
+            "magic": 0,
+            "prayer": 0
+        },
+        "1306": {
+            "female": false,
+            "animation": 15,
+            "armour": 6,
+            "weaponAim": 0,
+            "weaponPower": 0,
+            "magic": 0,
+            "prayer": 0
+        },
+        "1307": {
+            "female": false,
+            "animation": 30,
+            "armour": 20,
+            "weaponAim": 0,
+            "weaponPower": 0,
+            "magic": 0,
+            "prayer": 0
+        },
+        "1308": {
+            "female": false,
+            "animation": 39,
+            "armour": 10,
+            "weaponAim": 0,
+            "weaponPower": 0,
+            "magic": 0,
+            "prayer": 0
+        },
+        "1309": {
+            "female": true,
+            "animation": 57,
+            "armour": 20,
+            "weaponAim": 0,
+            "weaponPower": 0,
+            "magic": 0,
+            "prayer": 0
+        },
+        "1310": {
+            "female": true,
+            "animation": 56,
+            "armour": 20,
+            "weaponAim": 0,
+            "weaponPower": 0,
+            "magic": 0,
+            "prayer": 0
+        },
+        "1311": {
+            "female": true,
+            "animation": 61,
+            "armour": 20,
+            "weaponAim": 0,
+            "weaponPower": 0,
+            "magic": 0,
+            "prayer": 0
+        },
+        "1312": {
+            "female": false,
+            "animation": 94,
+            "armour": 10,
+            "weaponAim": 0,
+            "weaponPower": 0,
+            "magic": 0,
+            "prayer": 0
+        },
+        "1313": {
+            "female": false,
+            "animation": 87,
+            "armour": 10,
+            "weaponAim": 0,
+            "weaponPower": 0,
+            "magic": 0,
+            "prayer": 0
+        },
+        "1314": {
+            "female": false,
+            "animation": 159,
+            "armour": 10,
+            "weaponAim": 0,
+            "weaponPower": 0,
+            "magic": 0,
+            "prayer": 0
+        }
+    }
+}

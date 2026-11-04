@@ -7,6 +7,7 @@ const Item = require('./item');
 const LocalEntities = require('./local-entities');
 const Trade = require('./trade');
 const log = require('bole')('player');
+const items = require('@2003scape/rsc-data/config/items');
 const prayers = require('@2003scape/rsc-data/config/prayers');
 const quests = require('@2003scape/rsc-data/quests');
 const regions = require('@2003scape/rsc-data/regions');
@@ -16,15 +17,24 @@ const {
     rollPlayerNPCDamage,
     rollPlayerPlayerDamage,
     rollPlayerNPCRangedDamage,
-    rollPlayerPlayerRangedDamage
+    rollPlayerPlayerRangedDamage,
+    protectedFromMissiles
 } = require('../combat');
 
 const { weapons: rangedWeapons } = require('@2003scape/rsc-data/ranged');
+const { THROWING_IDS, throwingRadius } = require('../ranged-data');
+
+// Open-RSC RangeEvent/ThrowingEvent: a shot every 3 ticks
+const RANGED_DELAY_TICKS = 3;
 const poisonRules = require('../poison');
+const kittenCare = require('../plugins/minigames/kitten-care');
 const wilderness = require('../wilderness');
 
 // dropped for the killer when a player dies to a player
 const BONES_ID = 20;
+
+// ARSC Kitten Care (Open-RSC Player.timeIncrementActivity): 5 activity points per 30 s logged in
+const KITTEN_ACTIVITY_TICKS = 47;
 
 // properties to save in the database
 const SAVE_PROPERTIES = [
@@ -50,7 +60,9 @@ const SAVE_PROPERTIES = [
     'cache',
     'inventory',
     'bank',
-    'muteEndDate'
+    'muteEndDate',
+    'ironMan', // ARSC Iron Man mode (src/ironman.js)
+    'hcIronmanDeath'
 ];
 
 // amounts fatigue goes down by with sleeping bags or beds
@@ -113,6 +125,10 @@ class Player extends Character {
 
         // ticks remaining until unskulled
         this.skulled = Math.max(0, Number(playerData.skulled) || 0);
+
+        // ARSC Iron Man mode, 0-3 (src/ironman.js), and 1 once a Hardcore Ironman has died
+        this.ironMan = Number(playerData.ironMan) || 0;
+        this.hcIronmanDeath = Number(playerData.hcIronmanDeath) || 0;
 
         this.friends = playerData.friends;
         this.ignores = playerData.ignores;
@@ -1027,10 +1043,15 @@ class Player extends Character {
 
         // Inventory.dropOnDeath: 3 kept (none when skulled), +1 with Protect
         // Item, stackables always lost
+        // ARSC Iron Man (src/ironman.js, Open-RSC Inventory.dropOnDeath): an
+        // Ultimate Ironman keeps no three items (and cannot pray Protect Item)
+        const ironman = require('../ironman');
+        const ultimate = ironman.isUltimate(this);
+
         const kept = new Set(
             wilderness.keptOnDeath(this.inventory.items, {
-                skulled,
-                protectItem: !!this.prayers[8]
+                skulled: skulled || ultimate,
+                protectItem: !!this.prayers[8] && !ultimate
             })
         );
         const itemsKept = [];
@@ -1041,12 +1062,22 @@ class Player extends Character {
                 continue;
             }
 
-            // a player killer owns the drop (the victim keeps an untradeable)
+            // a player killer owns the drop (the victim keeps an untradeable);
+            // an Iron Man killer does not loot players, so the victim keeps it
             const owner =
-                killer && !item.definition.untradeable ? killer : this;
+                killer && !item.definition.untradeable && !ironman.isIronMan(killer)
+                    ? killer
+                    : this;
 
-            world.addPlayerDrop(owner, item, this.x, this.y);
+            const dropped = world.addPlayerDrop(owner, item, this.x, this.y);
+
+            if (dropped && killer) {
+                dropped.playerKill = true;
+            }
         }
+
+        // a Hardcore Ironman's death downgrades them (Player.killedBy)
+        ironman.onDeath(this);
 
         this.inventory.clear(); // ARSC: the equipment slots too
 
@@ -1427,6 +1458,10 @@ class Player extends Character {
         this.world.setTickTimeout(() => {
             this.x = x;
             this.y = y;
+            // ARSC: re-file in the quadtree (model/entity-list.js relocate)
+            if (world.players && typeof world.players.relocate === 'function') {
+                world.players.relocate(this);
+            }
 
             this.sendWorldInfo();
             this.localEntities.updateNearby('npcs');
@@ -1649,7 +1684,12 @@ class Player extends Character {
         }
 
         const { world } = this;
-        const { range } = rangedWeapons[rangedWeapon.id];
+        const thrown = THROWING_IDS.has(rangedWeapon.id);
+
+        // ThrowingEvent.canReach: darts 4 tiles, knives and spears 3
+        const range = thrown
+            ? throwingRadius(rangedWeapon.id)
+            : rangedWeapons[rangedWeapon.id].range;
 
         if (!this.withinRange(character, range * 2, true)) {
             await world.sleepTicks(1);
@@ -1672,11 +1712,29 @@ class Player extends Character {
             return false;
         }
 
+        // Open-RSC RangeEvent.java:111-118, ThrowingEvent.java:112-118: no
+        // shot (and no ammunition spent) at a player praying Protect from
+        // Missiles; the event keeps trying at its pace until the shooter
+        // walks away or the prayer drops
+        if (protectedFromMissiles(character)) {
+            this.message('Player has a protection from missiles prayer active!');
+
+            this.rangedTimeout = world.setTickTimeout(() => {
+                this.shootRanged(character);
+            }, RANGED_DELAY_TICKS);
+
+            return false;
+        }
+
         const ammunitionID = this.inventory.getAmmunitionID();
 
         if (ammunitionID === -1) {
             return false;
         }
+
+        // the bow (or the thrown weapon) the formula reads, before the last
+        // thrown copy leaves the hand
+        const bowID = rangedWeapon.id;
 
         this.faceDirection(-1, 1);
 
@@ -1684,12 +1742,19 @@ class Player extends Character {
 
         poisonRules.rangedHit(this, character, ammunitionID);
 
-        if (Math.random() >= 0.2) {
-            const [arrowStack] = world.groundItems
-                .getAtPoint(character.x, character.y)
-                .filter(
-                    ({ id, owner }) => id === ammunitionID && owner === this.id
-                );
+        // Formulae.loseArrow: random(0, 6) != 0, so 6 in 7 land under the
+        // target. Knives and spears are separate ground items, arrows and
+        // darts join their stack (ThrowingEvent.java:187-199)
+        if (Math.floor(Math.random() * 7) !== 0) {
+            const stackable = !!(items[ammunitionID] || {}).stackable;
+            const [arrowStack] = stackable
+                ? world.groundItems
+                      .getAtPoint(character.x, character.y)
+                      .filter(
+                          ({ id, owner }) =>
+                              id === ammunitionID && owner === this.id
+                      )
+                : [];
 
             if (arrowStack) {
                 arrowStack.amount += 1;
@@ -1718,9 +1783,19 @@ class Player extends Character {
                 character.exitShop(true);
             }
 
-            damage = rollPlayerPlayerRangedDamage(this, character);
+            damage = rollPlayerPlayerRangedDamage(
+                this,
+                character,
+                bowID,
+                ammunitionID
+            );
         } else {
-            damage = rollPlayerNPCRangedDamage(this, character);
+            damage = rollPlayerNPCRangedDamage(
+                this,
+                character,
+                bowID,
+                ammunitionID
+            );
         }
 
         character.damage(damage, this, 'ranged');
@@ -1745,7 +1820,7 @@ class Player extends Character {
 
         this.rangedTimeout = world.setTickTimeout(() => {
             this.shootRanged(character);
-        }, 4);
+        }, RANGED_DELAY_TICKS);
 
         return true;
     }
@@ -1754,6 +1829,14 @@ class Player extends Character {
         this.normalizeSkills();
         this.tickPoison();
         this.tickSkull();
+
+        // ARSC Kitten Care: a carried kitten grows with time (plugins/minigames/kitten-care.js)
+        this.kittenActivityTicks = (this.kittenActivityTicks || 0) + 1;
+
+        if (this.kittenActivityTicks >= KITTEN_ACTIVITY_TICKS) {
+            this.kittenActivityTicks = 0;
+            kittenCare.addActivity(this, 5);
+        }
 
         if (this.interfaceOpen.sleep) {
             this.refreshDisplayFatigue();
@@ -1865,6 +1948,9 @@ class Player extends Character {
         }
 
         super.walkTo(deltaX, deltaY);
+
+        // ARSC Kitten Care (Open-RSC Player.stepIncrementActivity): 2 activity points per step
+        kittenCare.addActivity(this, 2);
 
         this.localEntities.updateNearby('npcs');
 
