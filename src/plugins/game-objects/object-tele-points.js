@@ -5,7 +5,7 @@
 // authentic/misc/MagicalPool.java (1155, 1166) and the quest passages of authentic/quests/members/DwarfCannon.java (982,
 // 983), undergroundpass/obstacles/UndergroundPassObstaclesMap1.java (812, 733) and UndergroundPassPuzzle.java (801),
 // legendsquest/obstacles/LegendsQuestGameObjects.java (1158, 1159), watchtower/WatchTowerObstacles.java (the Skavid caves
-// 949-950/970-972/975, 998, 1007/1008, 1024, 969 and the cave exit walls 187-192) and Waterfall_Quest.java (raft 464)
+// 949-950/970-972/975, 998, 1007/1008, 1024, 969, the island ladder 997 and the cave exit walls 187-192) and Waterfall_Quest.java (raft 464)
 // (AGPL-3.0)
 //
 // One table of objects (and wall objects) whose action only moves the player to a fixed tile. Row fields:
@@ -566,6 +566,8 @@ const TELE_POINTS = [
     { id: 1008, x: 654, y: 3580, command: 'Search', to: [638, 776], custom: searchDarkPlaceRock },
     { id: 998, x: 668, y: 825, command: 'enter', to: [605, 803], custom: enterTunnelCave },
     { id: 1024, x: 648, y: 3604, command: 'enter', to: [662, 788] },
+    // WatchTowerObstacles.java ISLAND_LADDER (997): down from the island to the tunnel side (no plane shift)
+    { id: 997, x: 604, y: 803, command: 'Climb-down', to: [669, 826], before: ['You climb down the ladder'] },
     { id: 969, x: 651, y: 3592, command: 'enter', to: [609, 742], custom: enterSkavidHole },
     { id: 187, x: 626, y: 3591, command: 'Leave', to: [624, 807], wall: true },
     { id: 188, x: 649, y: 3554, command: 'Leave', to: [648, 769], wall: true },
