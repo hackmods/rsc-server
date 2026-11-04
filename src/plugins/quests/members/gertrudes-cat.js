@@ -560,9 +560,11 @@ async function onGameObjectCommandOne(player, gameObject) {
     const { world } = player;
 
     if (gameObject.id === CRATE_ID || gameObject.id === BARREL_ID) {
-        const name = gameObject.id === CRATE_ID ? 'crate' : 'barrel';
-
-        player.message(`@que@you search the ${name}...`);
+        player.message(
+            gameObject.id === CRATE_ID
+                ? '@que@you search the crate...'
+                : '@que@you search the barrel...'
+        );
         await world.sleepTicks(3);
         player.message('@que@...but find nothing...');
         await world.sleepTicks(3);
