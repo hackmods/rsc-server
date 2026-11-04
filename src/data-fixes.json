@@ -263,6 +263,42 @@
             "value": 610,
             "note": "rsc-data strings the dragonstone amulet (524) into the finished one (522); the Enchant lvl-5 spell (packet-handlers/magic.js, spell 42) turns the Unenchanted Dragonstone Amulet (610) into 522, so stringing gives 610",
             "source": "rsc-data config/items.json: 610 Unenchanted Dragonstone Amulet, 522 Dragonstone Amulet; src/packet-handlers/magic.js spell 42 { from: 610, to: 522 }"
+        },
+        {
+            "id": "respawn-plague-sheep-430",
+            "file": "npc-respawn",
+            "path": "430",
+            "op": "set",
+            "value": 43000,
+            "note": "rsc-data gives the 1st plague sheep (430) no respawn, so after one player killed it Sheep Herder could never be done again on the world",
+            "source": "Open-RSC server/conf/server/defs/NpcDefs.json, id 430 respawnTime 43 (seconds)"
+        },
+        {
+            "id": "respawn-plague-sheep-431",
+            "file": "npc-respawn",
+            "path": "431",
+            "op": "set",
+            "value": 43000,
+            "note": "rsc-data gives the 2nd plague sheep (431) no respawn, so after one player killed it Sheep Herder could never be done again on the world",
+            "source": "Open-RSC server/conf/server/defs/NpcDefs.json, id 431 respawnTime 43 (seconds)"
+        },
+        {
+            "id": "respawn-plague-sheep-432",
+            "file": "npc-respawn",
+            "path": "432",
+            "op": "set",
+            "value": 43000,
+            "note": "rsc-data gives the 3rd plague sheep (432) no respawn, so after one player killed it Sheep Herder could never be done again on the world",
+            "source": "Open-RSC server/conf/server/defs/NpcDefs.json, id 432 respawnTime 43 (seconds)"
+        },
+        {
+            "id": "respawn-plague-sheep-433",
+            "file": "npc-respawn",
+            "path": "433",
+            "op": "set",
+            "value": 43000,
+            "note": "rsc-data gives the 4th plague sheep (433) no respawn, so after one player killed it Sheep Herder could never be done again on the world",
+            "source": "Open-RSC server/conf/server/defs/NpcDefs.json, id 433 respawnTime 43 (seconds)"
         }
     ]
 }
