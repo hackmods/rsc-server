@@ -140,3 +140,20 @@ test('fishing, mining and woodcutting rows only reference existing items', () =>
     }
     fail('rows with unknown items', bad);
 });
+
+test('every spawned NPC comes back after a plugin takes it out of the world', () => {
+    // rsc-data times only the npcs that can die; Open-RSC respawns every npc (data-fixes npc-respawn-openrsc). Live: Clivet
+    // rafted off in a Hazeel Cult run and never returned, so the quest could not be started again until a restart.
+    // ARSC's own npcs (src/arsc-npcs, ids past rsc-data's table) are in neither table and no plugin removes them.
+    const bad = [...spawnedNpcIds].filter((id) => npcs[id] && !(npcRespawn[id] > 0)).map((id) => `${id} ${npcs[id] && npcs[id].name}`);
+    fail('spawned NPCs with no respawn time', bad);
+});
+
+test('data-fixes fill adds missing keys and keeps existing rows', () => {
+    const { fixes } = require('../src/data-fixes');
+    const fill = fixes.find((f) => f.id === 'npc-respawn-openrsc');
+    assert.ok(fill && fill.op === 'fill');
+    assert.strictEqual(npcRespawn[424], 30000, 'Clivet: Open-RSC 30 s');
+    assert.strictEqual(npcRespawn[4], 84000, 'a goblin keeps its rsc-data time');
+    assert.strictEqual(npcRespawn[433], 43000, 'the plague sheep keeps its own fix');
+});

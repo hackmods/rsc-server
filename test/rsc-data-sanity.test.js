@@ -116,7 +116,7 @@ test('rsc-data skill rows are sane once data-fixes.json is applied', () => {
 function rawAt(file, keyPath) {
     const root = path.dirname(require.resolve('@2003scape/rsc-data/package.json'));
     let node = JSON.parse(fs.readFileSync(path.join(root, `${file}.json`), 'utf8'));
-    for (const key of keyPath.split('.')) {
+    for (const key of keyPath ? keyPath.split('.') : []) {
         if (node === undefined || node === null) return undefined;
         node = node[key];
     }
@@ -132,6 +132,7 @@ test('every data-fixes.json entry still differs from raw rsc-data', () => {
         let differs;
         if (fix.op === 'set') differs = !same(raw, fix.value);
         else if (fix.op === 'delete') differs = raw !== undefined;
+        else if (fix.op === 'fill') differs = Object.keys(fix.values).some((key) => raw[key] === undefined);
         else differs = fix.values.some((value) => !raw.some((existing) => same(existing, value)));
         if (!differs) stale.push(fix.id);
     }

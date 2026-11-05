@@ -26,6 +26,23 @@ function clone(value) {
 }
 
 function apply(fix, table) {
+    // fill: add the keys of `values` the table lacks (an empty path is the table itself), never overwriting a row
+    if (fix.op === 'fill') {
+        const target = fix.path ? fix.path.split('.').reduce((at, key) => (at ? at[key] : at), table) : table;
+
+        if (!target) {
+            throw new Error(`data-fixes: ${fix.id}: no ${fix.path} in ${fix.file}`);
+        }
+
+        for (const [key, value] of Object.entries(fix.values)) {
+            if (target[key] === undefined) {
+                target[key] = clone(value);
+            }
+        }
+
+        return;
+    }
+
     const keys = fix.path.split('.');
     const last = keys.pop();
     let parent = table;
