@@ -52,11 +52,13 @@ test('gauntlets of cooking change a lobster outcome at the same roll', async () 
     assert.deepStrictEqual(bare.added, [374]);
 
     const gloved = makePlayer(40, [700]);
+    gloved.cache = { famcrest_gauntlets: 2 }; // Formulae.burnFood also needs famcrest_gauntlets == COOKING
     assert.strictEqual(await use(gloved, RANGE_ID, 372, 0.7), true);
     assert.deepStrictEqual(gloved.added, [373]);
 
     // gauntlets do nothing for other foods
     const trout = makePlayer(20, [700]);
+    trout.cache = { famcrest_gauntlets: 2 };
     await use(trout, RANGE_ID, 358, 0.999);
     assert.notStrictEqual(trout.added[0], 359);
 });

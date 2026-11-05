@@ -1,5 +1,5 @@
 // Ported from Open-RSC Core-Framework authentic/defaults/DoorAction.java (AGPL-3.0): Fishing Guild, Magic Guild,
-// Khazard house, Shantay jail and Zanaris market doors.
+// Khazard house, Khazard arena lobby, Shantay jail and Zanaris market doors.
 // Ported from authentic/npcs/alkharid/ShantayPassNpcs.java (AGPL-3.0): the Shantay Pass Stone Gate.
 // Ported from authentic/npcs/shilo/Yohnus.java (AGPL-3.0): the Shilo blacksmiths door (the FASTER_YOHNUS custom option is skipped).
 // Ported from authentic/quests/members/undergroundpass/obstacles/UndergroundPassObstaclesMap2.java (AGPL-3.0): the
@@ -20,6 +20,7 @@ const HEAD_WIZARD = 513;
 const DOORMAN = 221;
 const GUARD_KHAZARD_BYPRISONER = 373;
 const GUARD_KHAZARD_BRIBABLE = 374;
+const GUARD_KHAZARD_ARENA_ENTRANCE = 385;
 const SHANTAY = 549;
 const SHANTAY_PASS_GUARD = 719;
 const YOHNUS = 622;
@@ -59,6 +60,7 @@ const DOORS = [
         }
     },
     { id: 113, kind: 'wall', custom: 'khazard', worn: [KHAZARD_HELMET, KHAZARD_CHAINMAIL] },
+    { id: 114, kind: 'wall', custom: 'khazardLobby' },
     { id: 67, kind: 'wall', custom: 'doorman', item: [DIAMOND, 1] },
     { id: 176, kind: 'wall', custom: 'shantayJail' },
     { id: 165, kind: 'wall', custom: 'yohnus' },
@@ -186,6 +188,27 @@ async function khazard(player, wallObject, door) {
 
         player.disengage();
     }
+
+    return true;
+}
+
+// ---- Fight Arena: arena lobby (DOOR_KHAZARD_BFIELD_LOBBY, 615,715 and 619,711) -------------------------------
+
+async function khazardLobby(player, wallObject) {
+    const stage = player.questStages.fightArena;
+
+    if ('freed_servil' in player.cache || stage === -1 || stage === 3) {
+        await player.enterDoor(wallObject);
+        return true;
+    }
+
+    await npcSays(
+        player,
+        nearbyNpc(player, GUARD_KHAZARD_ARENA_ENTRANCE, 8),
+        "and where do you think you're going?",
+        'only General Khazard decides who fights in the arena',
+        'so get out of here'
+    );
 
     return true;
 }
@@ -555,7 +578,7 @@ async function stoneGateLook(player) {
 
 // ---- hooks ----------------------------------------------------------------------------------------------------
 
-const CUSTOM = { khazard, doorman, shantayJail, yohnus, railings };
+const CUSTOM = { khazard, khazardLobby, doorman, shantayJail, yohnus, railings };
 
 async function openWall(player, wallObject, click) {
     const door = findDoor('wall', wallObject);

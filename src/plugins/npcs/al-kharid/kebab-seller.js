@@ -1,8 +1,11 @@
 // https://classic.runescape.wiki/w/Transcript:Kebab_Seller
+// Family Crest branch ported from Open-RSC Core-Framework authentic/npcs/alkharid/KebabSeller.java (AGPL-3.0)
 
 const {
+    ASK_FOR_AVAN,
+    canAskForAvan,
     kebabSellerAdamFitzharmon
-} = require('../../quests/members/family-crest');
+} = require('../../quests/members/family-crest/shared');
 
 const KEBAB_ID = 210;
 const KEBAB_SELLER_ID = 90;
@@ -17,10 +20,9 @@ async function onTalkToNPC(player, npc) {
     await npc.say('Would you like to buy a nice kebab?', 'Only 1 gold');
 
     const choices = ["I think I'll give it a miss", 'Yes please'];
-    const familyCrestStage = player.questStages.familyCrest;
 
-    if (familyCrestStage > 2 && familyCrestStage < 5) {
-        choices.push("I'm in search of a man named adam fitzharmon");
+    if (canAskForAvan(player)) {
+        choices.push(ASK_FOR_AVAN);
     }
 
     const choice = await player.ask(choices, true);
@@ -38,7 +40,7 @@ async function onTalkToNPC(player, npc) {
                 await npc.say('Come back when you have some');
             }
             break;
-        case 3: // family crest
+        case 2: // family crest
             await kebabSellerAdamFitzharmon(npc);
             break;
     }

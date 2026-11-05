@@ -1,4 +1,11 @@
 // https://classic.runescape.wiki/w/Transcript:Zeke
+// Family Crest branch ported from Open-RSC Core-Framework authentic/npcs/alkharid/ZekeScimitars.java (AGPL-3.0)
+
+const {
+    ASK_FOR_AVAN,
+    canAskForAvan,
+    kebabSellerAdamFitzharmon
+} = require('../../quests/members/family-crest/shared');
 
 const ZEKE_ID = 84;
 
@@ -11,10 +18,13 @@ async function onTalkToNPC(player, npc) {
 
     await npc.say('A thousand greetings sir');
 
-    const choice = await player.ask(
-        ['Do you want to trade?', 'Nice cloak'],
-        true
-    );
+    const choices = ['Do you want to trade?', 'Nice cloak'];
+
+    if (canAskForAvan(player)) {
+        choices.push(ASK_FOR_AVAN);
+    }
+
+    const choice = await player.ask(choices, true);
 
     switch (choice) {
         case 0: // trade
@@ -24,6 +34,9 @@ async function onTalkToNPC(player, npc) {
             return true;
         case 1: // cloak
             await npc.say('Thank you');
+            break;
+        case 2: // family crest
+            await kebabSellerAdamFitzharmon(npc);
             break;
     }
 

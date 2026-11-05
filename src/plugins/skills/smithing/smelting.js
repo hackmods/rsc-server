@@ -2,6 +2,7 @@
 
 const items = require('@2003scape/rsc-data/config/items');
 const { smelting } = require('@2003scape/rsc-data/skills/smithing');
+const { ITEMS: FAMILY_CREST_ITEMS, goldsmithingBonus } = require('../../quests/members/family-crest/shared');
 
 const BRONZE_BAR_ID = 169;
 const COAL_ID = 155;
@@ -12,6 +13,10 @@ const IRON_ORE = 151;
 const SILVER_BAR_ID = 384;
 const STEEL_BAR_ID = 171;
 
+// Open-RSC Smelting.java: Family Crest perfect gold (690) smelts like gold into a perfect gold bar (691)
+const PERFECT_GOLD_ID = FAMILY_CREST_ITEMS.perfectGold;
+const PERFECT_GOLD_BAR_ID = FAMILY_CREST_ITEMS.perfectGoldBar;
+
 const ORE_IDS = new Set();
 
 for (const { ores } of Object.values(smelting)) {
@@ -21,7 +26,10 @@ for (const { ores } of Object.values(smelting)) {
 }
 
 async function onUseWithGameObject(player, gameObject, item) {
-    if (gameObject.id !== FURNACE_ID || !ORE_IDS.has(item.id)) {
+    if (
+        gameObject.id !== FURNACE_ID ||
+        (!ORE_IDS.has(item.id) && item.id !== PERFECT_GOLD_ID)
+    ) {
         return false;
     }
 
@@ -30,7 +38,9 @@ async function onUseWithGameObject(player, gameObject, item) {
     // > Coal can be used on a furnace with iron ore in the player's inventory
     // > to smelt steel bars. This does not work with any other bar which
     // > requires coal to create.
-    if (item.id === COAL_ID) {
+    if (item.id === PERFECT_GOLD_ID) {
+        resultBarID = GOLD_BAR_ID;
+    } else if (item.id === COAL_ID) {
         resultBarID = STEEL_BAR_ID;
     } else {
         barLoop: for (const [barID, { ores }] of Object.entries(smelting)) {
@@ -60,7 +70,11 @@ async function onUseWithGameObject(player, gameObject, item) {
     const isCraftingBar =
         resultBarID === GOLD_BAR_ID || resultBarID == SILVER_BAR_ID;
     const smithingLevel = player.skills.smithing.current;
-    const { level, experience, ores } = smelting[resultBarID];
+    const { level, experience } = smelting[resultBarID];
+    const ores =
+        item.id === PERFECT_GOLD_ID
+            ? [{ id: PERFECT_GOLD_ID, amount: 1 }]
+            : smelting[resultBarID].ores;
 
     player.sendBubble(item.id);
 
@@ -152,8 +166,11 @@ async function onUseWithGameObject(player, gameObject, item) {
         }
     }
 
-    player.addExperience('smithing', experience);
-    player.inventory.add(resultBarID);
+    // Smelting.java: gauntlets of goldsmithing add 45 to every gold bar, perfect gold too
+    player.addExperience('smithing', experience + goldsmithingBonus(player, resultBarID));
+    player.inventory.add(
+        item.id === PERFECT_GOLD_ID ? PERFECT_GOLD_BAR_ID : resultBarID
+    );
     player.message(`@que@You retrive a bar of ${metalName}`);
 
     return true;

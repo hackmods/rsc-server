@@ -2,6 +2,7 @@
 
 const crafting = require('@2003scape/rsc-data/skills/crafting');
 const items = require('@2003scape/rsc-data/config/items');
+const { ITEMS: FAMILY_CREST_ITEMS, perfectJewellery } = require('../../quests/members/family-crest/shared');
 
 const goldJewellery = crafting['gold-jewellery'];
 const silverJewellery = crafting['silver-jewellery'];
@@ -16,8 +17,10 @@ GEM_NAMES.unshift('Gold');
 const FURNACE_ID = 118;
 const GOLD_BAR_ID = 172;
 const SILVER_BAR_ID = 384;
+// Open-RSC Crafting.java: a Family Crest perfect gold bar makes the perfect ruby ring (692) and necklace (693)
+const PERFECT_GOLD_BAR_ID = FAMILY_CREST_ITEMS.perfectGoldBar;
 
-async function goldMoulding(player) {
+async function goldMoulding(player, barID = GOLD_BAR_ID) {
     const { world } = player;
 
     player.message('What would you like to make?');
@@ -80,9 +83,9 @@ async function goldMoulding(player) {
         player.inventory.remove(gemID);
     }
 
-    player.inventory.remove(GOLD_BAR_ID);
+    player.inventory.remove(barID);
     player.message(`You make a ${items[id].name}`);
-    player.inventory.add(id);
+    player.inventory.add(perfectJewellery(barID, id));
     player.addExperience('crafting', experience);
 }
 
@@ -138,8 +141,8 @@ async function onUseWithGameObject(player, gameObject, item) {
         return false;
     }
 
-    if (item.id === GOLD_BAR_ID) {
-        await goldMoulding(player);
+    if (item.id === GOLD_BAR_ID || item.id === PERFECT_GOLD_BAR_ID) {
+        await goldMoulding(player, item.id);
         return true;
     }
 
