@@ -96,7 +96,7 @@ function chase(player, npc) {
 
 function nearGuardian(player, radius = 5) {
     for (const id of GUARDIAN_IDS) {
-        const guardian = player.getNearbyEntitiesByID('npcs', id, radius).find((npc) => !npc.locked);
+        const guardian = player.getNearbyEntitiesWithinRadius('npcs', id, radius).find((npc) => !npc.locked);
 
         if (guardian) {
             return guardian;

@@ -218,6 +218,7 @@ function fakePlayer({
             player.questStages[key] = -1;
         },
         getNearbyEntitiesByID: (type, id) => world.npcList.filter((n) => n.id === id),
+        getNearbyEntitiesWithinRadius: (type, id) => world.npcList.filter((n) => n.id === id),
         getNearestEntityByID: (type, id) => world.npcList.find((n) => n.id === id),
         sounds: [],
         sendSound: (name) => {

@@ -181,6 +181,7 @@ function fakePlayer({
             player.questStages[key] = -1;
         },
         getNearbyEntitiesByID: (type, id) => world.npcList.filter((n) => n.id === id),
+        getNearbyEntitiesWithinRadius: (type, id) => world.npcList.filter((n) => n.id === id),
         getDistance: (e) => Math.max(Math.abs(e.x - player.x), Math.abs(e.y - player.y))
     };
 

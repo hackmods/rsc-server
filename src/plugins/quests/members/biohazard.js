@@ -143,7 +143,8 @@ function chase(player, npc) {
 }
 
 function nearNpc(player, id, radius) {
-    return player.getNearbyEntitiesByID('npcs', id, radius).find((npc) => !npc.locked) || null;
+    // the Java's radius (Entity.getNearbyEntitiesWithinRadius; getNearbyEntitiesByID takes a box side)
+    return player.getNearbyEntitiesWithinRadius('npcs', id, radius).find((npc) => !npc.locked) || null;
 }
 
 function inBounds(player, minX, minY, maxX, maxY) {

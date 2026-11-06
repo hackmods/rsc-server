@@ -250,6 +250,17 @@ class Entity {
         );
     }
 
+    // `range` above is the side of a box centred here (getInArea), so it reaches range / 2 tiles. Open-RSC's
+    // ifnearvisnpc(player, id, radius) and friends take a radius: a port passing that number through searched half as far
+    // (live, Biohazard: the door mourner 7 tiles off was "not near" at 10, and the headquarters door did nothing).
+    getNearbyEntitiesWithinRadius(type, id, radius) {
+        return this.getNearbyEntities(type, radius * 2 + 2).filter(
+            (entity) =>
+                entity.id === id &&
+                Math.max(Math.abs(entity.x - this.x), Math.abs(entity.y - this.y)) <= radius
+        );
+    }
+
     getNearestEntityByID(type, id, range = 48) {
         const nearbyEntities = this.getNearbyEntitiesByID(type, id, range);
 
