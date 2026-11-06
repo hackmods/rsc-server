@@ -391,4 +391,6 @@ module.exports = {
     "quests.members.holy-grail": require('./quests/members/holy-grail.js'),
     "npcs.entrana.high-priest-of-entrana": require('./npcs/entrana/high-priest-of-entrana.js'),
     "quests.members.waterfall-quest": require('./quests/members/waterfall-quest.js'),
+    "quests.members.temple-of-ikov": require('./quests/members/temple-of-ikov.js'),
+    "quests.members.biohazard": require('./quests/members/biohazard.js'),
 };

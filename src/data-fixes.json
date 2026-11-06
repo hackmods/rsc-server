@@ -1022,6 +1022,51 @@
             },
             "note": "rsc-data lists respawn times only for the 292 npcs that can die; the 4th plague sheep above was one; a quest plugin that takes any other npc out of the world (Clivet rafting off in The Hazeel Cult, the Lost City leprechaun vanishing) left it gone until a restart, so every later player was stuck. Open-RSC respawns every npc (Npc.remove, respawnTime per npc def): those times fill the gaps, rsc-data rows are kept",
             "source": "Open-RSC server/conf/server/defs/NpcDefs.json respawnTime (seconds) x 1000; Npc.java remove() line 836; live evidence: Clivet (424) never came back after a Hazeel Cult run on the test stack (2026-11-05)"
+        },
+        {
+            "id": "ranged-ice-arrows-654",
+            "file": "ranged",
+            "path": "weapons.654.ammunition",
+            "op": "set",
+            "value": [723, 647, 646, 645, 644, 643, 642, 641, 640, 639, 638, 574, 11],
+            "note": "rsc-data lets no bow fire Ice Arrows (723); the yew longbow fires them, tried before the other arrows as in Open-RSC (Temple of Ikov: the fire warrior of Lesarkus takes only ice arrows)",
+            "source": "Open-RSC server/src/com/openrsc/server/event/rsc/impl/projectile/RangeUtils.java lines 78-82 (ICE_ARROWS fired from the yew and magic bows), Formulae.arrowIDs (ice arrows come before rune arrows); plugin quests/members/temple-of-ikov.js"
+        },
+        {
+            "id": "ranged-ice-arrows-655",
+            "file": "ranged",
+            "path": "weapons.655.ammunition",
+            "op": "set",
+            "value": [723, 647, 646, 645, 644, 643, 642, 641, 640, 639, 638, 574, 11],
+            "note": "rsc-data lets no bow fire Ice Arrows (723); the yew shortbow fires them, tried before the other arrows as in Open-RSC (Temple of Ikov: the fire warrior of Lesarkus takes only ice arrows)",
+            "source": "Open-RSC server/src/com/openrsc/server/event/rsc/impl/projectile/RangeUtils.java lines 78-82 (ICE_ARROWS fired from the yew and magic bows), Formulae.arrowIDs (ice arrows come before rune arrows); plugin quests/members/temple-of-ikov.js"
+        },
+        {
+            "id": "ranged-ice-arrows-656",
+            "file": "ranged",
+            "path": "weapons.656.ammunition",
+            "op": "set",
+            "value": [723, 647, 646, 645, 644, 643, 642, 641, 640, 639, 638, 574, 11],
+            "note": "rsc-data lets no bow fire Ice Arrows (723); the magic longbow fires them, tried before the other arrows as in Open-RSC (Temple of Ikov: the fire warrior of Lesarkus takes only ice arrows)",
+            "source": "Open-RSC server/src/com/openrsc/server/event/rsc/impl/projectile/RangeUtils.java lines 78-82 (ICE_ARROWS fired from the yew and magic bows), Formulae.arrowIDs (ice arrows come before rune arrows); plugin quests/members/temple-of-ikov.js"
+        },
+        {
+            "id": "ranged-ice-arrows-657",
+            "file": "ranged",
+            "path": "weapons.657.ammunition",
+            "op": "set",
+            "value": [723, 647, 646, 645, 644, 643, 642, 641, 640, 639, 638, 574, 11],
+            "note": "rsc-data lets no bow fire Ice Arrows (723); the magic shortbow fires them, tried before the other arrows as in Open-RSC (Temple of Ikov: the fire warrior of Lesarkus takes only ice arrows)",
+            "source": "Open-RSC server/src/com/openrsc/server/event/rsc/impl/projectile/RangeUtils.java lines 78-82 (ICE_ARROWS fired from the yew and magic bows), Formulae.arrowIDs (ice arrows come before rune arrows); plugin quests/members/temple-of-ikov.js"
+        },
+        {
+            "id": "ranged-ice-arrows-damage",
+            "file": "ranged",
+            "path": "ammunition.723",
+            "op": "set",
+            "value": 22,
+            "note": "rsc-data has no ammunition row for Ice Arrows (723), so a bow could not use them; they hit like mithril arrows (642) here. Open-RSC rolls ranged damage from the shooter, not the arrow, so no authentic number exists",
+            "source": "Open-RSC server/src/com/openrsc/server/event/rsc/impl/projectile/RangeUtils.java lines 78-82 (ICE_ARROWS fired from the yew and magic bows), Formulae.arrowIDs (ice arrows come before rune arrows); plugin quests/members/temple-of-ikov.js"
         }
     ]
 }

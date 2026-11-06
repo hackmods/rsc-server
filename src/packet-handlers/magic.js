@@ -117,6 +117,7 @@ const TELEPORTS = {
 };
 
 const ARDOUGNE_TELEPORT = 26;
+const PLAGUE_SAMPLE_ID = 812;
 const BONES_TO_BANANAS = 7;
 const LOW_ALCHEMY = 10;
 const HIGH_ALCHEMY = 28;
@@ -393,6 +394,14 @@ async function teleport(player, id, spell) {
     }
 
     finishCast(player, id, cost);
+
+    // Open-RSC SpellHandler.handleTeleport: Biohazard's plague sample (812) is too delicate for a teleport spell
+    const { inventory } = player;
+
+    if (inventory.has(PLAGUE_SAMPLE_ID)) {
+        player.message('the plague sample is too delicate...', 'it disintegrates in the crossing');
+        inventory.remove(PLAGUE_SAMPLE_ID, inventory.count(PLAGUE_SAMPLE_ID));
+    }
 
     const { x, y } = TELEPORTS[id];
     player.teleport(x, y, true);

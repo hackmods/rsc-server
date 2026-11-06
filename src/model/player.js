@@ -463,7 +463,8 @@ class Player extends Character {
         this.send({
             type: 'playerQuestList',
             questCompletion: quests.map((name) => {
-                return this.questStages[name] && this.questStages[name] === -1;
+                // -2: Temple of Ikov handed the staff to Lucien (done as well, templeOfIkov in quests/members/temple-of-ikov.js)
+                return this.questStages[name] === -1 || this.questStages[name] === -2;
             })
         });
     }
