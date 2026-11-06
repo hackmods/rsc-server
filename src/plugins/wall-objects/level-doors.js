@@ -612,10 +612,12 @@ async function onGameObjectCommandOne(player, gameObject) {
         return false;
     }
 
-    // the gate does nothing from the desert side
-    if (player.y < 735) {
-        await stoneGateGoThrough(player);
+    // from the desert side (y >= 735) the gate is the Tourist Trap's (quests/members/tourist-trap/tourist-trap.js)
+    if (player.y >= 735) {
+        return false;
     }
+
+    await stoneGateGoThrough(player);
 
     return true;
 }
@@ -625,9 +627,11 @@ async function onGameObjectCommandTwo(player, gameObject) {
         return false;
     }
 
-    if (player.y < 735) {
-        await stoneGateLook(player);
+    if (player.y >= 735) {
+        return false;
     }
+
+    await stoneGateLook(player);
 
     return true;
 }

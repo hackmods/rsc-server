@@ -393,4 +393,10 @@ module.exports = {
     "quests.members.waterfall-quest": require('./quests/members/waterfall-quest.js'),
     "quests.members.temple-of-ikov": require('./quests/members/temple-of-ikov.js'),
     "quests.members.biohazard": require('./quests/members/biohazard.js'),
+    "quests.members.observatory-quest": require('./quests/members/observatory-quest.js'),
+    "npcs.ardougne.spirit-of-scorpius": require('./npcs/ardougne/spirit-of-scorpius.js'),
+    "quests.members.tourist-trap.shared": require('./quests/members/tourist-trap/shared.js'),
+    "quests.members.tourist-trap.dialogue": require('./quests/members/tourist-trap/dialogue.js'),
+    "quests.members.tourist-trap.tourist-trap": require('./quests/members/tourist-trap/tourist-trap.js'),
+    "quests.members.tourist-trap.mechanism": require('./quests/members/tourist-trap/mechanism.js'),
 };

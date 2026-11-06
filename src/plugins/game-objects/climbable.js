@@ -5,9 +5,10 @@
 // 359: the White Wolf Mountain stairs (the dwarf guards them, quests/members/fishing-contest.js)
 // 981, 985: the Dwarf Cannon watch tower ladders (quests/members/dwarf-cannon/objects.js; the trap door is shut at stage 0)
 // 369, 370: the Temple of Ikov dungeon stairs (quests/members/temple-of-ikov.js; down needs a lit light)
+// 928: the Observatory reception ladder (quests/members/observatory-quest.js; the assistant warns first)
 // 199: the black hole ladder (miniquests/black-hole.js); 635: the Grand Tree watch tower (agility 25,
 // quests/members/grand-tree/roots.js); 295: the Port Sarim jeweller's ladder (quests/members/merlins-crystal/excalibur.js)
-const EXCLUDE_IDS = new Set([130, 198, 199, 223, 227, 244, 295, 331, 359, 369, 370, 458, 635, 981, 985]);
+const EXCLUDE_IDS = new Set([130, 198, 199, 223, 227, 244, 295, 331, 359, 369, 370, 458, 635, 928, 981, 985]);
 // ladders, stairs and levers that move the player to a fixed tile (object-tele-points.js) are not plane shifts
 const { findTelePoint } = require('./object-tele-points');
 

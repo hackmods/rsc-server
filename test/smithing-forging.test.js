@@ -17,13 +17,13 @@ function menuPaths(menus, prefix = []) {
     );
 }
 
-async function forge(barID, path) {
+async function forge(barID, path, questStages = { touristTrap: -1 }) {
     const choices = [...path];
     const added = [];
     const removed = [];
     const player = {
         world: { members: true },
-        questStages: {},
+        questStages,
         skills: { smithing: { current: 99, base: 99 } },
         inventory: {
             has: () => true,
