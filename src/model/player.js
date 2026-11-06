@@ -1395,7 +1395,9 @@ class Player extends Character {
                     yOffset = up ? height : -1;
                     break;
                 case 2:
-                    xOffset = up ? -height : 1;
+                    // Open-RSC Ladders.coordModifier: up lands past the far end (x + height), down at x - 1. The signs were
+                    // swapped: Biohazard's stairs (632,566) landed the climber at 629,1510, behind the railing.
+                    xOffset = up ? height : -1;
                     break;
                 case 4:
                     yOffset = up ? -1 : height;
