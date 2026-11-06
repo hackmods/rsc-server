@@ -14,7 +14,7 @@
 //   4  jump off (462, 463, 482) the trees over the river, tying a Rope (237) to the far one lands on the ledge and the falls;
 //      the cupboard 506/507 (634,3295) holds Glarial's urn (805), the coffin 467 (646,3305) Glarial's amulet (782, wear
 //      it), the crate 492 (650,3290) an old key (797) for the locked door 135 (668,3281). The doors 471 (659,3303) open to
-//      someone wearing the amulet, else the corridor floods. The statue of Glarial 483 (647,3266) with the amulet lifts the
+//      someone wearing the amulet, else the corridor floods. The statue of Glarial 483 (665,3270, past the locked door) with the amulet lifts the
 //      ground to the chalice room (647,3267); the urn emptied into the Chalice of eternity (485 at (647,3269)) ends the quest.
 //   -1 1 quest point, attack and strength 1000 + 900 x level (quarter points), 40 Mithril seeds, 2 Gold bars, 2 Diamonds
 // Open-RSC quirk kept: the stone stands (473-478) take an air, water or earth rune each and remember it
