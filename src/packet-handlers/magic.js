@@ -123,6 +123,7 @@ const LOW_ALCHEMY = 10;
 const HIGH_ALCHEMY = 28;
 const SUPERHEAT = 21;
 const CRUMBLE_UNDEAD = 19;
+const IBAN_BLAST = 25;
 
 // spell index: spell power { player, npc } against a player and an NPC.
 // Open-RSC constants/SpellDamages.java modernMagicProjectiles (the table its
@@ -598,6 +599,39 @@ function godSpellRefused(player, id, spell) {
     return true;
 }
 
+// Open-RSC SpellHandler IBAN_BLAST: only after the Underground Pass quest, and 25 casts per charge of the staff (cache
+// "Iban blast_casts", set to 25 by the quest and by the Flames of Zamorak). Returns true (after telling the player) when refused
+function ibanBlastRefused(player, id, spell) {
+    if (id !== IBAN_BLAST) {
+        return false;
+    }
+
+    if (!player.questStages || player.questStages.undergroundPass !== -1) {
+        player.message('you need to complete underground pass quest to cast this spell');
+        return true;
+    }
+
+    const key = `${spell.name}_casts`;
+    const casts = player.cache ? player.cache[key] : undefined;
+
+    if (typeof casts === 'number' && casts < 1) {
+        player.message('you need to recharge the staff of iban');
+        player.message("at iban's temple");
+        return true;
+    }
+
+    return false;
+}
+
+// each Iban blast uses a charge
+function countIbanCast(player, id, spell) {
+    const key = `${spell.name}_casts`;
+
+    if (id === IBAN_BLAST && player.cache && typeof player.cache[key] === 'number') {
+        player.cache[key] -= 1;
+    }
+}
+
 // a god spell cast inside the Mage Arena counts towards the 100
 function countGodCast(player, id, spell) {
     if (!GOD_SPELLS.has(id) || !inMageArena(player) || !player.cache) {
@@ -695,7 +729,7 @@ async function castNPC({ player }, { index, id }) {
         return;
     }
 
-    if (godSpellRefused(player, id, spell)) {
+    if (godSpellRefused(player, id, spell) || ibanBlastRefused(player, id, spell)) {
         return;
     }
 
@@ -758,6 +792,7 @@ async function castNPC({ player }, { index, id }) {
     player.sendProjectile(npc, PROJECTILE_MAGIC);
     finishCast(player, id, cost, null);
     countGodCast(player, id, spell);
+    countIbanCast(player, id, spell);
 
     if (curse) {
         curseStat(npc.skills[curse.skill], curse.fraction);
@@ -824,7 +859,7 @@ async function castPlayer({ player }, { index, id }) {
         return;
     }
 
-    if (godSpellRefused(player, id, spell)) {
+    if (godSpellRefused(player, id, spell) || ibanBlastRefused(player, id, spell)) {
         return;
     }
 
@@ -905,6 +940,7 @@ async function castPlayer({ player }, { index, id }) {
     player.sendProjectile(victim, PROJECTILE_MAGIC);
     finishCast(player, id, cost, null);
     countGodCast(player, id, spell);
+    countIbanCast(player, id, spell);
 
     wilderness.skullOnAttack(player, victim);
     wilderness.markCombat(player, victim);

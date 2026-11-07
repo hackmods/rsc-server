@@ -33,13 +33,14 @@
 //   8  Elena -> 9 (go to the King of East Ardougne)
 //   9  King Lathas (512, 613,602): the plague is a hoax; he gives the Magic amulet (826) -> -1: 3 quest points, thieving
 //      2000 + 200 x level quarter points
-//  -1  King Lathas starts Underground Pass (the quest is not ported: only its first stage key is set, and the "complete"
-//      dialogue at stage 8 is said without the reward); the Ardougne wall gateway (450, 622,588 and 624,588) opens, and the
+//  -1  King Lathas starts and completes Underground Pass (quests/members/underground-pass/, completeUndergroundPass; the "complete"
+//      dialogue at stage 8 ends with the reward); the Ardougne wall gateway (450, 622,588 and 624,588) opens, and the
 //      training camp gate (563, 660,551)
 // Differences: the Java's generic cupboards (71, 56) and crates (290) are left to the neighbouring ports; the "smuggling
 // gate" (60 at 94,521) has no spawn in rsc-data; the non-member dialogues are kept for a world with members off.
 
 const GameObject = require('../../../model/game-object');
+const { completeUndergroundPass } = require('./underground-pass/shared');
 
 const ELENA_ID = 483;
 const OMART_ID = 484;
@@ -1179,7 +1180,7 @@ async function kingLathas(player, npc) {
             );
             await player.say('i will be ready and waiting');
             await npc.say('your loyalty is appreiciated traveller');
-            // the Java completes Underground Pass here: that quest is not ported
+            completeUndergroundPass(player);
         } else if (underground === -1) {
             await player.say('hello king lathas');
             await npc.say(
