@@ -236,7 +236,13 @@ async function command({ player }, { command, args }) {
                 break;
             }
 
-            player.cache[args[0]] = JSON.parse(args[1]);
+            // ARSC: null clears the key. Stored as null, a plugin that tests presence (typeof !== 'undefined') read every
+            // "cleared" flag as set: Tourist Trap's barrel search handed Ana over at the start of a reset run.
+            if (args[1] === 'null' || args[1] === undefined) {
+                delete player.cache[args[0]];
+            } else {
+                player.cache[args[0]] = JSON.parse(args[1]);
+            }
             break;
         case 'droprandom': {
             for (let i = 0; i < +args[0]; i += 1) {

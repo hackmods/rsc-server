@@ -159,3 +159,14 @@ test('getSaveMessage copies skills without touching the live base levels', { ski
     assert.strictEqual(message.skills.attack.experience, 400);
     assert.strictEqual(player.skills.attack.base, 5);
 });
+
+test('::setcache key null clears the key (a reset flag must not read as set)', () =>
+    withPolicy('prefix:nobody', 'open', async () => {
+        const player = makePlayer('admin');
+        player.rank = 3;
+        player.cache.ana_cart = true;
+        await command({ player }, { command: 'setcache', args: ['ana_cart', 'null'] });
+        assert.strictEqual('ana_cart' in player.cache, false);
+        await command({ player }, { command: 'setcache', args: ['tries', '3'] });
+        assert.strictEqual(player.cache.tries, 3);
+    }));
