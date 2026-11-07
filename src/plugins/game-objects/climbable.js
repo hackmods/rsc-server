@@ -7,7 +7,8 @@
 // 369, 370: the Temple of Ikov dungeon stairs (quests/members/temple-of-ikov.js; down needs a lit light)
 // 199: the black hole ladder (miniquests/black-hole.js); 635: the Grand Tree watch tower (agility 25,
 // quests/members/grand-tree/roots.js); 295: the Port Sarim jeweller's ladder (quests/members/merlins-crystal/excalibur.js)
-const EXCLUDE_IDS = new Set([130, 198, 199, 223, 227, 244, 295, 331, 359, 369, 370, 458, 635, 981, 985]);
+// 659, 1017, 1021: the Yanille watchtower ladders (quests/members/watchtower/obstacles.js)
+const EXCLUDE_IDS = new Set([130, 198, 199, 223, 227, 244, 295, 331, 359, 369, 370, 458, 635, 659, 981, 985, 1017, 1021]);
 // ladders, stairs and levers that move the player to a fixed tile (object-tele-points.js) are not plane shifts
 const { findTelePoint } = require('./object-tele-points');
 

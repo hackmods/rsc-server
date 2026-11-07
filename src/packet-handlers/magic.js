@@ -117,6 +117,7 @@ const TELEPORTS = {
 };
 
 const ARDOUGNE_TELEPORT = 26;
+const WATCHTOWER_TELEPORT = 31;
 const PLAGUE_SAMPLE_ID = 812;
 const BONES_TO_BANANAS = 7;
 const LOW_ALCHEMY = 10;
@@ -384,6 +385,13 @@ async function teleport(player, id, spell) {
     // (quests/members/plague-city/items.js sets cache.ardougneScroll)
     if (id === ARDOUGNE_TELEPORT && !player.cache.ardougneScroll) {
         player.message("You don't know how to cast this spell yet", 'You need to do the plague city quest');
+        return;
+    }
+
+    // Open-RSC SpellHandler.canTeleport: the Watchtower teleport is learnt from the wizard's spell scroll
+    // (quests/members/watchtower/mechanism.js sets cache.watchtower_scroll)
+    if (id === WATCHTOWER_TELEPORT && !player.cache.watchtower_scroll) {
+        player.message('You cannot cast this spell', 'You need to finish the watchtower quest first');
         return;
     }
 
