@@ -89,7 +89,28 @@ function getMinimumLevel(items) {
     })[0].level;
 }
 
+// Smithing.java: "Forge Dart Tips" is on the missile heads menu only during or after the Tourist Trap (stage 8 or more, or done)
+const DART_TIPS_MENU = 'Forge Dart Tips';
+
+function dartTipsUnlocked(player) {
+    const stage = (player.questStages && player.questStages.touristTrap) || 0;
+
+    return stage >= 8 || stage === -1;
+}
+
 async function promptForgeItem(player, menus, items, barID, depth = 0) {
+    // before the quest the missile heads menu offers arrow heads and Cancel
+    let cancelOption = false;
+
+    if (depth > 0 && menus.includes(DART_TIPS_MENU) && !dartTipsUnlocked(player)) {
+        const keep = menus.map((menu) => menu !== DART_TIPS_MENU);
+
+        menus = menus.filter((menu, i) => keep[i]);
+        items = items.filter((item, i) => keep[i]);
+        barID = barID.filter((bars, i) => keep[i]);
+        cancelOption = true;
+    }
+
     if (depth === 0) {
         if (barID === BRONZE_BAR_ID) {
             menus = menus.concat(CRAFT_ITEM_MENU);
@@ -107,13 +128,17 @@ async function promptForgeItem(player, menus, items, barID, depth = 0) {
         return choice + (barCount > 1 ? ` (${barCount} bars)` : '');
     });
 
-    if (depth === 0) {
+    if (depth === 0 || cancelOption) {
         choices.push('Cancel');
     }
 
     const choice = await player.ask(choices, false);
 
     if (depth === 0 && choice === choices.length) {
+        return;
+    }
+
+    if (cancelOption && choice === choices.length - 1) {
         return;
     }
 

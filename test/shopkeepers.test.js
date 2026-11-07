@@ -64,6 +64,7 @@ function makePlayer(choices, { questStages = {}, cache = {} } = {}, decline = 'l
         questStages,
         cache,
         world: { addPlayerDrop() {} }, // Shantay drops the kebab recipe 1 time in 26
+        inventory: { has: () => true }, // Shantay asks whether the player has the disclaimer
         engage() {},
         disengage() {},
         message() {},

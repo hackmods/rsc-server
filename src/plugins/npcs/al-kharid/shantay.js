@@ -1,11 +1,12 @@
 // Ported from Open-RSC authentic/npcs/alkharid/ShantayPassNpcs.java (AGPL-3.0)
 // Shantay (Al Kharid desert pass): greeting and menu that opens 'shantay-pass'. Skipped: the desert pass gate and
-// poster, the disclaimer and "I see you're new" lines, the Tourist Trap line, the jail and fine logic, the assistant
-// NPC, and the rest of the "What is this place?" lore tree (only its first lines are kept). The kebab recipe drop (the
-// scrumpled piece of paper, 1120, read in items/scrumpled-piece-of-paper.js) is ported.
+// poster, the jail and fine logic, the assistant NPC, and the rest of the "What is this place?" lore tree (only its first
+// lines are kept). The kebab recipe drop (the scrumpled piece of paper, 1120, read in items/scrumpled-piece-of-paper.js), the
+// disclaimer line and the Tourist Trap line (Irena, quests/members/tourist-trap) are ported.
 
 const SHANTAY_ID = 549;
 const SCRUMPLED_PAPER_ID = 1120;
+const SHANTAY_DISCLAIMER_ID = 1099;
 
 async function onTalkToNPC(player, npc) {
     if (npc.id !== SHANTAY_ID) {
@@ -20,6 +21,18 @@ async function onTalkToNPC(player, npc) {
     }
 
     await npc.say('Hello Effendi, I am Shantay.');
+
+    if (!player.inventory.has(SHANTAY_DISCLAIMER_ID)) {
+        await npc.say("I see you're new!", 'Make sure you read the poster before going into the desert.');
+    }
+
+    // ShantayPassNpcs: before the Tourist Trap starts he points at Irena
+    if ((player.questStages.touristTrap || 0) === 0) {
+        await npc.say(
+            'There is a heartbroken Mother just past the gates and in the Desert.',
+            'Her name is Irena and she mourns her lost Daughter. Such a shame.'
+        );
+    }
 
     const choice = await player.ask(
         [
