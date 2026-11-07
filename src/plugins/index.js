@@ -399,4 +399,12 @@ module.exports = {
     "quests.members.tourist-trap.dialogue": require('./quests/members/tourist-trap/dialogue.js'),
     "quests.members.tourist-trap.tourist-trap": require('./quests/members/tourist-trap/tourist-trap.js'),
     "quests.members.tourist-trap.mechanism": require('./quests/members/tourist-trap/mechanism.js'),
+    "quests.members.shilo-village.shared": require('./quests/members/shilo-village/shared.js'),
+    "quests.members.shilo-village.items": require('./quests/members/shilo-village/items.js'),
+    "quests.members.shilo-village.mosol-rei": require('./quests/members/shilo-village/mosol-rei.js'),
+    "quests.members.shilo-village.trufitus-items": require('./quests/members/shilo-village/trufitus-items.js'),
+    "quests.members.shilo-village.objects": require('./quests/members/shilo-village/objects.js'),
+    "quests.members.shilo-village.nazastarool": require('./quests/members/shilo-village/nazastarool.js'),
+    "quests.members.shilo-village.tomb-dolmen": require('./quests/members/shilo-village/tomb-dolmen.js'),
+    "quests.members.shilo-village.village": require('./quests/members/shilo-village/village.js'),
 };
