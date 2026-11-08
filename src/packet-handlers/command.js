@@ -47,6 +47,12 @@ async function command({ player }, { command, args }) {
 
     // Ordinary banking: the module requires an open bank and validates the
     // complete transfer before changing either store.
+    // ARSC clans (src/clans.js): ::clan and ::c work whatever the command policy is
+    if (command === 'clan' || command === 'c') {
+        await require('../clans').command(player, command, args);
+        return;
+    }
+
     if (command === 'bankpreset') {
         await require('../bank-presets').command(player, args);
         return;

@@ -1687,6 +1687,20 @@ async function handle(req, res) {
 
         audit({ source: 'api', broadcast: body.message });
         send(res, 200, { ok: true, sentTo: broadcast(body.message) });
+    } else if (
+        route === '/clans' ||
+        route.startsWith('/clans/') ||
+        route === '/clan-battles' ||
+        route.startsWith('/pvp/')
+    ) {
+        // ARSC Wilderness clans and PvP record (src/clans.js): GETs public, POSTs behind the token
+        const out = await require('./clans').handleHttp(req.method, route, url, () => readBody(req));
+
+        if (out) {
+            send(res, out.status, out.body);
+        } else {
+            send(res, 404, { error: 'not found' });
+        }
     } else if (route.startsWith('/exchange/')) {
         // ARSC Grand Exchange: GETs public, POST /exchange/stake behind the token
         const out = await require('./exchange').handleHttp(

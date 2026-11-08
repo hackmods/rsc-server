@@ -7,6 +7,9 @@ module.exports = {
         // Wilderness outfitter (plugins/npcs/edgeville/wilderness-outfitter.js, shop in arsc-shops.js), on the street south
         // of Edgeville bank, 19 tiles below the Wilderness border (y 427); the tile and its wander box are walkable
         { id: 720, x: 214, y: 446, minX: 212, maxX: 216, minY: 445, maxY: 447 },
+        // the Clan Herald (plugins/npcs/edgeville/clan-herald.js, src/clans.js), the "Referee" definition, standing on the
+        // east end of the outfitter's walkable box
+        { id: 601, x: 216, y: 446, minX: 216, maxX: 216, minY: 446, maxY: 446 },
         // Monster Slayer guild master (plugins/npcs/varrock/slayer-master.js), south-east Varrock
         { id: 749, x: 118, y: 504, minX: 116, maxX: 120, minY: 502, maxY: 506 },
         // the Iron Man tutors (plugins/npcs/lumbridge/iron-men.js, src/arsc-npcs), Open-RSC NpcLocsIronman.json:
