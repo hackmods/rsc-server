@@ -201,6 +201,8 @@ class Server {
 
             require('./exchange').init(this.world); // ARSC Grand Exchange
 
+            require('./clans').init(this.world); // ARSC Wilderness clans and battles
+
             this.world.tick();
             setTimeout(this.world.boundSaveAllPlayers, 1000 * 60 * 5); // ARSC periodic save
 

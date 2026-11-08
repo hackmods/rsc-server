@@ -1056,6 +1056,7 @@ class Player extends Character {
             })
         );
         const itemsKept = [];
+        const killerDrop = []; // ARSC PvP record (src/pvp-stats.js): the loot value
 
         for (const item of this.inventory.items) {
             if (kept.has(item)) {
@@ -1075,6 +1076,10 @@ class Player extends Character {
             if (dropped && killer) {
                 dropped.playerKill = true;
             }
+
+            if (killer && owner === killer) {
+                killerDrop.push(item);
+            }
         }
 
         // a Hardcore Ironman's death downgrades them (Player.killedBy)
@@ -1089,6 +1094,13 @@ class Player extends Character {
             killer.message(`You have defeated ${this.getFormattedUsername()}!`);
             killer.sendSound('victory');
             log.info(`${killer} killed ${this} in the wilderness`);
+
+            // ARSC: the PvP record, clan counters and clan battle kills
+            try {
+                require('../pvp-stats').onKill(this, killer, { dropped: killerDrop, skulled });
+            } catch (e) {
+                log.error(e);
+            }
         }
 
         this.removeSkull();
@@ -1830,6 +1842,7 @@ class Player extends Character {
 
     tick() {
         this.normalizeSkills();
+        require('../pvp-stats').onMove(this); // ARSC: deepest Wilderness level
         this.tickPoison();
         this.tickSkull();
 

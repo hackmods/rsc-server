@@ -1,0 +1,22 @@
+{
+ "note": "Items the Grand Exchange system stock (scripts/gen-ge-system-stock.js) must never hold, beyond its rules. A reason per id; regenerate after an edit.",
+ "items": {
+  "49": "a quest prop the rules cannot tell from a good (a quest hands it out or asks for it)",
+  "58": "a quest prop the rules cannot tell from a good (a quest hands it out or asks for it)",
+  "59": "Phoenix Gang quest reward",
+  "99": "a quest prop the rules cannot tell from a good (a quest hands it out or asks for it)",
+  "201": "a quest prop the rules cannot tell from a good (a quest hands it out or asks for it)",
+  "387": "Disk of Returning: a holiday-era novelty, a teleport",
+  "411": "a quest prop the rules cannot tell from a good (a quest hands it out or asks for it)",
+  "412": "a quest prop the rules cannot tell from a good (a quest hands it out or asks for it)",
+  "414": "a quest prop the rules cannot tell from a good (a quest hands it out or asks for it)",
+  "537": "a quest prop the rules cannot tell from a good (a quest hands it out or asks for it)",
+  "583": "a quest prop the rules cannot tell from a good (a quest hands it out or asks for it)",
+  "706": "a quest prop the rules cannot tell from a good (a quest hands it out or asks for it)",
+  "920": "a toy ship from a quest",
+  "1099": "a quest prop the rules cannot tell from a good (a quest hands it out or asks for it)",
+  "1119": "a cat (Gertrude's Cat)",
+  "1120": "a quest prop the rules cannot tell from a good (a quest hands it out or asks for it)",
+  "1285": "a quest prop the rules cannot tell from a good (a quest hands it out or asks for it)"
+ }
+}

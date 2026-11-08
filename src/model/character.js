@@ -191,6 +191,8 @@ class Character extends Entity {
             if (byKind) {
                 byKind.set(player.id, (byKind.get(player.id) || 0) + damage);
             }
+
+            require('../pvp-stats').onDamage(this, player, damage); // ARSC PvP record
         }
 
         this.skills.hits.current -= damage;
