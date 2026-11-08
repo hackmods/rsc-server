@@ -505,7 +505,10 @@ function setMotto(player, text) {
 }
 
 // admin seeding (POST /clans/seed): create the clan or bring its roster in;
-// a member already in another clan is skipped. Idempotent
+// a member already in another clan is skipped. Idempotent. `exact: true` sets
+// every listed member's rank to the spec (leader, generals, the rest members),
+// so a roster whose order changes (the trader guilds rank by profit) can demote
+// a general; without it a general stays one
 function seed(specs) {
     const out = [];
 
@@ -544,6 +547,7 @@ function seed(specs) {
 
         const skipped = [];
         const generals = new Set((spec.generals || []).map(normName));
+        const exact = spec.exact === true;
 
         for (const username of [leader, ...(spec.members || []).map(normName)]) {
             if (!username) {
@@ -570,7 +574,13 @@ function seed(specs) {
             }
 
             member.rank =
-                username === leader ? 'leader' : generals.has(username) ? 'general' : member.rank === 'leader' ? 'member' : member.rank;
+                username === leader
+                    ? 'leader'
+                    : generals.has(username)
+                      ? 'general'
+                      : exact || member.rank === 'leader'
+                        ? 'member'
+                        : member.rank;
         }
 
         clan.leader = leader;

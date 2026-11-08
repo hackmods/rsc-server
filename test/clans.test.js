@@ -387,3 +387,18 @@ test('HTTP: clans, a clan with its chat, battles, hiscores merged with online co
 
     assert.equal(await clans.handleHttp('GET', '/other', url('/other')), null);
 });
+
+test('seed with exact: ranks follow the spec, so a general can be demoted (the trader guilds rank by profit)', () => {
+    setup();
+    const spec = (leader, generals) => [{ tag: 'MHSE', name: 'Merchant House', leader, generals, members: ['lombard', 'fugger', 'medici', 'barings'], exact: true }];
+    clans.seed(spec('lombard', ['fugger', 'medici']));
+    assert.equal(clans.memberOf('fugger').member.rank, 'general');
+    clans.seed(spec('barings', ['lombard', 'medici']));
+    assert.equal(clans.memberOf('barings').member.rank, 'leader');
+    assert.equal(clans.memberOf('lombard').member.rank, 'general', 'the old leader steps down to general');
+    assert.equal(clans.memberOf('fugger').member.rank, 'member', 'fugger is demoted');
+    assert.equal(clans.getClan('MHSE').leader, 'barings');
+    // without exact, a general keeps the rank
+    clans.seed([{ tag: 'MHSE', name: 'Merchant House', leader: 'barings', members: ['lombard'] }]);
+    assert.equal(clans.memberOf('lombard').member.rank, 'general');
+});
