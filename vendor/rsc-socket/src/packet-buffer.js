@@ -177,8 +177,11 @@ class PacketBuffer {
         const length = this.offset;
         const header = Buffer.alloc(3);
 
-        if (length >= 160) {
-            header[0] = 160 + (length + 1) / 256;
+        // the length byte counts the opcode too (length + 1): a 159-byte payload is a 160-byte frame, which needs the
+        // two-byte form (a one-byte 160 reads as its first half). Live, the Dig Site's level 3 exam question 3 menu was
+        // exactly that size; it never arrived and the frames after it were misread.
+        if (length + 1 >= 160) {
+            header[0] = 160 + Math.floor((length + 1) / 256);
             header[1] = (length + 1) & 0xff;
             header[2] = this.id;
 
