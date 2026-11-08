@@ -495,6 +495,11 @@ class World {
     }
 
     getPlayerByUsername(username) {
+        // ARSC: no name finds nobody (a command with its name left out threw here)
+        if (typeof username !== 'string' || !username) {
+            return undefined;
+        }
+
         username = username.toLowerCase();
 
         for (const player of this.players.getAll()) {
