@@ -13,6 +13,7 @@ const TASTY_UGTHANKI_KEBAB_ID = 1102;
 const SPECIAL_DEFENSE_CABBAGE_ID = 228;
 const CABBAGE_ID = 18;
 const ROCK_CAKE_ID = 1061;
+const NIGHTSHADE_ID = 1086;
 const ROTTEN_APPLES_ID = 801;
 const COOKED_OOMLIE_MEAT_PARCEL_ID = 1269;
 const JANGERBERRIES_ID = 936;
@@ -226,6 +227,11 @@ async function onInventoryCommand(player, item) {
     if (item.id === JANGERBERRIES_ID) {
         await eatJangerberries(player);
         return true;
+    }
+
+    // nightshade (Watchtower, InvAction.handleNightshade) is poisonous: quests/members/watchtower/mechanism.js
+    if (item.id === NIGHTSHADE_ID) {
+        return false;
     }
 
     const definition = edible[item.id];
