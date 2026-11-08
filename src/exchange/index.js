@@ -15,6 +15,7 @@ const log = require('bole')('exchange');
 const R = require('./rules');
 const { clerkNear } = require('./clerks');
 const house = require('./house');
+const activity = require('./activity');
 
 // timings (tests shorten them)
 const config = { requestMs: 15000, voidRetryMs: 5000, voidRetryMaxMs: 30000 };
@@ -873,6 +874,7 @@ function onTrade(playerA, playerB, offerA, offerB) {
 }
 
 function init(world) {
+    activity.start(world);
     house.start(world, { write, notify: notifyCounterparties });
 
     setInterval(() => {
@@ -971,13 +973,28 @@ async function handleHttp(world, method, route, url, readBody) {
     }
 
     if (method === 'GET' && parts[1] === 'house' && parts.length === 2) {
-        const listings = house.houseListings(world.members !== false);
+        const players = world.exchangeActivity
+            ? world.exchangeActivity.view()
+            : { effective: 0 };
+        const h = players.effective;
+        const state = world.exchangeHouseResults || new Map();
+        const listings = house.houseListings(world.members !== false, { h }).map(
+            (l) => {
+                const r = state.get(l.itemId);
+                return r
+                    ? { ...l, open: r.open, yielded: r.yielded }
+                    : l;
+            }
+        );
 
         return {
             status: 200,
             body: {
                 user: house.houseName(),
                 everyMs: house.houseIntervalMs(),
+                players,
+                floor: house.floorFor(h),
+                config: house.floorConfig(),
                 last: world.exchangeHouse || null,
                 count: listings.length,
                 listings
