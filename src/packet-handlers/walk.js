@@ -46,6 +46,11 @@ async function walk({ player }, { targetX, targetY, steps }) {
                 player.ranAwayTick = player.world.ticks;
             }
 
+            // ARSC: Open-RSC EscapeNpcTrigger (Legends' Quest demon and heroes)
+            if (player.opponent && player.opponent.constructor.name === 'NPC') {
+                await player.world.callPlugin('onNPCEscape', player, player.opponent);
+            }
+
             await player.retreat();
         }
     } else if (player.locked) {

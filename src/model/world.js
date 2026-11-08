@@ -72,6 +72,7 @@ const PLUGIN_TYPES = [
     'onWearItem',
     'onRemoveItem',
     'onNPCRangedAttack',
+    'onNPCEscape',
     'onCatGrowth'
 ];
 

@@ -73,8 +73,11 @@ async function chargeOrb(player, gameObject, spell, spellID) {
     player.message('You succesfully charge the orb');
 }
 
+// the Legends' Quest dark metal gate takes the charge spells itself (quests/members/legends-quest/objects.js)
+const DARK_METAL_GATE_ID = 1165;
+
 async function onCastOnGameObject(player, gameObject, spell, spellID) {
-    if (!CHARGE_ORBS[spellID]) {
+    if (!CHARGE_ORBS[spellID] || gameObject.id === DARK_METAL_GATE_ID) {
         return false;
     }
 
