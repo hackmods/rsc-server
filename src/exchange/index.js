@@ -895,6 +895,61 @@ function strip(reply) {
     return body;
 }
 
+let stockTierMap = null;
+
+// itemId -> { tier, base } from system-stock.json, loaded on first use
+function stockTiers() {
+    if (!stockTierMap) {
+        stockTierMap = new Map();
+
+        for (const i of require('./system-stock.json').items) {
+            stockTierMap.set(i.id, { tier: i.tier, base: i.base });
+        }
+    }
+
+    return stockTierMap;
+}
+
+// per tier and bucket: 100 * sum(coins traded) / sum(qty * base value), so
+// 100 means items trade at their base value. Items in neither tier are left out.
+function buildIndex(rows, bucketMs) {
+    const tiers = stockTiers();
+    const series = { supplies: [], market: [] };
+    const open = {};
+
+    for (const row of rows) {
+        const info = tiers.get(row.itemId);
+
+        if (!info || !series[info.tier] || !(info.base > 0)) {
+            continue;
+        }
+
+        const key = `${info.tier}:${row.t}`;
+        let b = open[key];
+
+        if (!b) {
+            b = open[key] = { t: row.t, notional: 0, basis: 0, volume: 0 };
+            series[info.tier].push(b);
+        }
+
+        b.notional += row.notional;
+        b.basis += row.qty * info.base;
+        b.volume += row.qty;
+    }
+
+    for (const tier of Object.keys(series)) {
+        series[tier] = series[tier]
+            .sort((a, b) => a.t - b.t)
+            .map((b) => ({
+                t: b.t,
+                value: Math.round((10000 * b.notional) / b.basis) / 100,
+                volume: b.volume
+            }));
+    }
+
+    return { bucketMs, base: 100, series };
+}
+
 async function handleHttp(world, method, route, url, readBody) {
     const parts = route.split('/').filter(Boolean); // exchange, what, arg
 
@@ -942,6 +997,69 @@ async function handleHttp(world, method, route, url, readBody) {
             itemId,
             depth: Math.min(50, +url.searchParams.get('depth') || 10)
         });
+    }
+
+    // market data (docs/MARKET_API.md): the data server reads, tiers and
+    // base values come from system-stock.json
+    if (method === 'GET' && parts[1] === 'tape' && parts.length === 2) {
+        return read({
+            handler: 'exchangeTape',
+            since: +url.searchParams.get('since') || 0,
+            limit: Math.min(200, +url.searchParams.get('limit') || 50),
+            // buyer and seller names: the admin port is internal; the fleet's
+            // public /market/tape never asks for them
+            accounts: url.searchParams.get('accounts') === '1'
+        });
+    }
+
+    if (method === 'GET' && parts[1] === 'candles' && parts.length === 3) {
+        const itemId = itemArg();
+
+        if (itemId == null) {
+            return { status: 404, body: { error: 'unknown item' } };
+        }
+
+        const out = await read({
+            handler: 'exchangeCandles',
+            itemId,
+            bucketMs: +url.searchParams.get('bucket') || 60 * 60 * 1000,
+            hours: Math.min(720, +url.searchParams.get('hours') || 24)
+        });
+
+        return out.status === 200
+            ? { status: 200, body: { itemId, ...out.body } }
+            : out;
+    }
+
+    if (method === 'GET' && parts[1] === 'movers' && parts.length === 2) {
+        const out = await read({
+            handler: 'exchangeMovers',
+            hours: Math.min(168, +url.searchParams.get('hours') || 24)
+        });
+
+        if (out.status === 200) {
+            const tiers = stockTiers();
+
+            out.body.items = out.body.items.map((i) => ({
+                ...i,
+                tier: tiers.has(i.itemId) ? tiers.get(i.itemId).tier : 'other'
+            }));
+        }
+
+        return out;
+    }
+
+    if (method === 'GET' && parts[1] === 'index' && parts.length === 2) {
+        const hours = Math.min(720, +url.searchParams.get('hours') || 168);
+        const out = await read({
+            handler: 'exchangeIndexRows',
+            hours,
+            bucketMs: +url.searchParams.get('bucket') || 60 * 60 * 1000
+        });
+
+        return out.status === 200
+            ? { status: 200, body: buildIndex(out.body.rows, out.body.bucketMs) }
+            : out;
     }
 
     if (method === 'GET' && parts[1] === 'history' && parts.length === 3) {
