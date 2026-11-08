@@ -228,6 +228,13 @@ async function searchTreeForEntrance(player) {
         return;
     }
 
+    // The Java registers the entrance in place of what stands on the tile (a fern, 398): one object a tile. Added on top, the
+    // fern was the one a click found, and searching or using the key on the entrance said "Nothing interesting happens".
+    if (existing) {
+        swapObject(player, existing, OBJECT.HILLSIDE_ENTRANCE, ENTRANCE_TICKS);
+        return;
+    }
+
     const entrance = new GameObject(world, { id: OBJECT.HILLSIDE_ENTRANCE, x: 350, y: 782, direction: 2 });
 
     world.addEntity('gameObjects', entrance);

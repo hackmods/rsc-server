@@ -904,3 +904,15 @@ test('the bridge blockade: only "Investigate" is the quest, "Jump" is left to th
     assert.equal(await objects.onGameObjectCommandTwo(p, blockade), false);
     assert.equal(await objects.onGameObjectCommandOne(p, gameObject(5, 1, 1)), false);
 });
+
+test('the tree search puts the entrance in place of the fern on its tile (one object a tile, as the Java registers it)', async () => {
+    // Live: added on top of the fern 398 at 350,782, the entrance was never the object a click found ("Nothing interesting happens").
+    const world = fakeWorld();
+    const fern = gameObject(398, 350, 782);
+    world.gameObjects = { getAtPoint: (x, y) => (x === 350 && y === 782 ? [fern] : []) };
+    world.replaceTimed = (type, entity, id, ticks) => (world.swapped = [type, entity.id, id, ticks]);
+    const p = player({ stage: 7, world });
+    await objects.onGameObjectCommandTwo(p, gameObject(573, 350, 781));
+    assert.deepEqual(world.swapped.slice(0, 3), ['gameObjects', 398, 572]);
+    assert.ok(world.swapped[3] > 0, 'for a while');
+});
