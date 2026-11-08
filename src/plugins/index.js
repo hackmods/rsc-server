@@ -110,6 +110,7 @@ module.exports = {
     "npcs.dwarven-mine.nurmof": require('./npcs/dwarven-mine/nurmof.js'),
     "npcs.draynor.aggie": require('./npcs/draynor/aggie.js'),
     "npcs.draynor.ned": require('./npcs/draynor/ned.js'),
+    "npcs.edgeville.clan-herald": require('./npcs/edgeville/clan-herald.js'),
     "npcs.edgeville.monk": require('./npcs/edgeville/monk.js'),
     "npcs.edgeville.shopkeeper": require('./npcs/edgeville/shopkeeper.js'),
     "npcs.edgeville.wilderness-outfitter": require('./npcs/edgeville/wilderness-outfitter.js'),
