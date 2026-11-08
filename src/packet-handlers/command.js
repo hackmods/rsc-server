@@ -1,6 +1,7 @@
 // :: commands
 
 const NPC = require('../model/npc');
+const log = require('bole')('command');
 const items = require('@2003scape/rsc-data/config/items');
 const quests = require('@2003scape/rsc-data/quests');
 const regions = require('@2003scape/rsc-data/regions');
@@ -25,7 +26,12 @@ function markMinted(player) {
     }
 }
 
-async function command({ player }, { command, args }) {
+// a player name from the words after the command ("fang rook" or "fang_rook")
+function nameArg(args) {
+    return (args || []).join(' ').replace(/_/g, ' ').trim();
+}
+
+async function runCommand({ player }, { command, args }) {
     // ARSC Tutorial Island: sent by the clients' "Skip the tutorial" option,
     // so it works whatever the command policy is
     if (command === 'skiptutorial') {
@@ -156,7 +162,14 @@ async function command({ player }, { command, args }) {
             break;
         case 'teleport':
             if (Number.isNaN(+args[0])) {
-                const { spawnX, spawnY } = regions[args[0]];
+                const region = regions[args[0]];
+
+                if (!region) {
+                    player.message(`unknown region ${args[0] || ''}: ::teleport <x> <y> or a region name`);
+                    break;
+                }
+
+                const { spawnX, spawnY } = region;
 
                 if (spawnX && spawnY) {
                     player.teleport(spawnX, spawnY, true);
@@ -205,10 +218,25 @@ async function command({ player }, { command, args }) {
             player.sendFatigue();
             break;
         case 'chaseobj':
-            await player.chase(world.gameObjects.getByID(+args[0]), false);
+            {
+                const object = world.gameObjects.getByID(+args[0]);
+
+                if (!object) {
+                    player.message(`no game object ${args[0] || ''}`);
+                    break;
+                }
+
+                await player.chase(object, false);
+            }
             break;
         case 'gotoentity': {
             const entities = world[args[0]];
+
+            if (!entities || typeof entities.getByID !== 'function') {
+                player.message('usage: ::gotoentity <npcs|players|gameObjects|groundItems|wallObjects> <id>');
+                break;
+            }
+
             const entity = entities.getByID(+args[1]);
 
             if (entity) {
@@ -271,7 +299,14 @@ async function command({ player }, { command, args }) {
             break;
         }
         case 'goto': {
-            const otherPlayer = world.getPlayerByUsername(args[0]);
+            const name = nameArg(args);
+            const otherPlayer = name ? world.getPlayerByUsername(name) : null;
+
+            if (!otherPlayer) {
+                player.message(name ? `${name} is not online` : 'usage: ::goto <player name>');
+                break;
+            }
+
             player.teleport(otherPlayer.x, otherPlayer.y);
             break;
         }
@@ -354,6 +389,20 @@ async function command({ player }, { command, args }) {
         case 'npccoords':
             player.message(world.npcs.getAtPoint(+args[0], +args[1]).length);
             break;
+    }
+}
+
+// ARSC: a command that throws (a lookup that found nothing, a bad argument) tells its player what failed instead of
+// throwing into the server's packet loop, where it was only logged and the player saw nothing
+async function command(socket, message) {
+    try {
+        await runCommand(socket, message);
+    } catch (e) {
+        log.warn(`::${message && message.command} failed: ${e && e.message}`);
+
+        if (socket && socket.player) {
+            socket.player.message(`::${message.command} failed: ${(e && e.message) || e}`);
+        }
     }
 }
 
