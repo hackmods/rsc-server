@@ -7,11 +7,13 @@ const WELL_IDS = new Set([2, 466, 814]);
 async function onUseWithGameObject(player, gameObject, item) {
     const refilledID = Item.getFullWater(item.id);
 
-    if (
-        typeof refilledID === 'undefined' ||
-        (WELL_IDS.has(gameObject.id) && item.id !== BUCKET_ID) &&
-        !SOURCE_IDS.has(gameObject.id)
-    ) {
+    // Open-RSC Refill.blockUseLoc: a refillable item on a source (fountain, sink, pump), or a bucket on a well. The old test
+    // (`undefined || well-and-not-bucket && not-source`) let every other object through: an empty vial used on the Dig Site's
+    // barrel of unidentified liquid came back full of water, and the quest's step after it had nothing to use.
+    const fromSource = SOURCE_IDS.has(gameObject.id);
+    const fromWell = WELL_IDS.has(gameObject.id) && item.id === BUCKET_ID;
+
+    if (typeof refilledID === 'undefined' || !(fromSource || fromWell)) {
         return false;
     }
 
