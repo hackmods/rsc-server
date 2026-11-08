@@ -40,6 +40,7 @@ function makeCaster(world, id, pos, { equipped = [], cache = {} } = {}) {
         y: pos.y,
         combatLevel: 60,
         cache,
+        questStages: { undergroundPass: -1 }, // Iban blast needs the Underground Pass quest
         skills: {
             magic: { current: 99, base: 99 },
             hits: { current: 90, base: 90 },
@@ -559,4 +560,28 @@ test('a stationary aggressive NPC aggroes but never wanders', () => {
     npc.tick();
     assert.equal(attacked, near);
     assert.equal(walked, 0);
+});
+
+// SpellHandler IBAN_BLAST: the Underground Pass quest, then 25 casts of the cache counter per charge
+test('Iban blast needs the Underground Pass quest and spends a charge per cast', async (t) => {
+    const world = magicWorld();
+    const caster = makeCaster(world, 1, WILD, { equipped: [1000], cache: { 'Iban blast_casts': 1 } });
+    const skeleton = makeTarget(world, { name: 'Skeleton' });
+
+    caster.player.questStages.undergroundPass = 5;
+    delete caster.player.magicReadyTick;
+    await castNPC({ player: caster.player }, { index: skeleton.npc.index, id: 25 });
+    assert.deepEqual(caster.log.messages, ['you need to complete underground pass quest to cast this spell']);
+    assert.equal(skeleton.log.damage.length, 0);
+
+    caster.player.questStages.undergroundPass = -1;
+    await maxCast(t, castNPC, caster, skeleton.npc, 25);
+    assert.deepEqual(skeleton.log.damage.map((d) => d[0]), [15]);
+    assert.equal(caster.player.cache['Iban blast_casts'], 0);
+
+    caster.log.messages.length = 0;
+    delete caster.player.magicReadyTick;
+    await castNPC({ player: caster.player }, { index: skeleton.npc.index, id: 25 });
+    assert.deepEqual(caster.log.messages, ['you need to recharge the staff of iban', "at iban's temple"]);
+    assert.equal(skeleton.log.damage.length, 1);
 });

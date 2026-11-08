@@ -754,3 +754,55 @@ test('packet handler index exposes playerAttack from player.js and wilderness.js
     assert.equal(typeof player.useWithPlayer, 'function');
     assert.equal(typeof require('../src/packet-handlers/logout.js').logout, 'function');
 });
+
+// ---------------------------------------------------------------- PvP record (src/pvp-stats.js)
+
+test('PvP death records the kill: counters, streak, assists, style and loot value', () => {
+    const { w, victim, killer } = setupKill();
+    const helper = makePlayer(w);
+    victim.playerDamage.set(helper.id, 2);
+    victim.magicDamage.set(killer.id, 4);
+    victim.cache.pvp = { kills: 0, deaths: 0, assists: 0, streak: 6, bestStreak: 6, damage: 0, deepest: 0, loot: 0 };
+    give(victim, COINS, 1000);
+    give(victim, RUNE_2H);
+    Player.prototype.processDeath.call(victim);
+
+    assert.equal(killer.cache.pvp.kills, 1);
+    assert.equal(killer.cache.pvp.streak, 1);
+    assert.equal(killer.cache.pvp.bestStreak, 1);
+    assert.equal(killer.cache.pvp.loot, 1000, 'the coins went to the killer; the 2h was kept');
+    assert.equal(victim.cache.pvp.deaths, 1);
+    assert.equal(victim.cache.pvp.streak, 0, 'a death ends the streak');
+    assert.equal(victim.cache.pvp.bestStreak, 6);
+    assert.equal(helper.cache.pvp.assists, 1);
+    assert.equal(killer.cache.pvp.assists, 0);
+});
+
+test('PvP record: style, damage in the Wilderness only, deepest level', () => {
+    const stats = require('../src/pvp-stats');
+    const w = makeWorld();
+    const victim = makePlayer(w, { x: 200, y: 300 });
+    const attacker = makePlayer(w);
+    victim.playerDamage.set(attacker.id, 10);
+    victim.rangedDamage.set(attacker.id, 7);
+    assert.equal(stats.styleOf(victim, attacker), 'ranged');
+    victim.magicDamage.set(attacker.id, 3);
+    victim.rangedDamage.set(attacker.id, 0);
+    assert.equal(stats.styleOf(victim, attacker), 'melee');
+
+    stats.onDamage(victim, attacker, 4);
+    assert.equal(attacker.cache.pvp.damage, 4);
+    const safe = makePlayer(w, { x: 200, y: 500 });
+    stats.onDamage(safe, attacker, 9);
+    assert.equal(attacker.cache.pvp.damage, 4, 'no PvP damage outside the Wilderness');
+    stats.onDamage(victim, { id: 99, x: 0, y: 0 }, 9);
+    assert.equal(attacker.cache.pvp.damage, 4, 'an NPC is not counted');
+
+    stats.onMove(victim);
+    const level = wild.wildernessLevel(victim);
+    assert.ok(level > 0);
+    assert.equal(victim.cache.pvp.deepest, level);
+    victim.y = 420;
+    stats.onMove(victim);
+    assert.equal(victim.cache.pvp.deepest, level, 'deepest only rises');
+});

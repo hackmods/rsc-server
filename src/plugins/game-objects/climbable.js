@@ -1,3 +1,4 @@
+// 732, 750-753, 816, 817, 836, 838, 862-866, 872, 920: the Underground Pass ledges, grills and ladder (quests/members/underground-pass/)
 // 199: the black hole ladder (miniquests/black-hole.js)
 // 331: the trapped Handelmort mansion stairs (quests/members/tribal-totem.js)
 // 458: the Sea Slug fishing platform ladder (quests/members/sea-slug.js)
@@ -9,7 +10,7 @@
 // 199: the black hole ladder (miniquests/black-hole.js); 635: the Grand Tree watch tower (agility 25,
 // quests/members/grand-tree/roots.js); 295: the Port Sarim jeweller's ladder (quests/members/merlins-crystal/excalibur.js)
 // 659, 1017, 1021: the Yanille watchtower ladders (quests/members/watchtower/obstacles.js)
-const EXCLUDE_IDS = new Set([130, 198, 199, 223, 227, 244, 295, 331, 359, 369, 370, 458, 635, 659, 928, 981, 985, 1017, 1021]);
+const EXCLUDE_IDS = new Set([130, 198, 199, 223, 227, 244, 295, 331, 359, 369, 370, 458, 635, 928, 981, 985, 732, 750, 751, 752, 753, 816, 817, 836, 838, 862, 863, 864, 865, 866, 872, 920, 659, 1017, 1021]);
 // ladders, stairs and levers that move the player to a fixed tile (object-tele-points.js) are not plane shifts
 const { findTelePoint } = require('./object-tele-points');
 
